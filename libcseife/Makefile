@@ -62,7 +62,7 @@ flist: $(wildcard Makefile *.c *.h)
 AR=ar
 AS=as
 RANLIB=ranlib
-CC=mpiicc
+CC=mpicc
 
 FLAGS += $(MYFLAGS)
 CFLAGS += -O3 -w $(FLAGS)
