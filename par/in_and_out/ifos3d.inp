@@ -135,7 +135,7 @@ data-format_(SEIS_FORMAT[6]) = 1
 #  4: SEG-Y (ASCII-text/native 4-byte-floats (IEEE on PC)/little endian on PC)
 #  5: SEG-Y (ASCII-text/IBM-4-byte-floats on PC/big endian on PC) 
 #
-basic_filename_(SEIS_FILE) = ./su_obs/obs_toy
+basic_filename_(SEIS_FILE) = ./su/cal_toy
 #
 #------------------------ Method --------------------------------
 #
@@ -156,8 +156,8 @@ inversion_parameter_file_(INV_FILE) = ./in_and_out/workflow_toy.dat
 hessian_file_(HESS_FILE) = ./hess/toy
 #
 #-------------------------General---------------------------------------------------
-minimum/maximum_iteration_number_(>0)_(ITMIN,ITMAX) = 1 , 60
-filtering_(yes=1/no=0)_(FILT) = 0
+minimum/maximum_iteration_number_(>0)_(ITMIN,ITMAX) = 1 , 80
+filtering_(yes=1/no=0)_(FILT) = 1
 maximum_number_frequencies_per_iteration_(NFMAX) = 5
 number_of_timestep_per_period_used_for_inversion_(TAST) = 100
 average_model_parameter_(VP0,VS0,RHO0) = 6200.0, 3600.0, 2800.0
@@ -173,7 +173,7 @@ initial_test_steplength_(TESTSTEP) = 0.02
 Type_of_preconditioning_(DAMPTYPE) = 2
 # 0: no damping
 # 1: Circular taper around receivers
-# 2: Circular taper around sources and receivers
+# 2: Cicular taper around sources and receivers
 # 3: Tapering of source and receiver planes
 #
 #------------------------Hessian ----------------------------------------

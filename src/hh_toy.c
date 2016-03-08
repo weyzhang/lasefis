@@ -19,7 +19,7 @@ float ***  taus, float ***  taup, float *  eta){
 	float Vp, Vs, Rho;
 	float *pts=NULL, ts=0.0, tp=0.0, sumu, sumpi;
 	int i, j, k, l, ii, jj, kk;
-	int kasten=0;
+	int kasten=1;
 
 	/* parameters for layer 1 */
 	const float vp1=6200.0, vs1=3600.0, rho1=2800.0;
