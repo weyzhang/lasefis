@@ -1,6 +1,6 @@
 # What is IFOS3D?
 
-**IFOS2D** (**I**nversion of **F**ull **O**bserved **S**eismograms) is a 3D elastic full waveform inversion code.  
+**IFOS3D** (**I**nversion of **F**ull **O**bserved **S**eismograms) is a 3D elastic full waveform inversion code.  
 The inversion problem is solved by a conjugate gradient method and the gradients are computed in the frequency domain with the adjoint method.  
 The forward modeling is done by a time domain finite difference scheme. 
 
