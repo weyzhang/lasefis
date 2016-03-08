@@ -1,4 +1,4 @@
 cd ../src
 make clean
-make fdmpi
+make ifos3d
 cd ../par

@@ -55,7 +55,7 @@ int read_par(FILE *fp_in){
 	int  lineno=0, l, nvarin=0;
 	
 	
-	if (fp_in==NULL) err(" Could not open input parameter file (fdmpi.inp)! ");
+	if (fp_in==NULL) err(" Could not open input parameter file (ifos3d.inp)! ");
 
 		while (fgets(cline,255,fp_in)){ /* leaves via break */
 			/* If there are more than 255 characters in one line, this does not work. */

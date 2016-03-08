@@ -160,8 +160,8 @@ snapmerge:	$(SNAPMERGE_OBJ)
 # part_model:	$(PARTMODEL_OBJ)
 #	$(CC) $(LFLAGS) $(PARTMODEL_OBJ) -o ../bin/partmodel
 
-fdmpi: $(FDMPI_OBJ)
-	$(CC)   $(SFLAGS) $(FDMPI_OBJ) $(LFLAGS) -o ../bin/fdmpi
+ifos3d: $(FDMPI_OBJ)
+	$(CC)   $(SFLAGS) $(FDMPI_OBJ) $(LFLAGS) -o ../bin/ifos3d
 
 
 clean:

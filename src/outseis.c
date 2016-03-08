@@ -63,11 +63,11 @@ int nsrc, int ns, int seis_form[6]){
 	
 	infilename=(char *)FILEINP;
 	
-	strncpy(kindofdata,"synthetic seismograms modeled by fdmpi",STRING_SIZE);
+	strncpy(kindofdata,"synthetic seismograms modeled by ifos",STRING_SIZE);
 	if (FDMPIVERS==33)
-		strncat(kindofdata," (3D isotropic elastic)",STRING_SIZE-sizeof("synthetic seismograms modeled by fdmpi"));
+		strncat(kindofdata," (3D isotropic elastic)",STRING_SIZE-sizeof("synthetic seismograms modeled by ifos"));
 	else if (FDMPIVERS==32)
-		strncat(kindofdata," (3D isotropic acoustic)",STRING_SIZE-sizeof("synthetic seismograms modeled by fdmpi"));
+		strncat(kindofdata," (3D isotropic acoustic)",STRING_SIZE-sizeof("synthetic seismograms modeled by ifos"));
 	kindofdata[STRING_SIZE-1]='\0';
 	
 	

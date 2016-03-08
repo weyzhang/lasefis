@@ -139,7 +139,7 @@ void pwsources(int *nsrc, float **srcpos){ /* plane wave excitation */
 		/*srcpos=fmatrix(1,6,1,*nsrc);*/
 		
 		
-		/*read from fdmpi.c */
+		/*read from ifos.c */
 		/*fprintf(FP," Number of source positions: %i\n",*nsrc);*/
 		fprintf(FP," x-range for plane wave: %d to %d gridpoints. \n",FW,ixend);
 		fprintf(FP," y-range for plane wave: %d to %d gridpoints. \n",FW,iyend);

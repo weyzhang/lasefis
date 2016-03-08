@@ -145,17 +145,17 @@ float ***  taus, float ***  taup, float *  eta){
 	/* each PE writes his model to disk */
 	   
 	   
-	/*sprintf(filename,"%s.FDMPI.pwavemod",MFILE);
+	/*sprintf(filename,"%s.IFOS.pwavemod",MFILE);
 	writemod(filename,pwavemod,3);
 	MPI_Barrier(MPI_COMM_WORLD);
 	if (MYID==0) mergemod(filename,3);
 	
-	sprintf(filename,"%s.FDMPI.swavemod",MFILE);
+	sprintf(filename,"%s.IFOS.swavemod",MFILE);
 	writemod(filename,swavemod,3);
 	MPI_Barrier(MPI_COMM_WORLD);
 	if (MYID==0) mergemod(filename,3); 
 	
-	sprintf(filename,"%s.FDMPI.rho",MFILE);
+	sprintf(filename,"%s.IFOS.rho",MFILE);
 	writemod(filename,rho,3);
 	MPI_Barrier(MPI_COMM_WORLD);
 	if (MYID==0) mergemod(filename,3);*/

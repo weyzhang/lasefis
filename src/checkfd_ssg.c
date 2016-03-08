@@ -323,28 +323,28 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 			
 			switch (SEISMO){
 			case 1:  particle velocities only 
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_VX));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_VX));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_VY));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_VY));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_VZ));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_VZ));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);
 				break;
 			case 2 :  pressure only 
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_P));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_P));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);
 				break;
 			case 4 :
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_VX));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_VX));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);	
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_VY));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_VY));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_VZ));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_VZ));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);							
 			case 3 : curl and div only 
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_DIV));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_DIV));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);
-				sprintf(xfile,"%s.fdmpi.tmp",dirname(SEIS_FILE_CURL));
+				sprintf(xfile,"%s.ifos.tmp",dirname(SEIS_FILE_CURL));
 				if (access(xfile,W_OK|X_OK)==-1) err2(" PE %d cannot write seismograms to %s!",xfile);	
 				break;
 			}		

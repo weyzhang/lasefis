@@ -212,11 +212,11 @@ int DDN_rtraceh(FILE * instream, int lbendian, int ieeeibm, int meterfeet, int s
 	/* 177-178 short gaps;	 */ n+=fread(&dummyshort,1,2,instream); /* gap size (total number of groups dropped) */
 	/* 179-180 short otrav;	 */ n+=fread(&dummyshort,1,2,instream); /* overtravel taper code: 1 = down (or behind), 2 = up (or ahead) */
 	if (susegy==1){
-	 /* 181-184 int ???;      */ n+=fread(&xcoo,1,4,instream); if (doswap) swap4(&xcoo); /* 1st horizontal coordinate for models (in FDMPI ususally X) */
+	 /* 181-184 int ???;      */ n+=fread(&xcoo,1,4,instream); if (doswap) swap4(&xcoo); /* 1st horizontal coordinate for models (in IFOS ususally X) */
 	 							      /* X coordinate of ensemble (CDP) position of this trace (scalar in Trace
 									 Header bytes 71-72 applies). The coordinate reference system should be
 									 identified through an extended header Location Data stanza. */
-	 /* 185-188 int ???;      */ n+=fread(&ycoo,1,4,instream); if (doswap) swap4(&ycoo); /* 2nd horizontal coordinate for models (in FDMPI ususally Z) */   
+	 /* 185-188 int ???;      */ n+=fread(&ycoo,1,4,instream); if (doswap) swap4(&ycoo); /* 2nd horizontal coordinate for models (in IFOS ususally Z) */   
 	 							      /* Y coordinate of ensemble (CDP) position of this trace (scalar in Trace
 									 Header bytes 71-72 applies). The coordinate reference system should be
 									 identified through an extended header Location Data stanza. */
@@ -555,10 +555,10 @@ int DDN_wtraceh(FILE * outstream, int lbendian, int ieeeibm, int meterfeet, int 
 	if (susegy==1) scalef=-myisign(scale)*(int)pow(10.0,abs(scale)); else scalef=-scale;
 	if (meterfeet==1){
 		gcoo[0]=(int)floor((recpos[1][tracl]*DX*scalefac)/0.3048+0.5);
-		gcoo[2]=(int)floor((recpos[2][tracl]*DY*scalefac)/0.3048+0.5); /* fdmpi swaps Y and Z */
+		gcoo[2]=(int)floor((recpos[2][tracl]*DY*scalefac)/0.3048+0.5); /* ifos swaps Y and Z */
 		gcoo[1]=(int)floor((recpos[3][tracl]*DZ*scalefac)/0.3048+0.5);
 		scoo[0]=(int)floor((xshot*scalefac)/0.3048+0.5);
-		scoo[2]=(int)floor((yshot*scalefac)/0.3048+0.5); /* fdmpi swaps Y and Z */
+		scoo[2]=(int)floor((yshot*scalefac)/0.3048+0.5); /* ifos swaps Y and Z */
 		scoo[1]=(int)floor((zshot*scalefac)/0.3048+0.5);
 		gwdep=(int)floor((sqrt(z*z+y*y)*scalefac)/0.3048+0.5);  /* misused parameter for tunnel geometry */
 		if (nsrc==1) offset=(int)floor((sqrt(
@@ -568,10 +568,10 @@ int DDN_wtraceh(FILE * outstream, int lbendian, int ieeeibm, int meterfeet, int 
 	} 
 	else {
 		gcoo[0]=(int)floor(recpos[1][tracl]*DX*scalefac+0.5);
-		gcoo[2]=(int)floor(recpos[2][tracl]*DY*scalefac+0.5); /* fdmpi swaps Y and Z */
+		gcoo[2]=(int)floor(recpos[2][tracl]*DY*scalefac+0.5); /* ifos swaps Y and Z */
 		gcoo[1]=(int)floor(recpos[3][tracl]*DZ*scalefac+0.5);
 		scoo[0]=(int)floor(xshot*scalefac+0.5);
-		scoo[2]=(int)floor(yshot*scalefac+0.5); /* fdmpi swaps Y and Z */
+		scoo[2]=(int)floor(yshot*scalefac+0.5); /* ifos swaps Y and Z */
 		scoo[1]=(int)floor(zshot*scalefac+0.5);			
 		gwdep=(int)floor(sqrt(z*z+y*y)*scalefac+0.5); /* misused parameter for tunnel geometry */	
 		if (nsrc==1) offset=(int)floor((sqrt(
@@ -724,11 +724,11 @@ int DDN_wtraceh(FILE * outstream, int lbendian, int ieeeibm, int meterfeet, int 
 	/* 177-178 short gaps;	 */ n+=fwrite(&snull,1,2,outstream); /* gap size (total number of groups dropped) */
 	/* 179-180 short otrav;	 */ n+=fwrite(&snull,1,2,outstream); /* overtravel taper code: 1 = down (or behind), 2 = up (or ahead) */
 	if (susegy==1){
-	 ih=(int)floor(xcoo*scalefac+0.5); if (doswap) swap4(&ih); /* 1st horizontal coordinate for models (in FDMPI ususally X) */
+	 ih=(int)floor(xcoo*scalefac+0.5); if (doswap) swap4(&ih); /* 1st horizontal coordinate for models (in IFOS ususally X) */
 	 /* 181-184 int ???;      */ n+=fwrite(&ih,1,4,outstream);   /* X coordinate of ensemble (CDP) position of this trace (scalar in Trace
 									 Header bytes 71-72 applies). The coordinate reference system should be
 									 identified through an extended header Location Data stanza. */
-	 ih=(int)floor(ycoo*scalefac+0.5); if (doswap) swap4(&ih); /* 2nd horizontal coordinate for models (in FDMPI ususally Z) */
+	 ih=(int)floor(ycoo*scalefac+0.5); if (doswap) swap4(&ih); /* 2nd horizontal coordinate for models (in IFOS ususally Z) */
 	 /* 185-188 int ???;      */ n+=fwrite(&ih,1,4,outstream);   /* Y coordinate of ensemble (CDP) position of this trace (scalar in Trace
 									 Header bytes 71-72 applies). The coordinate reference system should be
 									 identified through an extended header Location Data stanza. */
@@ -1131,7 +1131,7 @@ int DDN_rsegytxth(FILE * instream, int * asciiebcdic, FILE * outstream){
 }
 
 int DDN_wsegytxth(FILE * outstream, int asciiebcdic, char * kindofdata, char * infilename, int ns, float dt, int ndt){
-	/* this subroutine wirtes an almost empty textual header - some entries starting with "FDMPI-" are non-standard */
+	/* this subroutine wirtes an almost empty textual header - some entries starting with "IFOS-" are non-standard */
 	char segyhbuf[3201];
 	int j;
 	if (curerr==NULL) curerr=FP;
@@ -1160,13 +1160,13 @@ int DDN_wsegytxth(FILE * outstream, int asciiebcdic, char * kindofdata, char * i
 	sprintf(&segyhbuf[1520],"%-79.79s\n","C20 MAP PROJECTION                      ZONE ID       COORDINATE UNITS         ");
 	sprintf(&segyhbuf[1600],"%-79.79s\n","C21 PROCESSING: ");
 	sprintf(&segyhbuf[1680],"%-79.79s\n","C22 PROCESSING: ");
-	/* FDMPI-header */
-	sprintf(&segyhbuf[1760],"C23 FDMPI-DATA: %s",kindofdata); sprintf(&segyhbuf[1760],"%-79.79s\n",&segyhbuf[1760]);
-	sprintf(&segyhbuf[1840],"C24 FDMPI-INPUT: %s",infilename); sprintf(&segyhbuf[1840],"%-79.79s\n",&segyhbuf[1840]);
-	sprintf(&segyhbuf[1920],"C25 FDMPI-PAR: ns: %d, dt: %d * %e s",ns,ndt,dt); sprintf(&segyhbuf[1920],"%-79.79s\n",&segyhbuf[1920]);
-	sprintf(&segyhbuf[2000],"%-79.79s\n","C26 FDMPI-CONTACT: Thomas Bohlen <thomas.bohlen@geophysik.tu-freiberg.de>      ");
-	sprintf(&segyhbuf[2080],"%-79.79s\n","C27 FDMPI-CONTACT: Daniel Koehn <daniel.koehn@geophysik.tu-freiberg.de>        ");
-	sprintf(&segyhbuf[2160],"%-79.79s\n","C28 FDMPI-CONTACT: Denise De Nil <denise.denil@geophysik.tu-freiberg.de>       ");
+	/* IFOS-header */
+	sprintf(&segyhbuf[1760],"C23 IFOS-DATA: %s",kindofdata); sprintf(&segyhbuf[1760],"%-79.79s\n",&segyhbuf[1760]);
+	sprintf(&segyhbuf[1840],"C24 IFOS-INPUT: %s",infilename); sprintf(&segyhbuf[1840],"%-79.79s\n",&segyhbuf[1840]);
+	sprintf(&segyhbuf[1920],"C25 IFOS-PAR: ns: %d, dt: %d * %e s",ns,ndt,dt); sprintf(&segyhbuf[1920],"%-79.79s\n",&segyhbuf[1920]);
+	sprintf(&segyhbuf[2000],"%-79.79s\n","C26 IFOS-CONTACT: Thomas Bohlen <thomas.bohlen@geophysik.tu-freiberg.de>      ");
+	sprintf(&segyhbuf[2080],"%-79.79s\n","C27 IFOS-CONTACT: Daniel Koehn <daniel.koehn@geophysik.tu-freiberg.de>        ");
+	sprintf(&segyhbuf[2160],"%-79.79s\n","C28 IFOS-CONTACT: Denise De Nil <denise.denil@geophysik.tu-freiberg.de>       ");
 	/* completing SEGY-textual header with almost empty lines, rev.-tag and end-tag */
 	for (j=29; j<39;j++) sprintf(&segyhbuf[(j-1)*80],"C%2d%-76.76s\n",j," ");	
 	sprintf(&segyhbuf[3040],"%-79.79s\n","C39 SEG Y REV1");
@@ -1232,7 +1232,7 @@ int DDN_rsegybinh(FILE * instream, int * lbendian, int * ieeeibm, int * meterfee
 	   n+=fread(&sintnull,1,2,instream); /* corellated data traces: 1=no, 2=yes */
 	   n+=fread(&sintnull,1,2,instream); /* binary gain recovered:  1=yes, 2=no */
 	   n+=fread(&sintnull,1,2,instream); /* amplitude recovery method:  1=none */
-	n+=fread(&smf,1,2,instream); /*2: feet, 1: meter (fdmpi assumes that SI units are used) */
+	n+=fread(&smf,1,2,instream); /*2: feet, 1: meter (ifos assumes that SI units are used) */
 	   n+=fread(&sintnull,1,2,instream); /* impulse signal polarity pressure */
 	   /* not defined: increase in pressure or downward movement gives positive number on tape */
 	   /* 1 = increase in pressure or upward movement gives negative number on tape */
@@ -1315,7 +1315,7 @@ int DDN_wsegybinh(FILE * outstream, int lbendian, int ieeeibm, int meterfeet, in
 	   n+=fwrite(&sintnull,1,2,outstream); /* binary gain recovered:  1=yes, 2=no */
 	   n+=fwrite(&sintnull,1,2,outstream); /* amplitude recovery method:  1=none */
 	if (meterfeet==1) h=2; /* feet */ 
-	else h=1; if (doswap) swap2(&h); /* meter (fdmpi assumes that SI units are used) */
+	else h=1; if (doswap) swap2(&h); /* meter (ifos assumes that SI units are used) */
 	 n+=fwrite(&h,1,2,outstream);
 	   n+=fwrite(&sintnull,1,2,outstream); /* impulse signal polarity pressure */
 	   /* not defined: increase in pressure or downward movement gives positive number on tape */

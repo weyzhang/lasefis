@@ -35,7 +35,7 @@ float ***sxx, float ***syy, float ***szz, float ***pi, float ***u){
 	extern float DX, DY, DZ;
 
 
-	ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in fdmpi.c) */
+	ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in ifos.c) */
 	dh24x=1.0/DX;
 	dh24y=1.0/DY;
 	dh24z=1.0/DZ;
