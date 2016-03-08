@@ -27,14 +27,14 @@
 
 void hess_apply(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float ***grad1, float ***grad2,float ***grad3, float ***hess1, float ***hess2, float ***hess3, float finv, int iteration){
 
-	extern float WATER_HESS[3];
+	extern float WATER_HESS[3], VP0, VS0, RHO0;
 	extern int NXG, NYG, NZG, FW, NX, NY, NZ;
 	extern FILE *FP;
 	int LBFGS=0;
 	
 	float wl[3],buf[3];
 	int i,j,k,buf1;
-	float vp0=1240.0, vs0=730.0, rho0=1820.0;
+	
 		
 	buf[0]=0.0;buf[1]=0.0;buf[2]=0.0;
 	wl[0]=0.0;wl[1]=0.0;wl[2]=0.0;
@@ -44,9 +44,9 @@ void hess_apply(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float ***g
 		for (j=1;j<=ny2;j++){
 			for (i=1;i<=nx2;i++){
 				for (k=1;k<=nz2;k++){
-				grad1[j][i][k]=grad1[j][i][k]*vp0;
-				grad2[j][i][k]=grad2[j][i][k]*vs0;
-				grad3[j][i][k]=grad3[j][i][k]*rho0;
+				grad1[j][i][k]=grad1[j][i][k]*VP0;
+				grad2[j][i][k]=grad2[j][i][k]*VS0;
+				grad3[j][i][k]=grad3[j][i][k]*RHO0;
 				/*hess1[j][i][k]=hess1[j][i][k]*pow(vp0,2.0);
 				hess2[j][i][k]=hess2[j][i][k]*pow(vs0,2.0);
 				hess3[j][i][k]=hess3[j][i][k]*pow(rho0,2.0);*/

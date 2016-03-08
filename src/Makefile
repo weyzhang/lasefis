@@ -8,7 +8,7 @@
 
 # source code for model generation (elastic)
 
-MODEL_SCR = hh_toy_florian.c
+MODEL_SCR = hh_toy.c
 
 # Compiler (LAM: CC=hcc, CRAY T3E: CC=cc, SHARCNet: mpicc)
 

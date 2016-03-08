@@ -10,9 +10,9 @@
 #-----------------------------------------------------------------------------------
 #
 #-------------- Domain Decomposition -----------------------------
-number_of_processors_in_x-direction_(NPROCX) = 8
-number_of_processors_in_y-direction_(NPROCY) = 8
-number_of_processors_in_z-direction_(NPROCZ) = 8
+number_of_processors_in_x-direction_(NPROCX) = 2
+number_of_processors_in_y-direction_(NPROCY) = 2
+number_of_processors_in_z-direction_(NPROCZ) = 2
 #
 #-------------------- 3-D Grid -----------------------------------
 number_of_gridpoints_in_x-direction_(NX) = 160
@@ -161,6 +161,10 @@ minimum/maximum_iteration_number_(>0)_(ITMIN,ITMAX) = 1 , 80
 filtering_(yes=1/no=0)_(FILT) = 1
 maximum_number_frequencies_per_iteration_(NFMAX) = 5
 number_of_timestep_per_period_used_for_inversion_(TAST) = 100
+average_model_parameter_(VP0,VS0,RHO0) = 6200.0, 3600.0, 2800.0
+# velocities  in m/s, density in kg/m³
+parameter_class_weighting_factors_for_vp/vs/rho_(WEIGHT) = 1.0, 1.0, 0.0
+# choose from 1.0 (full update) to 0.0 (no update)
 #
 #------------------------Steplength estimation----------------------------------------
 number_of_shots_used_for_steplength_estimation_(NSHOTS_STEP) = 4

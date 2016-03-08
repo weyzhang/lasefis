@@ -42,7 +42,7 @@ void writepar(FILE *fp, int ns){
 	extern int METHOD;
 	extern int NP, NPROCX, NPROCY, NPROCZ, MYID;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS, LBFGS,EXTOBS;
-	extern float TESTSTEP,WATER_HESS[3];
+	extern float TESTSTEP,WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
 	/* definition of local variables */
 	char th1[3], file_ext[8];
 	char th2[3];	
@@ -431,6 +431,8 @@ fprintf(fp," \n minimum/maximum_iteration_number: %d,%d\n",ITMIN,ITMAX);
 fprintf(fp," \n filtering: %d\n",FILT);
 fprintf(fp," \n maximum_number_frequencies_per_iteration: %d\n",NFMAX);
 fprintf(fp," \n number_of_timestep_per_wavelength_used_for_inversion: %d\n",TAST);
+fprintf(fp," \n average_model_parameter VP0=%5.2f m/s, VS0=%5.2f m/s, RHO0=%5.2f kg/m^3\n",VP0, VS0, RHO0);
+fprintf(fp," \n parameter_class_weighting_factors_for_vp: %5.2f, vs: %5.2f, rho: %5.2f\n",WEIGHT[0], WEIGHT[1], WEIGHT[2]);
 
 fprintf(fp," \n------------------------Steplength estimation----------------------------------------\n");
 fprintf(fp,"\n number_of_shots_used_for_steplength_estimation: %d\n",NSHOTS_STEP);

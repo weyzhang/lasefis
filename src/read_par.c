@@ -48,7 +48,7 @@ int read_par(FILE *fp_in){
 	extern int METHOD;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS,EXTOBS,LBFGS;
 	/*extern float F_INV;*/
-	extern float TESTSTEP, WATER_HESS[3];
+	extern float TESTSTEP, WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
 	
 	/* definition of local variables */
 	char s[256], cline[256]="";
@@ -389,8 +389,7 @@ int read_par(FILE *fp_in){
 				case 69 :	
 					sscanf(cline,"%s =%i , %i",s,&ITMIN,&ITMAX);
 					if(!METHOD) ITMAX=1;
-					break;
-					
+					break;						
 				case 70 :
 					sscanf(cline,"%s =%i",s,&FILT);
 					break;
@@ -400,31 +399,38 @@ int read_par(FILE *fp_in){
 				case 72 :
 					sscanf(cline,"%s =%i",s,&TAST);
 					break;	
-				case 73 :
-					sscanf(cline,"%s =%i",s,&NSHOTS_STEP);
+				case 73:
+					sscanf(cline,"%s =%f, %f, %f",s,&VP0,&VS0,&RHO0);
 					break;	
 				case 74 :
+					sscanf(cline,"%s =%f, %f, %f",s,&WEIGHT[0],&WEIGHT[1],&WEIGHT[2]);	
+					break;	
+					
+				case 75 :
+					sscanf(cline,"%s =%i",s,&NSHOTS_STEP);
+					break;	
+				case 76 :
 					sscanf(cline,"%s =%f",s,&TESTSTEP);
 					break;
-				case 75 :
+				case 77 :
 					sscanf(cline,"%s =%i",s,&DAMPTYPE);
 					break;
-				case 76 :
+				case 78 :
 					sscanf(cline,"%s =%i",s,&HESS);
 					break;	
-				case 77 :
+				case 79 :
 					sscanf(cline,"%s =%i",s,&READ_HESS);
 					break;	
-				case 78 :
+				case 80 :
 					sscanf(cline,"%s =%i",s,&REC_HESS);
 					break;	
-				case 79 :
+				case 81 :
 					sscanf(cline,"%s =%f, %f, %f",s,&WATER_HESS[0],&WATER_HESS[1],&WATER_HESS[2]);
 					break;	
-				case 80 :
+				case 82 :
 					sscanf(cline,"%s =%i",s,&LBFGS);
 					break;
-				case 81 :
+				case 83 :
 	    				nvarin=sscanf(cline,"%s =%i ,%i ,%i",s,&ASCIIEBCDIC,&LITTLEBIG,&IEEEIBM);
 					switch(nvarin){
 						case 0: ;
@@ -439,7 +445,7 @@ int read_par(FILE *fp_in){
 			}
 		}
 		LOG=0;
-		if(lineno<81) fprintf(stderr," Warning: only %d non-commentary lines of input parameters read (expected 81).\n",lineno);
+		if(lineno<83) fprintf(stderr," Warning: only %d non-commentary lines of input parameters read (expected 83).\n",lineno);
 		/* else if (lineno>71) fprintf(stderr," Warning: %d non-commentary lines of input parameters read \n \t(expected and interpreted: 67).\n",lineno); */
 		/* else  fprintf(stderr," %d non-commentary lines of input parameters read.\n",lineno); */
 		fclose(fp_in);

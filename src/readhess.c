@@ -26,8 +26,8 @@
 void readhess(int nx, int ny, int nz, float ***  hess1, float ***  hess2, float ***hess3){
 
 	extern int NX, NY, NZ, NXG, NYG, NZG, POS[4];
+	extern float VP0, VS0, RHO0;
 	extern FILE *FP;
-float vp0=1240.0, vs0=730.0, rho0=1820.0;
 		
 	/* local variables */
 	float rhov, vp, vs; /*qp, qs;*/
@@ -78,9 +78,9 @@ float vp0=1240.0, vs0=730.0, rho0=1820.0;
 					hess3[jj][ii][kk]=rhov;*/
 					
 					
-					hess1[jj][ii][kk]=vp*pow(vp0,2);
-					hess2[jj][ii][kk]=vs*pow(vs0,2);
-					hess3[jj][ii][kk]=rhov*pow(rho0,2);
+					hess1[jj][ii][kk]=vp*pow(VP0,2);
+					hess2[jj][ii][kk]=vs*pow(VS0,2);
+					hess3[jj][ii][kk]=rhov*pow(RHO0,2);
 					
 			
 				}

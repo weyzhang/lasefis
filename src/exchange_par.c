@@ -44,9 +44,9 @@ void exchange_par(void){
 	extern int METHOD;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS,LBFGS,EXTOBS;
 	/*extern float F_INV;*/
-	extern float TESTSTEP, WATER_HESS[3];
+	extern float TESTSTEP, WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
 	int idum[55];
-	float fdum[36];
+	float fdum[42];
 	
 	
 	if (MYID == 0){ 
@@ -81,10 +81,16 @@ void exchange_par(void){
 		fdum[29]  = ALPHA;
 		fdum[30]  = BETA;
 		fdum[31]  = VPPML;
-		fdum[32]  = TESTSTEP;
-		fdum[33]  = WATER_HESS[0];
-		fdum[34]  = WATER_HESS[1];
-		fdum[35]  = WATER_HESS[2];
+		fdum[32]  = VP0;
+		fdum[33]  = VS0;
+		fdum[34]  = RHO0;
+		fdum[35]  = WEIGHT[0];
+		fdum[36]  = WEIGHT[1];
+		fdum[37]  = WEIGHT[2];
+		fdum[38]  = TESTSTEP;
+		fdum[39]  = WATER_HESS[0];
+		fdum[40]  = WATER_HESS[1];
+		fdum[41]  = WATER_HESS[2];
 
 		idum[0]  = FDORDER;
 		idum[1]  = NPROCX;
@@ -152,7 +158,7 @@ void exchange_par(void){
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	MPI_Bcast(&idum,55,MPI_INT,0,MPI_COMM_WORLD);
-	MPI_Bcast(&fdum,36,MPI_FLOAT,0,MPI_COMM_WORLD);
+	MPI_Bcast(&fdum,42,MPI_FLOAT,0,MPI_COMM_WORLD);
 
 	MPI_Bcast(&SOURCE_FILE,STRING_SIZE,MPI_CHAR,0,MPI_COMM_WORLD);
 	MPI_Bcast(&SIGNAL_FILE,STRING_SIZE,MPI_CHAR,0,MPI_COMM_WORLD);
@@ -201,10 +207,16 @@ void exchange_par(void){
 	ALPHA = fdum[29];
 	BETA = fdum[30];
         VPPML = fdum[31];
-	TESTSTEP=fdum[32];
-	WATER_HESS[0]=fdum[33];
-	WATER_HESS[1]=	fdum[34];
-	WATER_HESS[2]=	fdum[35];
+	VP0 = fdum[32];
+	VS0 = fdum[33];
+	RHO0 = fdum[34];
+	WEIGHT[0] = fdum[35];
+	WEIGHT[1] = fdum[36];
+	WEIGHT[2] = fdum[37];
+	TESTSTEP=fdum[38];
+	WATER_HESS[0]=fdum[39];
+	WATER_HESS[1]=	fdum[40];
+	WATER_HESS[2]=	fdum[41];
 
 	FDORDER = idum[0];
 	NPROCX = idum[1];
