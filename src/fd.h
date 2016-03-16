@@ -392,7 +392,7 @@ void hess_F(int nx,int ny,int nz,float **** fvx,float **** fvy,float **** fvz,fl
 
 void hess_apply(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float ***grad1, float ***grad2,float ***grad3, float ***hess1, float ***hess2, float ***hess3, float finv, int iteration);
 
-void readhess(int nx, int ny, int nz, float ***  hess1, float ***  hess2, float ***hess3);
+void readhess(int nx, int ny, int nz, float ***  hess1, float ***  hess2, float ***hess3, float finv, int iteration);
 
 void lbfgs(float ***grad1, float ***grad2, float ***grad3, float *bfgsscale, float **bfgsmod, float **bfgsgrad, int iteration);
 void lbfgs_savegrad(float ***grad1, float ***grad2, float ***grad3,float **bfgsgrad1);

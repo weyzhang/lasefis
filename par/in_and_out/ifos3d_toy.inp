@@ -147,12 +147,12 @@ method_(METHOD) = 0
 #-----------------------------------------------------------------------------------
 #
 #-------------------------In- and Output Files--------------------------------------
-gradient_filename_(GRAD_FILE) = ./grad/toy
+gradient_filename_(GRAD_FILE) = ./grad/toy_grad
 model_output_filename_(MOD_OUT_FILE) = ./model/toy
 observed_data_fileneame_(SEIS_OBS_FILE) = ./su_obs/obs_toy
 external_or_internal_observed_data_(EXTOBS) = 0
 inversion_parameter_file_(INV_FILE) = ./in_and_out/workflow_toy.dat
-hessian_file_(HESS_FILE) = ./hess/toy
+hessian_file_(HESS_FILE) = ./hess/toy_hess
 #
 #-------------------------General---------------------------------------------------
 minimum/maximum_iteration_number_(>0)_(ITMIN,ITMAX) = 1 , 60

@@ -40,9 +40,9 @@ void outgrad(int nx,int ny,int nz,float ***grad1, float ***grad2,float ***grad3,
 	
 	
 		
-	sprintf(gradfile1,"%s.gradvp_%4.2fHz_it%d.%i.%i.%i",outfile,finv,iteration,POS[1],POS[2],POS[3]);
-	sprintf(gradfile2,"%s.gradvs_%4.2fHz_it%d.%i.%i.%i",outfile,finv,iteration,POS[1],POS[2],POS[3]);
-	sprintf(gradfile3,"%s.gradrho_%4.2fHz_it%d.%i.%i.%i",outfile,finv,iteration,POS[1],POS[2],POS[3]);
+	sprintf(gradfile1,"%s.vp_%4.2fHz_it%d.%i.%i.%i",outfile,finv,iteration,POS[1],POS[2],POS[3]);
+	sprintf(gradfile2,"%s.vs_%4.2fHz_it%d.%i.%i.%i",outfile,finv,iteration,POS[1],POS[2],POS[3]);
+	sprintf(gradfile3,"%s.rho_%4.2fHz_it%d.%i.%i.%i",outfile,finv,iteration,POS[1],POS[2],POS[3]);
 	
 	
 	fpmod1=fopen(gradfile1,"w");
