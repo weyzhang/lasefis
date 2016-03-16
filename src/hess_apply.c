@@ -30,7 +30,7 @@ void hess_apply(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float ***g
 	extern float WATER_HESS[3], VP0, VS0, RHO0;
 	extern int NXG, NYG, NZG, FW, NX, NY, NZ;
 	extern FILE *FP;
-	int LBFGS=0;
+	extern int LBFGS;
 	
 	float wl[3],buf[3];
 	int i,j,k,buf1;

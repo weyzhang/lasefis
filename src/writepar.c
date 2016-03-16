@@ -42,6 +42,8 @@ void writepar(FILE *fp, int ns){
 	extern int METHOD;
 	extern int NP, NPROCX, NPROCY, NPROCZ, MYID;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS, LBFGS,EXTOBS;
+	extern int NUMPAR, BFGSNUM;
+	
 	extern float TESTSTEP,WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
 	/* definition of local variables */
 	char th1[3], file_ext[8];
@@ -446,8 +448,9 @@ fprintf(fp,"Read_Hessian_from_file %d\n",READ_HESS);
 fprintf(fp,"Part_of_receivers_used_for_Hessian %d",REC_HESS); 
 fprintf(fp," \nWater_level_Hessian_for_vp/vs/rho %e \n",WATER_HESS[0]);
 fprintf(fp," \n------------------------LBFGS-----------------------------------------\n");
-fprintf(fp," \nLBFGS %i \n",LBFGS);
-	
+fprintf(fp," \nLBFGS: %i \n",LBFGS);
+fprintf(fp," Number_of_inverted_parameters_(NUMPAR): %i \n",NUMPAR);
+fprintf(fp," Number_iterations_used_for_LBFGS: %i \n",BFGSNUM);
 	
 	
 		

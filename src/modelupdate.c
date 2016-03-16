@@ -26,7 +26,7 @@
 void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float ***gradrho, float  ***  rho, float ***  pi, float ***  u, float **bfgsmod1, float step, float *beta, int it_group){
 
 	extern FILE *FP;
-	extern int NX, NY, NZ, LBFGS;
+	extern int NX, NY, NZ, LBFGS, BFGSNUM, NUMPAR;
 	extern float VP0, VS0, RHO0, WEIGHT[3];
 	
 
@@ -34,7 +34,7 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 	float vpnew,vsnew,rhonew;
 	float max[3],buf[3],max1[3],dummy[3];
 	float vp,vs;
-	int bfgsnum=5,w;
+	int w;
 	float scale1=0.0, scale2=0.0, scale3=0.0;
 	
 	buf[0]=0.0;buf[1]=0.0;buf[2]=0.0;
@@ -49,8 +49,8 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 	if(iteration>40)scale2=0.7;
 	if(iteration>60)scale2=0.4;*/
 	
-	if(LBFGS) {w=it_group%bfgsnum;
-		  if(w==0) w=bfgsnum;}
+	if(LBFGS) {w=it_group%BFGSNUM;
+		  if(w==0) w=BFGSNUM;}
 
 	 fprintf(FP,"Modelupdatefunction \n");
 	
@@ -143,8 +143,9 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 			/*save normalised model differences for LBFGS*/
 			 l++; l1++;
 			bfgsmod1[w][l]=(vpnew-sqrt(pi[j][i][k]/rho[j][i][k]))/VP0;
+			if(NUMPAR>1){
 			bfgsmod1[w][l1]=(vsnew-sqrt(u[j][i][k]/rho[j][i][k]))/VS0;
-			/*bfgsmod3[w][l]=(rhonew-rho[j][i][k])/rho0;*/
+			}
 			}
 			  
 			u[j][i][k]=rhonew*vsnew*vsnew;

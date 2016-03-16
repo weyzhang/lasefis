@@ -80,7 +80,6 @@ int main(int argc, char **argv){
 	float dummy=0.0;
 	int hloop=0,pshot=0,pshot1=0, pshot_loc=0;
 	
-	int LBFGS=0, bfgsnum=5;
 	float **bfgsmod1=NULL,**bfgsgrad1=NULL, *bfgsscale1=NULL;     /* *bfgsscale2,*bfgsscale3;**bfgsmod2,**bfgsmod3,**bfgsgrad2, **bfgsgrad3,*/
 	
 	
@@ -234,7 +233,7 @@ if(METHOD) nseismograms+=4;
 		memgrad=12*fac2*fac3;
 		memdynf=12*NFMAX*(ntr_hess+1)*fac1*fac2;
 		if(HESS) memgrad+=3*fac2*fac3;
-		if(LBFGS) membfgs=2*bfgsnum*3*fac3;
+		if(LBFGS) membfgs=NUMPAR*BFGSNUM*3*fac3;
 	}
 	memtotal=memdyn+memmodel+memseismograms+membuffer+(buffsize*pow(2.0,-20.0))+memgrad+memdynf+membfgs;
 	
@@ -361,13 +360,13 @@ MPI_Barrier(MPI_COMM_WORLD);
 	}
 	
 	if(LBFGS){
-		bfgsmod1=fmatrix(1,bfgsnum,1,2*NX*NY*NZ);
+		bfgsmod1=fmatrix(1,BFGSNUM,1,NUMPAR*NX*NY*NZ);
 		/*bfgsmod2=fmatrix(1,bfgsnum,1,NX*NY*NZ);
 		bfgsmod3=fmatrix(1,bfgsnum,1,NX*NY*NZ);*/
-		bfgsgrad1=fmatrix(1,bfgsnum,1,2*NX*NY*NZ);
+		bfgsgrad1=fmatrix(1,BFGSNUM,1,NUMPAR*NX*NY*NZ);
 		/*bfgsgrad2=fmatrix(1,bfgsnum,1,NX*NY*NZ);
 		bfgsgrad3=fmatrix(1,bfgsnum,1,NX*NY*NZ);*/
-		bfgsscale1=vector(1,bfgsnum);
+		bfgsscale1=vector(1,BFGSNUM);
 		/*bfgsscale2=vector(1,bfgsnum);
 		bfgsscale3=vector(1,bfgsnum);*/
 	}
@@ -1204,9 +1203,9 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 	}
 	
 	if(LBFGS){
-		free_matrix(bfgsmod1,1,bfgsnum,1,2*NX*NY*NZ);
-		free_matrix(bfgsgrad1,1,bfgsnum,1,2*NX*NY*NZ);
-		free_vector(bfgsscale1,1,bfgsnum);
+		free_matrix(bfgsmod1,1,BFGSNUM,1,NUMPAR*NX*NY*NZ);
+		free_matrix(bfgsgrad1,1,BFGSNUM,1,NUMPAR*NX*NY*NZ);
+		free_vector(bfgsscale1,1,BFGSNUM);
 	}
 	
 	if(ABS_TYPE==1){

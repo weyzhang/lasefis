@@ -184,3 +184,5 @@ Water_level_Hessian_for_vp/vs/rho_(WATER_HESS) = 0.0192, 0.0192, 1.0e-14
 # 
 #------------------------L-BFGS ----------------------------------------
 Apply_L_BFGS_(LBFGS) = 0
+Number_of_inverted_parameters_(NUMPAR) = 2
+Number_iterations_used_for_LBFGS_(BFGSNUM) = 5
