@@ -643,7 +643,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
         
 	
 	if(HESS&&READ_HESS==0) hloop=ntr_hess;
-	if(HESS&&READ_HESS==1) readhess(NX,NY,NZ,hess1,hess2,hess3,finv[0], iteration+100);
+	if(HESS&&READ_HESS==1) readhess(NX,NY,NZ,hess1,hess2,hess3,finv[0], iteration+1-it_group);
 	MPI_Barrier(MPI_COMM_WORLD);
 	if(METHOD==1 && EXTOBS==1){
 		for (ishot=1;ishot<=nshots;ishot++){
@@ -977,7 +977,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 		
 		if(METHOD){
 			/*output Hessian*/
-			if(HESS&&iteration==1) outgrad(NX,NY,NZ,hess1,hess2,hess3,finv[0],iteration+100, HESS_FILE);
+			if(HESS&&iteration==1) outgrad(NX,NY,NZ,hess1,hess2,hess3,finv[0],iteration, HESS_FILE);
 		
 			/*output "raw" gradient*/
 			outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration, GRAD_FILE);

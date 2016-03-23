@@ -45,15 +45,15 @@ void readhess(int nx, int ny, int nz, float ***  hess1, float ***  hess2, float 
 	   fprintf(FP,"\n...reading hess information from hess-files...\n");
 
 	   /*sprintf(filename,"hess/hess.vp");*/
-	   sprintf(filename,"%s.vp_%4.2fHz_it%d.%i.%i.%i",HESS_FILE,finv,iteration,POS[1],POS[2],POS[3]);
+	   sprintf(filename,"%s.vp_%4.2fHz_it%d",HESS_FILE,finv,iteration,POS[1],POS[2],POS[3]);
 	   fp_vp=fopen(filename,"r");
 	   if (fp_vp==NULL) err(" Could not open hess_vp ! ");
 
-	   sprintf(filename,"%s.vs_%4.2fHz_it%d.%i.%i.%i",HESS_FILE,finv,iteration,POS[1],POS[2],POS[3]);
+	   sprintf(filename,"%s.vs_%4.2fHz_it%d",HESS_FILE,finv,iteration,POS[1],POS[2],POS[3]);
 	   fp_vs=fopen(filename,"r");
 	   if (fp_vs==NULL) err(" Could not open  hess_vs! ");
 
-	   sprintf(filename,"%s.rho_%4.2fHz_it%d.%i.%i.%i",HESS_FILE,finv,iteration,POS[1],POS[2],POS[3]);
+	   sprintf(filename,"%s.rho_%4.2fHz_it%d",HESS_FILE,finv,iteration,POS[1],POS[2],POS[3]);
 	   fp_rho=fopen(filename,"r");
 	   if (fp_rho==NULL) err(" Could not open hess_rho ! ");
 	   
