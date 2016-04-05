@@ -16,7 +16,7 @@ libcseife:
 .PHONY: ifos3d 
 ifos3d: libcseife
 ifdef MODEL
-	$(MAKE) -C ../src/ ifos3d MODELi_SCR=$(MODEL)
+	$(MAKE) -C ../src/ ifos3d MODEL_SCR=$(MODEL)
 else
 	$(MAKE) -C ../src/ ifos3d 
 endif
