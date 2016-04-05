@@ -736,9 +736,11 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				if(!ntast) ntast=1;
 				fprintf(FP, "ntast=%i, TAST=%i \n", ntast, TAST);
 			}
-				
+			
+			if(MYID==0) fprintf(FP,"\n ****************************************\n ");
+			
 			for (nt=1;nt<=NT;nt++){
-				fprintf(FP,"%d",nt);
+				if(MYID==0) if(!(nt%(NT/40))) fprintf(FP,"*");
 				
 				time_v_update[nt]=0.0;
 				time_s_update[nt]=0.0;
@@ -889,9 +891,11 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 
 				/* Initialisieren de Wellenfeldes mit Nullen */
 				zero_wavefield(NX,NY,NZ,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,rxy,ryz,rxz,psi_sxx_x,psi_sxy_x,psi_sxz_x,psi_sxy_y,psi_syy_y,psi_syz_y,psi_sxz_z,psi_syz_z,psi_szz_z,psi_vxx,psi_vyx,psi_vzx,psi_vxy,psi_vyy,psi_vzy,psi_vxz,psi_vyz,psi_vzz);
-
+				
+				if(MYID==0) fprintf(FP,"\n ****************************************\n ");
+				
 				for (nt=1;nt<=NT;nt++){
-				  fprintf(FP,"%d",nt);
+				  if(MYID==0) if(!(nt%(NT/40))) fprintf(FP,"*");
 
 					time_v_update[nt]=0.0;
 					time_s_update[nt]=0.0;
