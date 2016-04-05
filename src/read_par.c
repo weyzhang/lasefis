@@ -27,7 +27,7 @@ int read_par(FILE *fp_in){
 
 
 	/* declaration of extern variables */
-	extern int   NX, NY, NZ, QUELLART, QUELLTYP, SNAP, SNAP_FORMAT, SNAP_PLANE;
+	extern int   NX, NY, NZ, SOURCE_SHAPE, SOURCE_TYPE, SNAP, SNAP_FORMAT, SNAP_PLANE;
 	extern int DRX, DRY, L, SRCREC, FDORDER, FW, FDCOEFF;
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH, PHI;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, ALPHA, BETA;
@@ -107,11 +107,11 @@ int read_par(FILE *fp_in){
 					sscanf(cline,"%s =%f",s,&DT);
 					break;					
 				case 14 :
-					nvarin=sscanf(cline,"%s =%i , %f , %f",s,&QUELLART,&FC,&AMP);
+					nvarin=sscanf(cline,"%s =%i , %f , %f",s,&SOURCE_SHAPE,&FC,&AMP);
 					switch(nvarin){
 						case 0: 
-						case 1: QUELLART=0;
-							/* fprintf(stderr," Caution: QUELLART set to %d.\n",QUELLART); */
+						case 1: SOURCE_SHAPE=0;
+							/* fprintf(stderr," Caution: SOURCE_SHAPE set to %d.\n",SOURCE_SHAPE); */
 						case 2: FC=0.0; 
 							/* fprintf(stderr," FC set to %d.\n",FC); */
 						case 3: AMP=1.0;
@@ -121,7 +121,7 @@ int read_par(FILE *fp_in){
 					}
 					break;
 				case 15 :
-					sscanf(cline,"%s =%i",s,&QUELLTYP);
+					sscanf(cline,"%s =%i",s,&SOURCE_TYPE);
 					break;
 				case 16 :
 					sscanf(cline,"%s =%f",s,&ALPHA);		

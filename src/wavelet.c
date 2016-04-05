@@ -30,7 +30,7 @@ void wavelet(float ** srcpos_loc, int nsrc, int quelltype, float **signals){
 
 
 	/* extern variables */
-	extern int QUELLART, NT, MYID;
+	extern int SOURCE_SHAPE, NT, MYID;
 	extern float  DT;
 	extern char SIGNAL_FILE[STRING_SIZE];
 	extern FILE *FP;
@@ -94,6 +94,6 @@ void wavelet(float ** srcpos_loc, int nsrc, int quelltype, float **signals){
 	fprintf(FP," have been assigned with a source signal. \n");
 			
 		
-	if (QUELLART==3) free_vector(psource,1,NT);
+	if (SOURCE_SHAPE==3) free_vector(psource,1,NT);
 
 }

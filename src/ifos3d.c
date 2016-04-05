@@ -591,7 +591,7 @@ MPI_Barrier(MPI_COMM_WORLD);
 	   MPI_Barrier(MPI_COMM_WORLD);
 	   srcpos= fmatrix(1,7,1,nsrc); 
 	   sources(fpsrc,&nsrc,srcpos);
-	   /*originally, QUELLTY=stype is defined in the source file, if not, QUELLTYP is taken from the input file */
+	   /*originally, SOURCE_TYPE (stype) is defined in the source file, if not, SOURCE_TYPE is taken from the input file */
 	   /*if (stype==NULL) printf("PE%d: Source type(s) undefined?! \n",MYID);*/
 	}
 	
@@ -712,7 +712,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				}
 			}
 			/*printf("source=%e,%e,%e,%e,%e,%e,%e\n",srcpos_loc[1][1],srcpos_loc[2][1],srcpos_loc[3][1],srcpos_loc[4][1],srcpos_loc[5][1],srcpos_loc[6][1],srcpos_loc[7][1]);*/
-			if(nsrc_loc>0){	wavelet(srcpos_loc,nsrc_loc,QUELLART,signals);	
+			if(nsrc_loc>0){	wavelet(srcpos_loc,nsrc_loc,SOURCE_SHAPE,signals);	
 			/*if (SEISMO){
 			  	saveseis(FP,signals,sectionvy,sectionvz,sectionp,sectioncurl,sectiondiv,recpos,recpos_loc,ntr,srcpos,ishot,ns,0,11);
 			}*/
@@ -1044,7 +1044,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 					}
 							
 					if(nsrc_loc>0){	
-						wavelet(srcpos_loc,nsrc_loc,QUELLART,signals);	
+						wavelet(srcpos_loc,nsrc_loc,SOURCE_SHAPE,signals);	
 						if(FILT==1) filt_seis(signals,nsrc_loc,NT,finv[nf-1]);}
 					zero_wavefield(NX,NY,NZ,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,rxy,ryz,rxz,psi_sxx_x,psi_sxy_x,psi_sxz_x,psi_sxy_y,psi_syy_y,psi_syz_y,psi_sxz_z,psi_syz_z,psi_szz_z,psi_vxx,psi_vyx,psi_vzx,psi_vxy,psi_vyy,psi_vzy,psi_vxz,psi_vyz,psi_vzz);
 								

@@ -27,7 +27,7 @@
 void writepar(FILE *fp, int ns){
 
 	/* declaration of extern variables */
-	extern int   NX, NY, NZ, NT, QUELLART, QUELLTYP, FDORDER, RUN_MULTIPLE_SHOTS;
+	extern int   NX, NY, NZ, NT, SOURCE_SHAPE, SOURCE_TYPE, FDORDER, RUN_MULTIPLE_SHOTS;
 	extern int  SNAP, SNAP_FORMAT, REC_ARRAY, L, SNAP_PLANE,FW;
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
@@ -99,7 +99,7 @@ void writepar(FILE *fp, int ns){
 	
 	fprintf(fp," Wavelet of source:");
 
-	switch (QUELLART){
+	switch (SOURCE_SHAPE){
 	case 1 :
 		fprintf(fp," Ricker\n");
 		break;
@@ -122,7 +122,7 @@ void writepar(FILE *fp, int ns){
 	}
 
 	fprintf(fp," Default type of source:");
-	switch (QUELLTYP){
+	switch (SOURCE_TYPE){
 	case 1 :
 		fprintf(fp," explosive point source (concentrated at a single gridpoint)\n");
 		break;
@@ -141,8 +141,8 @@ void writepar(FILE *fp, int ns){
 		fprintf(fp," Angle between x and z direticon (BETA): %f\n", BETA);
 		break;
 	default :
-		fprintf(fp," WARNING: Default type of source ('%d') not available -> changed to explosive! ", QUELLTYP);
-		QUELLTYP=1;
+		fprintf(fp," WARNING: Default type of source ('%d') not available -> changed to explosive! ", SOURCE_TYPE);
+		SOURCE_TYPE=1;
 	}
 	fprintf(fp,"\n");
 	fprintf(fp,"\n Source file: %s \n", SOURCE_FILE);
