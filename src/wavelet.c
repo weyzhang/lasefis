@@ -26,7 +26,7 @@
 #include "fd.h"
 
 
-void wavelet(float ** srcpos_loc, int nsrc, int quelltype, float **signals){
+void wavelet(float ** srcpos_loc, int nsrc, int sourceshape, float **signals){
 
 
 	/* extern variables */
@@ -40,7 +40,7 @@ void wavelet(float ** srcpos_loc, int nsrc, int quelltype, float **signals){
 	float *psource=NULL, tshift, amp=0.0, a, fc, tau, t, ts;
 
 
-	if (quelltype==3) psource=rd_sour(&nts,fopen(SIGNAL_FILE,"r"));
+	if (sourceshape==3) psource=rd_sour(&nts,fopen(SIGNAL_FILE,"r"));
 	
 	/*signals=fmatrix(1,nsrc,1,NT);*/
 	
@@ -53,7 +53,7 @@ void wavelet(float ** srcpos_loc, int nsrc, int quelltype, float **signals){
 				a=srcpos_loc[6][k];
 				ts=1.0/fc;
 
-				switch (quelltype){
+				switch (sourceshape){
 					case 1 : 
 						tau=PI*(t-1.5*ts-tshift)/(ts); /* Ricker */
 						amp=(((1.0-2.0*tau*tau)*exp(-tau*tau)));
@@ -89,7 +89,7 @@ void wavelet(float ** srcpos_loc, int nsrc, int quelltype, float **signals){
 		}
 	}
 	
-	fprintf(FP," Message from function wavelet written by PE %d, quelltype %d\n",MYID, quelltype);
+	fprintf(FP," Message from function wavelet written by PE %d, sourceshape %d\n",MYID, sourceshape);
 	fprintf(FP," %d source positions located in subdomain of PE %d \n",nsrc,MYID);
 	fprintf(FP," have been assigned with a source signal. \n");
 			
