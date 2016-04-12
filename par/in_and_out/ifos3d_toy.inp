@@ -40,7 +40,7 @@ point_source_(explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5)_(QUELLTYP) = 4
 force_angle_between_x_y_(in_degree)_(ALPHA) = 45.0
 force_angle_between_x_z_(in_degree)_(BETA) =  45.0
 # Plane wave (PW) excitation,if PLANE_WAVE_DEPTH>0, SRCREC is treated as 0
-depth_of_PW_excitation_(no<=0)_(in_meter)_(PLANE_WAVE_DEPTH) = 0.0direct.com/
+depth_of_PW_excitation_(no<=0)_(in_meter)_(PLANE_WAVE_DEPTH) = 0.0
 dip_of_PW_from_vertical_(in_degrees)_(PHI) =0.0
 duration_of_source-signal_PW_(in_seconds)_(TS) = 0.0033
 # External signal input instead of QUELLART
