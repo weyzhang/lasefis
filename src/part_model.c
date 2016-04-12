@@ -37,9 +37,28 @@ float  ** srcpos=NULL, ** recpos=NULL;
 char file_vp[STRING_SIZE], file_vp_part[STRING_SIZE], file_rho[STRING_SIZE], file_rho_part[STRING_SIZE];
 char recfs[STRING_SIZE], shift_shot[STRING_SIZE];
 char cline[256];
+char *fileinp="";
 FILE *fvpmod, *frhomod,*fvpmpart, *frhompart, * fpsrc, *fpr, *fshift;
 /* read parameters from parameter-file (stdin) */
-read_par(stdin); 
+fileinp = argv[1];
+
+	printf(" Input file for the snapmerge process from command line : %s \n",fileinp);
+	
+/* read parameters from parameter-file */
+	if ((FP=fopen(fileinp,"r"))==NULL) err(" Opening input file failed.");
+	else printf(" Opening input file was successful.\n\n");
+	
+	/* read parameters from parameter-file */
+	
+	if (strstr(fileinp,".json")) {
+	        //read json formated input file
+	        read_par_json(stdout, fileinp);
+	        fclose(FP);
+	}
+	else {
+	        //read "old" input file *.inp, might not work in future
+	        read_par(FP);
+	} 
 
 
 NXG=NX;

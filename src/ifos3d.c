@@ -127,9 +127,19 @@ int main(int argc, char **argv){
 			fprintf(stderr," Caution: input parameter filename set to default 'ifos3d.inp'. \n\n");
 		 }
 		 FP=fopen(FILEINP,"r");
-	         read_par(FP); 
+		 
+		if (strstr(FILEINP,".json")) {
+		//read json formated input file
+			read_par_json(stdout, FILEINP);
+			fclose(FP);
+		} else {
+		//read "old" input file *.inp, might not work in future
+			read_par(FP);
+		}
+		 
 	} 
-
+	       
+	         
 	/* PE 0 will broadcast the parameters to all others PEs */
 	exchange_par(); 
 			
@@ -554,19 +564,11 @@ MPI_Barrier(MPI_COMM_WORLD);
 	
 	/* Reading source positions from SOURCE_FILE */ 	
 	fprintf(FP,"\n ------------------ READING SOURCE PARAMETERS ------------------- \n");
-	if ((PLANE_WAVE_DEPTH>0)) {
-		/*determining the number of sources in the specified plane normal/tilted to the surface/upper model boundary*/
-		nsrc=(NXG-2*FW+1)*(NYG-2*FW+1);
-		/*fprintf(FP,"\n nsrc= %i with NGX=%i, NYG=%i and FW=%i. \n",nsrc,NXG,NYG,FW);*/
-		MPI_Barrier(MPI_COMM_WORLD);
-	        MPI_Bcast(&nsrc,1,MPI_INT,0,MPI_COMM_WORLD);
-		srcpos= fmatrix(1,7,1,nsrc);
-		pwsources(&nsrc,srcpos);	
-	}
-	else {
+	
 	    if (MYID==0) switch (SRCREC) {
 		case 0: 
-			fprintf(FP,"\n Reading source parameters specified in input file instead of source file. \n");break;
+			if (MYID==0) err("SRCREC parameter is invalid (SRCREC!=1)! No source parameters specified!");
+			break;
 		case 1:
 			fprintf(FP,"\n Reading source parameters from file: %s (IFOS source format)\n",SOURCE_FILE);
 			if ((fpsrc=fopen(SOURCE_FILE,"r"))==NULL) err(" Source file could not be opened !");
@@ -581,10 +583,20 @@ MPI_Barrier(MPI_COMM_WORLD);
 			if ((nsrc)==0) fprintf(FP,"\n WARNING: Could not determine number of sources parameter sets in input file. Assuming %d.\n",(nsrc=0));
 			else fprintf(FP," Number of source positions specified in %s : %d \n",SOURCE_FILE,nsrc);
 			break;
-		case 2: break;
-		case 3: fprintf(FP,"\n Reading source parameters from file: %s\n",SOURCE_FILE);
-		break;		
-		default: fprintf(FP,"\n WARNING: Format of source file %s unknown! Using default parameters instead of source file. \n",SOURCE_FILE);
+		case 2: if ((PLANE_WAVE_DEPTH>0)) {
+				/*determining the number of sources in the specified plane normal/tilted to the surface/upper model boundary*/
+				nsrc=(NXG-2*FW+1)*(NYG-2*FW+1);
+				/*fprintf(FP,"\n nsrc= %i with NGX=%i, NYG=%i and FW=%i. \n",nsrc,NXG,NYG,FW);*/
+				MPI_Barrier(MPI_COMM_WORLD);
+				MPI_Bcast(&nsrc,1,MPI_INT,0,MPI_COMM_WORLD);
+				srcpos= fmatrix(1,7,1,nsrc);
+				pwsources(&nsrc,srcpos);	
+			} else {
+				err("SRCREC parameter specifies PLANE_WAVE excitation, but PLANE_WAVE_DEPTH<=0!");
+			}	
+			break;
+	
+		default: err("SRCREC parameter is invalid (SRCREC!=1 or SRCREC!=2)! No source parameters specified!");
            }
 	   
 	   MPI_Bcast(&nsrc,1,MPI_INT,0,MPI_COMM_WORLD);
@@ -593,7 +605,7 @@ MPI_Barrier(MPI_COMM_WORLD);
 	   sources(fpsrc,&nsrc,srcpos);
 	   /*originally, SOURCE_TYPE (stype) is defined in the source file, if not, SOURCE_TYPE is taken from the input file */
 	   /*if (stype==NULL) printf("PE%d: Source type(s) undefined?! \n",MYID);*/
-	}
+	
 	
 	snum_loc = ivector(1,nsrc);
 	srcpos_loc = splitsrc(srcpos,&nsrc_loc, nsrc,snum_loc);

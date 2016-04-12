@@ -48,6 +48,7 @@ int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, in
 		case 3: sprintf(file_ext,"bin"); break;
 		case 4: sprintf(file_ext,"sgy"); break;
 		case 5: sprintf(file_ext,"sgy"); break;
+		case 7: sprintf(file_ext,"su"); break;
 		}
 		/*note that internally "y" is used for the vertical coordinate,
 		for usability reasons, we switch the "y" and "z" coordinate 

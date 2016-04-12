@@ -32,7 +32,7 @@ int read_par(FILE *fp_in){
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH, PHI;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, ALPHA, BETA;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
-	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, MOD_FORMAT[6], READREC, RUN_MULTIPLE_SHOTS;
+	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, MOD_FORMAT, READREC, RUN_MULTIPLE_SHOTS;
 	extern int BOUNDARY, REC_ARRAY, LOG, IDX, IDY, IDZ, ABS_TYPE;
 	extern float TSNAP1, TSNAP2, TSNAPINC, REFREC[4], DAMPING, FPML, VPPML;
 	extern char  MFILE[STRING_SIZE], SIGNAL_FILE[STRING_SIZE];
@@ -42,7 +42,7 @@ int read_par(FILE *fp_in){
 	extern int ASCIIEBCDIC,LITTLEBIG,IEEEIBM;
 	
 	extern float FC,AMP, REFSRC[3], SRC_DT, SRCTSHIFT;
-	extern int SRC_MF, SIGNAL_FORMAT[6], SRCOUT_PAR[6], FSRC, JSRC, LSRC;
+	extern int SRC_MF, SIGNAL_FORMAT, SRCOUT_PAR[6], FSRC, JSRC, LSRC;
 	extern char SRCOUT_FILE[STRING_SIZE];
 	extern char MOD_OUT_FILE[STRING_SIZE], HESS_FILE[STRING_SIZE];
 	extern int METHOD;
@@ -145,16 +145,11 @@ int read_par(FILE *fp_in){
 					}					
 					break;
 				case 21 :
-					nvarin=sscanf(cline,"%s =%s , %i , %i , %i , %i , %i , %i",s,SIGNAL_FILE,&SIGNAL_FORMAT[0],&SIGNAL_FORMAT[1],&SIGNAL_FORMAT[2],&SIGNAL_FORMAT[3],&SIGNAL_FORMAT[4],&SIGNAL_FORMAT[5]);
+					nvarin=sscanf(cline,"%s =%s , %i , %i , %i , %i , %i , %i",s,SIGNAL_FILE,&SIGNAL_FORMAT);
 					switch(nvarin){
 						case 0: 
 						case 1: strcpy(SIGNAL_FILE,"\0");
-						case 2: SIGNAL_FORMAT[0]=0;
-						case 3: SIGNAL_FORMAT[1]=0;
-						case 4: SIGNAL_FORMAT[2]=0;
-						case 5: SIGNAL_FORMAT[3]=0;
-						case 6: SIGNAL_FORMAT[4]=0;
-						case 7: SIGNAL_FORMAT[5]=0;
+						case 2: SIGNAL_FORMAT=0;		
 						/* case 8: break;
 						default: fprintf(stderr,"This line of read_par.c should never be reached! [2]\n");*/
 					}
@@ -197,16 +192,11 @@ int read_par(FILE *fp_in){
 					}
 					break;
 				case 25 :
-					nvarin=sscanf(cline,"%s =%i , %i , %i , %i , %i , %i , %i",s,&READMOD,&MOD_FORMAT[0],&MOD_FORMAT[1],&MOD_FORMAT[2],&MOD_FORMAT[3],&MOD_FORMAT[4],&MOD_FORMAT[5]);
+					nvarin=sscanf(cline,"%s =%i , %i , %i , %i , %i , %i , %i",s,&READMOD,&MOD_FORMAT);
 					switch(nvarin){
 						case 0:
 						case 1: READMOD=0;
-						case 2: MOD_FORMAT[0]=0;
-						case 3: MOD_FORMAT[1]=0;
-						case 4: MOD_FORMAT[2]=0;
-						case 5: MOD_FORMAT[3]=0;
-						case 6: MOD_FORMAT[4]=0;
-						case 7: MOD_FORMAT[5]=0;							
+						case 2: MOD_FORMAT=0;							
 					}
 					break;
 				case 26 :

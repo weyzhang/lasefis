@@ -47,6 +47,7 @@ IFLAGS=-I./../libcseife
 .c.o:
 	$(CC) -c  $(CFLAGS) $< $(IFLAGS)
 
+SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 
 SEISMERGE_SCR = seismerge.c
 
@@ -54,7 +55,9 @@ SEISMERGE_SCR = seismerge.c
 SNAPMERGE_SCR = \
 	snapmerge.c \
 	merge.c \
+	json_parser.c \
 	read_par.c \
+	read_par_json.c \
 	readdsk.c \
 	writedsk.c \
 	util.c 
@@ -62,6 +65,7 @@ SNAPMERGE_SCR = \
 PARTMODEL_SCR = \
 	part_model.c \
 	read_par.c \
+	read_par_json.c \
 	util.c 	
 
 
@@ -79,6 +83,8 @@ FDMPI_UTIL = \
 		rd_sour.c \
 		readdsk.c \
 		read_par.c \
+		json_parser.c \
+		read_par_json.c \
 		exchange_par.c \
 		receiver.c \
 		readmod.c \
@@ -155,7 +161,7 @@ seismerge:	$(SEISMERGE_OBJ)
 	$(CC) $(LFLAGS) $(SEISMERGE_OBJ) -o ../bin/seismerge	
 
 snapmerge:	$(SNAPMERGE_OBJ)
-	$(CC) $(LFLAGS) $(SNAPMERGE_OBJ) -o ../bin/snapmerge
+	$(CC)  $(SFLAGS) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LFLAGS)
 		
 # part_model:	$(PARTMODEL_OBJ)
 #	$(CC) $(LFLAGS) $(PARTMODEL_OBJ) -o ../bin/partmodel
