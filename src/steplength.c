@@ -23,16 +23,17 @@
  -------------------------------------------------------------*/
 
 #include "fd.h"
-void steplength(float *L2, float *step, int iteration){
+void steplength(float *L2, float *step, int iteration, int it_group){
 
 		extern FILE *FP;
 		extern FILE *FI;
-		extern int MYID;
+		extern int MYID, LBFGS;
 		extern float TESTSTEP;
 		float a=0.0, b=0.0, c=0.0;
 		float teststep=0.0;
   
-		teststep=TESTSTEP;		
+		teststep=TESTSTEP;
+		
 
 		if(MYID==0)fprintf(FP,"Start estimation of optimal steplength\n");
 		
@@ -60,10 +61,15 @@ void steplength(float *L2, float *step, int iteration){
 			step[3]=2.5*step[4];
 			if(MYID==0)fprintf(FP,"steplength larger stepmax, set to stepmax");
 		}
-				
+		
+		if(LBFGS && it_group>1 && step[3]>1.0){
+			step[3]=1.0;
+			if(MYID==0)fprintf(FP,"steplength larger 1.0, set to 1.0");
+		}
+		
 		if(step[3]<=0){
 			 step[3]=0.1*step[1];
-			 if(MYID==0)fprintf(FP,"steplength smaller 0,  set to step[2]");
+			 if(MYID==0)fprintf(FP,"steplength smaller 0,  set to %e", step[3]);
 		}
 		
 		if(step[3]<0.1*step[1]){ step[3]=0.1*step[1];
@@ -79,7 +85,7 @@ void steplength(float *L2, float *step, int iteration){
 		
 		if(step[4]<0.2*teststep) step[4]=0.2*teststep;
 		if(step[4]>teststep) step[4]=teststep;
-		
+		if(LBFGS && it_group>1) step[4]=0.5;
 		if(MYID==0)fprintf(FI,"new test-steplength4: %e\n", step[4]);
 
 }

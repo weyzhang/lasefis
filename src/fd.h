@@ -367,7 +367,7 @@ void zero_invers(int NX, int NY, int NZ, float **** Ffvx, float **** Ffvy, float
 void precon_grad(int nx,int ny,int nz, float ***grad1, float ***grad2,float ***grad3, int nsrc, float **  srcpos, int ntr_glob, int **recpos, float finv, int iteration,int cdf);
 void outgrad(int nx,int ny,int nz,float ***grad1, float ***grad2,float ***grad3, float finv, int iteration, char outfile[STRING_SIZE]);
 void outmod(int nx,int ny,int nz,float ***rho, float ***pi,float ***u, int iteration);
-void steplength(float *L2, float * step, int iteration);
+void steplength(float *L2, float * step, int iteration, int it_group);
 void zero_grad(int NX, int NY, int NZ, float *** grad1, float *** grad2, float *** grad3);
 void cpmodel(int nx, int ny, int nz, float ***rho, float ***pi, float ***u,float  ***  testrho, float ***  testpi, float ***  testu);
 void conjugate(int nx,int ny,int nz, float ***grad1, float ***grad2,float ***grad3, float ***gradprior1, float ***gradprior2, float ***gradprior3, float ***gradprior4, float ***gradprior5, float ***gradprior6,float *beta, int iteration,int cdf);

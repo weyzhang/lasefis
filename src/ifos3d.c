@@ -1003,13 +1003,9 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 			fprintf(FP,"\n STEPLENGTH CALCULATION ITERATION %d \n", iteration);
 				if(LBFGS||!LBFGS){
 			for (steptest=1;steptest<=2;steptest++){
-				if(cdf==1) step[4]=0.02;
-				/*if(cdf==1)step[4]=1-(groupnum-1)/4;*/
+				if(cdf==1) step[4]=TESTSTEP;
+				
 				step[steptest]=0.0; step[steptest]=step[4]*steptest;
-				/*if(iteration>10)step[steptest]=0.015*steptest;
-				if(iteration>20)step[steptest]=0.01*steptest;
-				if(iteration>30) step[steptest]=0.005*steptest;
-				if(iteration>50) step[steptest]=0.003*steptest;*/
 				fprintf(FP,"step[%d]=%e",steptest,step[steptest]);
 				
 				if(MYID==0) fprintf(FI,"\n steptest %d: steplength=%e \n",steptest ,step[steptest]);
@@ -1109,7 +1105,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 
 			if(MYID==0)fprintf(FP,"\n\n\n Steplength Parabel \n");
 			MPI_Barrier(MPI_COMM_WORLD);
-			steplength(misfit,step,iteration); /*find optimal steplength*/
+			steplength(misfit,step,iteration, it_group); /*find optimal steplength*/
 			}
 			
 			if(MYID==0)fprintf(FP,"\n Modelupdate \n");
