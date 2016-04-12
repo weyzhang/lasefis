@@ -675,6 +675,8 @@ void read_par_json(FILE *fp, char *fileinp) {
 				fprintf(fp,"Variable ITMIN is set to default value %d.\n",ITMIN);
 				ITMAX=1;
 				fprintf(fp,"Variable ITMAX is set to default value %d.\n",ITMAX);
+				FILT=0;
+				fprintf(fp,"Variable FILT is set to default value %d.\n",FILT);
 
 			}
 
