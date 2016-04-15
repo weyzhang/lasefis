@@ -69,7 +69,7 @@ PARTMODEL_SCR = \
 	util.c 	
 
 
-FDMPI_UTIL = \
+IFOS_UTIL = \
 		absorb.c \
 		av_mat.c \
 		comm_ini.c \
@@ -99,7 +99,7 @@ FDMPI_UTIL = \
 		writepar.c \
 		rwsegy.c \
 
-FDMPI_SRC = \
+IFOS_SRC = \
 		ifos3d.c \
 		comm_ini_s.c \
 		checkfd_ssg.c \
@@ -146,12 +146,12 @@ FDMPI_SRC = \
 		lbfgs_save.c \
 		constant_boundary.c \
 		$(MODEL_SCR) \
-		$(FDMPI_UTIL) 
+		$(IFOS_UTIL) 
 # model_gauss.c \
 
 
-FDMPI_OBJ = $(FDMPI_SRC:%.c=%.o)
-FDMPI_OBJ_RSG = $(FDMPI_SRC_RSG:%.c=%.o)
+IFOS_OBJ = $(IFOS_SRC:%.c=%.o)
+IFOS_OBJ_RSG = $(IFOS_SRC_RSG:%.c=%.o)
 # FDMPI_ACOUSTIC_OBJ = $(FDMPI_ACOUSTIC_SRC:%.c=%.o)
 # SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 # PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
@@ -166,8 +166,8 @@ snapmerge:	$(SNAPMERGE_OBJ)
 # part_model:	$(PARTMODEL_OBJ)
 #	$(CC) $(LFLAGS) $(PARTMODEL_OBJ) -o ../bin/partmodel
 
-ifos3d: $(FDMPI_OBJ)
-	$(CC)   $(SFLAGS) $(FDMPI_OBJ) $(LFLAGS) -o ../bin/ifos3d
+ifos3d: $(IFOS_OBJ)
+	$(CC)   $(SFLAGS) $(IFOS_OBJ) $(LFLAGS) -o ../bin/ifos3d
 
 
 clean:

@@ -25,7 +25,6 @@
 "Source" : "comment",
 			"SOURCE_SHAPE" : "4",
 			"SOURCE_TYPE" : "4",
-			"SIGNAL_FILE" : "./STF/stf.su",
 			"SRCREC" : "1",
 			"SOURCE_FILE" : "./sources/sources_toy.dat",
 			"RUN_MULTIPLE_SHOTS" : "1",
@@ -37,8 +36,6 @@
 
 "Q-approximation" : "comment",
 			"L" : "0",
-			"FL1" : "1000.0", 
-			"TAU" : "0.000001",
 
 "Free Surface" : "comment",
 			"FREE_SURF" : "0",
@@ -49,26 +46,13 @@
 			"FW" : "10",
 			"VPPML" : "6200.0",
 			"FPML" : "200.00",
-			"BOUNDARY" : "0",
 
 "Snapshots" : "comment",
 			"SNAP" : "0",
-			"TSNAP1" : "0.01",
-			"TSNAP2" : "0.24",
-			"TSNAPINC" : "0.0075",
-			"IDX, IDY, IDZ" : "1,1,1",
-			"SNAP_FORMAT" : "4",
-			"SNAP_FILE" : "./snap/back",
-			"SNAP_PLANE" : "1",
 
 "Receiver" : "comment",
 			"SEISMO" : "1",
-			"READREC" : "0",
-			"REC_FILE" : "./receiver/receiver.dat",
-			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0, 0.0",
-			"XREC1, YREC1, ZREC1" : "90.0 , 90.0, 90.0",
-			"XREC2, YREC2, ZREC2" : "90.0 , 90.0, 90.0",
-			"NGEOPH" : "1",
+			"READREC" : "2",
 
 "Receiver array" : "comment",
 			"REC_ARRAY" : "1",
@@ -80,11 +64,12 @@
 
 "Seismograms" : "comment",
 			"NDT" : "1",
-			"NDTSHIFT" : "0",
 			"SEIS_FORMAT" : "1",
-			"SEIS_FILE" : "./su_obs/obs_toy",
+			"SEIS_FILE" : "./su/cal_toy",
 
-
+			"VERBOSE" : "0",
+	
+	
 "Method" : "comment",
 			"METHOD" : "0",
 			
@@ -96,15 +81,14 @@
 			"SEIS_OBS_FILE" : "./su_obs/obs_toy",
 			"EXTOBS" : "0",
 			"INV_FILE" : "./in_and_out/workflow_toy.dat",
-			"HESS_FILE" : "./hess/toy_hess",
 
 "General" : "comment",
 			"ITMIN, ITMAX" : "1 , 60",
-			"FILT" : "0",
+			"FILT" : "1",
 			"NFMAX" : "5",
 			"TAST" : "100",
 			"VP0, VS0, RHO0" : "6200.0, 3600.0, 2800.0",
-			"WEIGHT" : "1.0, 1.0, 0.0",
+			"WEIGHT_VP,WEIGHT_VS,WEIGHT_RHO" : "1.0, 1.0, 0.0",
 
 "Steplength estimation" : "comment",
 			"NSHOTS_STEP" : "4",
@@ -115,12 +99,7 @@
 
 "Hessian" : "comment",
 			"HESS" : "0",
-			"READ_HESS" : "0",
-			"REC_HESS" : "1", 
-			"WATER_HESS_VP, WATER_HESS_VS, WATER_HESS_RHO" : "0.0192, 0.0192, 1.0e-14",
  
 "L-BFGS" : "comment",
-			"LBFGS" : "0",
-			"NUMPAR" : "2",
-			"BFGSNUM" : "5"
+			"LBFGS" : "0"
 }

@@ -145,7 +145,7 @@ int read_par(FILE *fp_in){
 					}					
 					break;
 				case 21 :
-					nvarin=sscanf(cline,"%s =%s , %i , %i , %i , %i , %i , %i",s,SIGNAL_FILE,&SIGNAL_FORMAT);
+					nvarin=sscanf(cline,"%s =%s , %i ",s,SIGNAL_FILE,&SIGNAL_FORMAT);
 					switch(nvarin){
 						case 0: 
 						case 1: strcpy(SIGNAL_FILE,"\0");
@@ -192,7 +192,7 @@ int read_par(FILE *fp_in){
 					}
 					break;
 				case 25 :
-					nvarin=sscanf(cline,"%s =%i , %i , %i , %i , %i , %i , %i",s,&READMOD,&MOD_FORMAT);
+					nvarin=sscanf(cline,"%s =%i , %i ",s,&READMOD,&MOD_FORMAT);
 					switch(nvarin){
 						case 0:
 						case 1: READMOD=0;

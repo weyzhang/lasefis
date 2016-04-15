@@ -25,7 +25,6 @@
 "Source" : "comment",
 			"SOURCE_SHAPE" : "4",
 			"SOURCE_TYPE" : "4",
-			"SIGNAL_FILE" : "./STF/stf.su",
 			"SRCREC" : "1",
 			"SOURCE_FILE" : "./sources/sources_toy.dat",
 			"RUN_MULTIPLE_SHOTS" : "1",
@@ -37,38 +36,23 @@
 
 "Q-approximation" : "comment",
 			"L" : "0",
-			"FL1" : "1000.0", 
-			"TAU" : "0.000001",
 
 "Free Surface" : "comment",
 			"FREE_SURF" : "0",
 			
 
 "Absorbing Boundary" : "comment",
-			"ABS_TYPE" : "1",			
+			"ABS_TYPE" : "1",
 			"FW" : "10",
 			"VPPML" : "6200.0",
 			"FPML" : "200.00",
-			"BOUNDARY" : "0",
 
 "Snapshots" : "comment",
 			"SNAP" : "0",
-			"TSNAP1" : "0.01",
-			"TSNAP2" : "0.24",
-			"TSNAPINC" : "0.0075",
-			"IDX, IDY, IDZ" : "1,1,1",
-			"SNAP_FORMAT" : "4",
-			"SNAP_FILE" : "./snap/back",
-			"SNAP_PLANE" : "1",
 
 "Receiver" : "comment",
 			"SEISMO" : "1",
-			"READREC" : "0",
-			"REC_FILE" : "./receiver/receiver.dat",
-			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0, 0.0",
-			"XREC1, YREC1, ZREC1" : "90.0 , 90.0, 90.0",
-			"XREC2, YREC2, ZREC2" : "90.0 , 90.0, 90.0",
-			"NGEOPH" : "1",
+			"READREC" : "2",
 
 "Receiver array" : "comment",
 			"REC_ARRAY" : "1",
@@ -80,7 +64,6 @@
 
 "Seismograms" : "comment",
 			"NDT" : "1",
-			"NDTSHIFT" : "0",
 			"SEIS_FORMAT" : "1",
 			"SEIS_FILE" : "./su_obs/obs_toy",
 
