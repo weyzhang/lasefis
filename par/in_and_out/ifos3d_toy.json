@@ -32,7 +32,6 @@
 "Model" : "comment",
 			"READMOD" : "0",
 			"MFILE" : "model/toy",
-			
 
 "Q-approximation" : "comment",
 			"L" : "0",
@@ -60,19 +59,15 @@
 			"REC_ARRAY_DIST" : "30.0",
 			"DRX" : "10",
 			"DRY" : "10",
-			
 
 "Seismograms" : "comment",
 			"NDT" : "1",
 			"SEIS_FORMAT" : "1",
 			"SEIS_FILE" : "./su/cal_toy",
 
-			"VERBOSE" : "0",
-	
-	
 "Method" : "comment",
-			"METHOD" : "0",
-			
+			"METHOD" : "1",
+
 "INVERSION PARAMETERS" : "comment",
 
 "In- and Output Files" : "comment",
