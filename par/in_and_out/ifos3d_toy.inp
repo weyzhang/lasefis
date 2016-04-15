@@ -103,11 +103,16 @@ output_of_seismograms_(SEISMO) = 1
 # SEISMO=3: curl and div
 # SEISMO=4: everything
 # Warning: "curl" is not really curl in 3D
-read_receiver_positions_from_file_(yes=1)_(READREC) = 0
+read_receiver_positions_(READREC) = 2
+# receiver line READREC=0
+# from_file READREC=1
+# rec array READREC=2
 REC_FILE = ./receiver/receiver.dat
 reference_point_for_receiver_coordinate_system_(REFREC) = 0.0 , 0.0 , 0.0
-# if READREC=1 the following three lines are ignored 
+# if READREC=1 the following receiver options are ignored 
 # Note that z denotes the vertical direction !
+#
+# --------------------Receiver line -------------------------------
 position_of_first_receiver_(in_m)_(XREC1,YREC1,ZREC1) =  90.0 , 90.0 , 90.0
 position_of_last_receiver_(in_m)_(XREC2,YREC2,ZREC2)  =  90.0 , 90.0 , 90.0
 distance_between_two_adjacent_receivers_(in_gridpoints)_(NGEOPH) = 1
