@@ -40,6 +40,7 @@
 #define PI (3.141592653589793)
 #define NPAR 45
 #define STRING_SIZE 74
+#define STRING_SIZE2 256
 #define REQUEST_COUNT 6
 #define NPROCX_MAX 100
 #define NPROCY_MAX 100
@@ -182,6 +183,8 @@ float readdsk(FILE *fp_in, int format);
 
 int read_par(FILE *fp);
 
+void read_par_json(FILE *fp, char *fileinp);
+
 void readmod_acoustic(float  ***  rho, float ***  pi, int ishot);
 
 int **receiver(FILE *fp, int *ntr);
@@ -309,7 +312,7 @@ float *** sxx, float *** syy, float *** szz, float *** sxy,
 float *** syz, float *** sxz, float  ***  rho, 
 float **  srcpos_loc, float ** signals, int nsrc, float ***absorb_coeff);
 
-void wavelet(float **srcpos_loc, int nsrc, int quelltype, float ** signals);
+void wavelet(float **srcpos_loc, int nsrc, int sourceshape, float ** signals);
 
 void writebufs(float *** sxx, float *** syy, float *** szz, 
 float *** sxy, float *** syz, float *** sxz,
@@ -327,6 +330,32 @@ void writedsk(FILE *fp_out, float amp, int format);
 void writemod(char modfile[STRING_SIZE], float *** rho, int format);
 
 void writepar(FILE *fp, int ns);
+
+/* declaration of functions for json parser in json_parser.c*/
+int read_objects_from_intputfile(FILE *fp, char input_file[STRING_SIZE],char ** varname_list,char ** value_list);
+
+void print_objectlist_screen(FILE *fp, int number_readobject,char ** varname_list,char ** value_list);
+
+int count_occure_charinstring(char stringline[STRING_SIZE], char teststring[]);
+
+void copy_str2str_uptochar(char string_in[STRING_SIZE], char string_out[STRING_SIZE], char teststring[]);
+
+int get_int_from_objectlist(char string_in[STRING_SIZE], int number_readobject, int * int_buffer,
+                            char ** varname_list,char ** value_list);
+
+int get_float_from_objectlist(char string_in[STRING_SIZE], int number_readobject, float * double_buffer,
+                              char ** varname_list,char ** value_list);
+
+int get_string_from_objectlist(char string_in[STRING_SIZE], int number_readobject, char string_buffer[STRING_SIZE],
+                               char ** varname_list,char ** value_list);
+
+int is_string_blankspace(char string_in[STRING_SIZE]);
+
+void remove_blankspaces_around_string(char string_in[STRING_SIZE] );
+
+void add_object_tolist(char string_name[STRING_SIZE],char string_value[STRING_SIZE], int * number_read_object,
+                       char ** varname_list,char ** value_list );
+
 
 /* utility functions (defined in file util.c)*/
 void err(char error_text[]);

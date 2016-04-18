@@ -27,7 +27,7 @@
 void writepar(FILE *fp, int ns){
 
 	/* declaration of extern variables */
-	extern int   NX, NY, NZ, NT, QUELLART, QUELLTYP, FDORDER, RUN_MULTIPLE_SHOTS;
+	extern int   NX, NY, NZ, NT, SOURCE_SHAPE, SOURCE_TYPE, FDORDER, RUN_MULTIPLE_SHOTS;
 	extern int  SNAP, SNAP_FORMAT, REC_ARRAY, L, SNAP_PLANE,FW;
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
@@ -43,6 +43,7 @@ void writepar(FILE *fp, int ns){
 	extern int NP, NPROCX, NPROCY, NPROCZ, MYID;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS, LBFGS,EXTOBS;
 	extern int NUMPAR, BFGSNUM;
+	extern int VERBOSE;
 	
 	extern float TESTSTEP,WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
 	/* definition of local variables */
@@ -99,7 +100,7 @@ void writepar(FILE *fp, int ns){
 	
 	fprintf(fp," Wavelet of source:");
 
-	switch (QUELLART){
+	switch (SOURCE_SHAPE){
 	case 1 :
 		fprintf(fp," Ricker\n");
 		break;
@@ -122,7 +123,7 @@ void writepar(FILE *fp, int ns){
 	}
 
 	fprintf(fp," Default type of source:");
-	switch (QUELLTYP){
+	switch (SOURCE_TYPE){
 	case 1 :
 		fprintf(fp," explosive point source (concentrated at a single gridpoint)\n");
 		break;
@@ -141,8 +142,8 @@ void writepar(FILE *fp, int ns){
 		fprintf(fp," Angle between x and z direticon (BETA): %f\n", BETA);
 		break;
 	default :
-		fprintf(fp," WARNING: Default type of source ('%d') not available -> changed to explosive! ", QUELLTYP);
-		QUELLTYP=1;
+		fprintf(fp," WARNING: Default type of source ('%d') not available -> changed to explosive! ", SOURCE_TYPE);
+		SOURCE_TYPE=1;
 	}
 	fprintf(fp,"\n");
 	fprintf(fp,"\n Source file: %s \n", SOURCE_FILE);
@@ -150,28 +151,34 @@ void writepar(FILE *fp, int ns){
 
 	if (SEISMO){
 		fprintf(fp," ------------------------- RECEIVER  ------- -------------------\n");
-		if (READREC){
-			fprintf(fp," Reading receiver positions from file \n");
-			fprintf(fp,"\t%s\n\n",REC_FILE);
-			fprintf(fp," reference_point_for_receiver_coordinate_system:\n");
-			fprintf(fp," x=%f \ty=%f\t z=%f\n",REFREC[1], REFREC[3], REFREC[2]);
-
-		} else if (REC_ARRAY>0){
+		switch (READREC){
+			case 1:
+				fprintf(fp," Reading receiver positions from file \n");
+				fprintf(fp,"\t%s\n\n",REC_FILE);
+				fprintf(fp," reference_point_for_receiver_coordinate_system:\n");
+				fprintf(fp," x=%f \ty=%f\t z=%f\n",REFREC[1], REFREC[3], REFREC[2]);
+				break;
+			case 2:
+				
 				fprintf(fp," Horitontal plane of receivers.\n");
 				fprintf(fp," Number of planes: %d \n",REC_ARRAY);
 				fprintf(fp," Depth of upper plane: %e m \n",REC_ARRAY_DEPTH);
 				fprintf(fp," Vertical increment between planes: %e m \n",REC_ARRAY_DIST);
-				fprintf(fp," Distance between receivers in x-direction within plane: %i \n", DRX);		
-				fprintf(fp," Distance between receivers in y-direction within plane: %i \n", DRY);		
-			}			
-			else{
-			fprintf(fp," Receiver line: \n");			
-			fprintf(fp," First receiver position (XREC1,YREC1,ZREC1) = (%5.3f, %5.3f, %5.3f m\n",
-			    XREC1,ZREC1,YREC1);
-			fprintf(fp," Last receiver position (XREC2,YREC2,ZREC2)  = (%5.3f, %5.3f, %5.3f) m\n",
-			    XREC2,ZREC2,YREC2);
-			fprintf(fp,"\n Receiver Array: %i \n",REC_ARRAY);
-			fprintf(fp,"\n");
+				fprintf(fp," Distance between receivers in x-direction within plane: %i Gridpoints\n", DRX);		
+				fprintf(fp," Distance between receivers in y-direction within plane: %i Gridpoints\n", DRY);		
+				break;
+			case 0 :
+				fprintf(fp," Receiver line: \n");			
+				fprintf(fp," First receiver position (XREC1,YREC1,ZREC1) = (%5.3f, %5.3f, %5.3f m\n",
+					XREC1,ZREC1,YREC1);
+				fprintf(fp," Last receiver position (XREC2,YREC2,ZREC2)  = (%5.3f, %5.3f, %5.3f) m\n",
+					XREC2,ZREC2,YREC2);
+				fprintf(fp,"\n Receiver Array: %i \n",REC_ARRAY);
+				fprintf(fp,"\n");
+				break;
+			default :
+				err(" invalid READREC in write_par!");
+				break;
 		}
 	}
 	fprintf(fp," ------------------------- FREE SURFACE ------------------------\n");

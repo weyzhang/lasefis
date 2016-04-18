@@ -127,9 +127,19 @@ int main(int argc, char **argv){
 			fprintf(stderr," Caution: input parameter filename set to default 'ifos3d.inp'. \n\n");
 		 }
 		 FP=fopen(FILEINP,"r");
-	         read_par(FP); 
+		 
+		if (strstr(FILEINP,".json")) {
+		//read json formated input file
+			read_par_json(stdout, FILEINP);
+			fclose(FP);
+		} else {
+		//read "old" input file *.inp, might not work in future
+			read_par(FP);
+		}
+		 
 	} 
-
+	       
+	         
 	/* PE 0 will broadcast the parameters to all others PEs */
 	exchange_par(); 
 			
@@ -554,19 +564,11 @@ MPI_Barrier(MPI_COMM_WORLD);
 	
 	/* Reading source positions from SOURCE_FILE */ 	
 	fprintf(FP,"\n ------------------ READING SOURCE PARAMETERS ------------------- \n");
-	if ((PLANE_WAVE_DEPTH>0)) {
-		/*determining the number of sources in the specified plane normal/tilted to the surface/upper model boundary*/
-		nsrc=(NXG-2*FW+1)*(NYG-2*FW+1);
-		/*fprintf(FP,"\n nsrc= %i with NGX=%i, NYG=%i and FW=%i. \n",nsrc,NXG,NYG,FW);*/
-		MPI_Barrier(MPI_COMM_WORLD);
-	        MPI_Bcast(&nsrc,1,MPI_INT,0,MPI_COMM_WORLD);
-		srcpos= fmatrix(1,7,1,nsrc);
-		pwsources(&nsrc,srcpos);	
-	}
-	else {
+	
 	    if (MYID==0) switch (SRCREC) {
 		case 0: 
-			fprintf(FP,"\n Reading source parameters specified in input file instead of source file. \n");break;
+			if (MYID==0) err("SRCREC parameter is invalid (SRCREC!=1)! No source parameters specified!");
+			break;
 		case 1:
 			fprintf(FP,"\n Reading source parameters from file: %s (IFOS source format)\n",SOURCE_FILE);
 			if ((fpsrc=fopen(SOURCE_FILE,"r"))==NULL) err(" Source file could not be opened !");
@@ -581,19 +583,29 @@ MPI_Barrier(MPI_COMM_WORLD);
 			if ((nsrc)==0) fprintf(FP,"\n WARNING: Could not determine number of sources parameter sets in input file. Assuming %d.\n",(nsrc=0));
 			else fprintf(FP," Number of source positions specified in %s : %d \n",SOURCE_FILE,nsrc);
 			break;
-		case 2: break;
-		case 3: fprintf(FP,"\n Reading source parameters from file: %s\n",SOURCE_FILE);
-		break;		
-		default: fprintf(FP,"\n WARNING: Format of source file %s unknown! Using default parameters instead of source file. \n",SOURCE_FILE);
+		case 2: if ((PLANE_WAVE_DEPTH>0)) {
+				/*determining the number of sources in the specified plane normal/tilted to the surface/upper model boundary*/
+				nsrc=(NXG-2*FW+1)*(NYG-2*FW+1);
+				/*fprintf(FP,"\n nsrc= %i with NGX=%i, NYG=%i and FW=%i. \n",nsrc,NXG,NYG,FW);*/
+				MPI_Barrier(MPI_COMM_WORLD);
+				MPI_Bcast(&nsrc,1,MPI_INT,0,MPI_COMM_WORLD);
+				srcpos= fmatrix(1,7,1,nsrc);
+				pwsources(&nsrc,srcpos);	
+			} else {
+				err("SRCREC parameter specifies PLANE_WAVE excitation, but PLANE_WAVE_DEPTH<=0!");
+			}	
+			break;
+	
+		default: err("SRCREC parameter is invalid (SRCREC!=1 or SRCREC!=2)! No source parameters specified!");
            }
 	   
 	   MPI_Bcast(&nsrc,1,MPI_INT,0,MPI_COMM_WORLD);
 	   MPI_Barrier(MPI_COMM_WORLD);
 	   srcpos= fmatrix(1,7,1,nsrc); 
 	   sources(fpsrc,&nsrc,srcpos);
-	   /*originally, QUELLTY=stype is defined in the source file, if not, QUELLTYP is taken from the input file */
+	   /*originally, SOURCE_TYPE (stype) is defined in the source file, if not, SOURCE_TYPE is taken from the input file */
 	   /*if (stype==NULL) printf("PE%d: Source type(s) undefined?! \n",MYID);*/
-	}
+	
 	
 	snum_loc = ivector(1,nsrc);
 	srcpos_loc = splitsrc(srcpos,&nsrc_loc, nsrc,snum_loc);
@@ -712,7 +724,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				}
 			}
 			/*printf("source=%e,%e,%e,%e,%e,%e,%e\n",srcpos_loc[1][1],srcpos_loc[2][1],srcpos_loc[3][1],srcpos_loc[4][1],srcpos_loc[5][1],srcpos_loc[6][1],srcpos_loc[7][1]);*/
-			if(nsrc_loc>0){	wavelet(srcpos_loc,nsrc_loc,QUELLART,signals);	
+			if(nsrc_loc>0){	wavelet(srcpos_loc,nsrc_loc,SOURCE_SHAPE,signals);	
 			/*if (SEISMO){
 			  	saveseis(FP,signals,sectionvy,sectionvz,sectionp,sectioncurl,sectiondiv,recpos,recpos_loc,ntr,srcpos,ishot,ns,0,11);
 			}*/
@@ -1040,7 +1052,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 					}
 							
 					if(nsrc_loc>0){	
-						wavelet(srcpos_loc,nsrc_loc,QUELLART,signals);	
+						wavelet(srcpos_loc,nsrc_loc,SOURCE_SHAPE,signals);	
 						if(FILT==1) filt_seis(signals,nsrc_loc,NT,finv[nf-1]);}
 					zero_wavefield(NX,NY,NZ,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,rxy,ryz,rxz,psi_sxx_x,psi_sxy_x,psi_sxz_x,psi_sxy_y,psi_syy_y,psi_syz_y,psi_sxz_z,psi_syz_z,psi_szz_z,psi_vxx,psi_vyx,psi_vzx,psi_vxy,psi_vyy,psi_vzy,psi_vxz,psi_vyz,psi_vzz);
 								

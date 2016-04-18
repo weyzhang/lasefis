@@ -34,16 +34,16 @@ timestep_(in_seconds)_(DT) = 5.0e-5
 #
 #--------------------Source---------------------------------------
 # Shape_of_source-signal:
-(ricker=1;fumue=2;from_SIGNAL_FILE=3;SIN**3=4;deltapulse=5)_(QUELLART) = 4
-point_source_(explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5)_(QUELLTYP) = 4
-# If QUELLTYP <5 the following two lines are ignored
+(ricker=1;fumue=2;from_SIGNAL_FILE=3;SIN**3=4;deltapulse=5)_(SOURCE_SHAPE) = 4
+point_source_(explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5)_(SOURCE_TYPE) = 4
+# If SOURCE_TYPE <5 the following two lines are ignored
 force_angle_between_x_y_(in_degree)_(ALPHA) = 45.0
 force_angle_between_x_z_(in_degree)_(BETA) =  45.0
 # Plane wave (PW) excitation,if PLANE_WAVE_DEPTH>0, SRCREC is treated as 0
 depth_of_PW_excitation_(no<=0)_(in_meter)_(PLANE_WAVE_DEPTH) = 0.0
 dip_of_PW_from_vertical_(in_degrees)_(PHI) =0.0
 duration_of_source-signal_PW_(in_seconds)_(TS) = 0.0033
-# External signal input instead of QUELLART
+# External signal input instead of SOURCE_SHAPE
 SIGNAL_FILE = ?
 read_source_positions_from_SOURCE_FILE_(yes=1)_(SRCREC) = 1
 SOURCE_FILE = ./sources/sources_toy.dat  
@@ -103,11 +103,16 @@ output_of_seismograms_(SEISMO) = 1
 # SEISMO=3: curl and div
 # SEISMO=4: everything
 # Warning: "curl" is not really curl in 3D
-read_receiver_positions_from_file_(yes=1)_(READREC) = 0
+read_receiver_positions_(READREC) = 2
+# receiver line READREC=0
+# from_file READREC=1
+# rec array READREC=2
 REC_FILE = ./receiver/receiver.dat
 reference_point_for_receiver_coordinate_system_(REFREC) = 0.0 , 0.0 , 0.0
-# if READREC=1 the following three lines are ignored 
+# if READREC=1 the following receiver options are ignored 
 # Note that z denotes the vertical direction !
+#
+# --------------------Receiver line -------------------------------
 position_of_first_receiver_(in_m)_(XREC1,YREC1,ZREC1) =  90.0 , 90.0 , 90.0
 position_of_last_receiver_(in_m)_(XREC2,YREC2,ZREC2)  =  90.0 , 90.0 , 90.0
 distance_between_two_adjacent_receivers_(in_gridpoints)_(NGEOPH) = 1

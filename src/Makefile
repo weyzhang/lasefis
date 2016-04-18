@@ -8,7 +8,7 @@
 
 # source code for model generation (elastic)
 
-MODEL_SCR = hh_toy.c
+MODEL_SCR = hh_toy_true.c
 
 # Compiler (LAM: CC=hcc, CRAY T3E: CC=cc, SHARCNet: mpicc)
 
@@ -47,6 +47,7 @@ IFLAGS=-I./../libcseife
 .c.o:
 	$(CC) -c  $(CFLAGS) $< $(IFLAGS)
 
+SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 
 SEISMERGE_SCR = seismerge.c
 
@@ -54,7 +55,9 @@ SEISMERGE_SCR = seismerge.c
 SNAPMERGE_SCR = \
 	snapmerge.c \
 	merge.c \
+	json_parser.c \
 	read_par.c \
+	read_par_json.c \
 	readdsk.c \
 	writedsk.c \
 	util.c 
@@ -62,10 +65,11 @@ SNAPMERGE_SCR = \
 PARTMODEL_SCR = \
 	part_model.c \
 	read_par.c \
+	read_par_json.c \
 	util.c 	
 
 
-FDMPI_UTIL = \
+IFOS_UTIL = \
 		absorb.c \
 		av_mat.c \
 		comm_ini.c \
@@ -79,6 +83,8 @@ FDMPI_UTIL = \
 		rd_sour.c \
 		readdsk.c \
 		read_par.c \
+		json_parser.c \
+		read_par_json.c \
 		exchange_par.c \
 		receiver.c \
 		readmod.c \
@@ -93,7 +99,7 @@ FDMPI_UTIL = \
 		writepar.c \
 		rwsegy.c \
 
-FDMPI_SRC = \
+IFOS_SRC = \
 		ifos3d.c \
 		comm_ini_s.c \
 		checkfd_ssg.c \
@@ -140,12 +146,12 @@ FDMPI_SRC = \
 		lbfgs_save.c \
 		constant_boundary.c \
 		$(MODEL_SCR) \
-		$(FDMPI_UTIL) 
+		$(IFOS_UTIL) 
 # model_gauss.c \
 
 
-FDMPI_OBJ = $(FDMPI_SRC:%.c=%.o)
-FDMPI_OBJ_RSG = $(FDMPI_SRC_RSG:%.c=%.o)
+IFOS_OBJ = $(IFOS_SRC:%.c=%.o)
+IFOS_OBJ_RSG = $(IFOS_SRC_RSG:%.c=%.o)
 # FDMPI_ACOUSTIC_OBJ = $(FDMPI_ACOUSTIC_SRC:%.c=%.o)
 # SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 # PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
@@ -155,13 +161,13 @@ seismerge:	$(SEISMERGE_OBJ)
 	$(CC) $(LFLAGS) $(SEISMERGE_OBJ) -o ../bin/seismerge	
 
 snapmerge:	$(SNAPMERGE_OBJ)
-	$(CC) $(LFLAGS) $(SNAPMERGE_OBJ) -o ../bin/snapmerge
+	$(CC)  $(SFLAGS) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LFLAGS)
 		
 # part_model:	$(PARTMODEL_OBJ)
 #	$(CC) $(LFLAGS) $(PARTMODEL_OBJ) -o ../bin/partmodel
 
-ifos3d: $(FDMPI_OBJ)
-	$(CC)   $(SFLAGS) $(FDMPI_OBJ) $(LFLAGS) -o ../bin/ifos3d
+ifos3d: $(IFOS_OBJ)
+	$(CC)   $(SFLAGS) $(IFOS_OBJ) $(LFLAGS) -o ../bin/ifos3d
 
 
 clean:

@@ -48,6 +48,7 @@ int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, in
 		case 3: sprintf(file_ext,"bin"); break;
 		case 4: sprintf(file_ext,"sgy"); break;
 		case 5: sprintf(file_ext,"sgy"); break;
+		case 7: sprintf(file_ext,"su"); break;
 		}
 		/*note that internally "y" is used for the vertical coordinate,
 		for usability reasons, we switch the "y" and "z" coordinate 
@@ -78,42 +79,42 @@ int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, in
 
 		switch (SEISMO){
 		case 1 : /* particle velocities only */
-		
-			fprintf(fp,"\n PE %d is writing %d seismogramtraces (vx)   to \t %s_vx.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			
+			fprintf(fp,"\n PE %d is writing %d seismogramtraces (vx)   to \t %s \n",MYID,ntr,vxf);
 			outseis(fp,fopen(vxf,"w"),1,sectionvx,recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
-			fprintf(fp," PE %d is writing %d seismogramtraces (vy)   to \t %s_vy.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (vy)   to \t %s \n",MYID,ntr,vyf);
 			outseis(fp,fopen(vyf,"w"),2,sectionvy,recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
-			fprintf(fp," PE %d is writing %d seismogramtraces (vz)   to \t %s_vz.%s.%d \n\n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (vz)   to \t %s \n",MYID,ntr,vzf);
 			outseis(fp,fopen(vzf,"w"),3,sectionvz,recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
 			
 			break;
 		case 2 : /* pressure only */
-			fprintf(fp," PE %d is writing %d seismogramtraces (p)    to \t %s.%p.%d \n\n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (p)   to \t %s \n",MYID,ntr,pf);
 			outseis(fp,fopen(pf,"w"), 0,sectionp, recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
 			
 			break;
 		case 3 : /* curl and div only */
 			
-			fprintf(fp," PE %d is writing %d seismogramtraces (div)  to \t %s_div.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (div)   to \t %s \n",MYID,ntr,divf);
 			outseis(fp,fopen(divf,"w"),0,sectiondiv,recpos,recpos_loc,ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
-			fprintf(fp," PE %d is writing %d seismogramtraces (curl) to \t %s_rot.%s.%d \n\n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (curl)  to \t %s \n",MYID,ntr,curlf);
 			outseis(fp,fopen(curlf,"w"),0,sectioncurl,recpos,recpos_loc,ntr,srcpos1,nsrc,ns,SEIS_FORMAT);	
 			
 			break;	
 		case 4 : /* everything */
-			fprintf(fp,"\n PE %d is writing %d seismogramtraces (vx)   to \t %s_vx.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp,"\n PE %d is writing %d seismogramtraces (vx)   to \t %s \n",MYID,ntr,vxf);
 			outseis(fp,fopen(vxf,"w"),1,sectionvx,recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
-			fprintf(fp," PE %d is writing %d seismogramtraces (vy)   to \t %s_vy.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (vy)   to \t %s \n",MYID,ntr,vyf);
 			outseis(fp,fopen(vyf,"w"),2,sectionvy,recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
-			fprintf(fp," PE %d is writing %d seismogramtraces (vz)   to \t %s_vz.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (vz)   to \t %s \n",MYID,ntr,vzf);
 			outseis(fp,fopen(vzf,"w"),3,sectionvz,recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
 			
-			fprintf(fp," PE %d is writing %d seismogramtraces (p)    to \t %s_p.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (p)    to \t %s \n",MYID,ntr,pf);
 			outseis(fp,fopen(pf,"w"), 0,sectionp, recpos,recpos_loc, ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
 
-			fprintf(fp," PE %d is writing %d seismogramtraces (div)  to \t %s_div.%s.%d \n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (div)  to \t %s \n",MYID,ntr,divf);
 			outseis(fp,fopen(divf,"w"),0,sectiondiv,recpos,recpos_loc,ntr,srcpos1,nsrc,ns,SEIS_FORMAT);
-			fprintf(fp," PE %d is writing %d seismogramtraces (curl) to \t %s_rot.%s.%d \n\n",MYID,ntr,seisfile,file_ext,MYID);
+			fprintf(fp," PE %d is writing %d seismogramtraces (curl) to \t %s \n",MYID,ntr,curlf);
 			outseis(fp,fopen(curlf,"w"),0,sectioncurl,recpos,recpos_loc,ntr,srcpos1,nsrc,ns,SEIS_FORMAT);	
 			break;
 			

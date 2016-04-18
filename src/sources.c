@@ -27,7 +27,7 @@
 void sources(FILE * fpsrc, int *nsrc, float **srcpos){
 
 	/* declaration of extern variables */
-	extern int MYID,SRC_MF,QUELLTYP;
+	extern int MYID,SRC_MF,SOURCE_TYPE;
 	extern FILE *FP;
 	extern float TS,REFSRC[3],SRCTSHIFT,FC,AMP;
 
@@ -48,7 +48,7 @@ void sources(FILE * fpsrc, int *nsrc, float **srcpos){
 					case 3: tshift=0.0;
 					case 4: srcpos[5][l]=FC;
 					case 5: srcpos[6][l]=AMP;
-					case 6: srcpos[7][l]=QUELLTYP;
+					case 6: srcpos[7][l]=SOURCE_TYPE;
 				}
 				/*change stype to srcpos[7]*/
 				/*note that internally "y" is used for the vertical coordinate,
@@ -107,7 +107,7 @@ void pwsources(int *nsrc, float **srcpos){ /* plane wave excitation */
 
 	/* declaration of extern variables */
 	extern float PLANE_WAVE_DEPTH, TS, DX, DY, PHI;
-	extern int MYID, NXG, NYG, SRCREC, FW,QUELLTYP;
+	extern int MYID, NXG, NYG, SRCREC, FW,SOURCE_TYPE;
 	extern FILE *FP;	
 
 	float x, y, z, tan_phi;
@@ -158,7 +158,7 @@ void pwsources(int *nsrc, float **srcpos){ /* plane wave excitation */
 			srcpos[4][isrc]=0.0;
 			srcpos[5][isrc]=1.0/TS;
 			srcpos[6][isrc]=1.0;
-			srcpos[7][isrc]=QUELLTYP;
+			srcpos[7][isrc]=SOURCE_TYPE;
 		}
 		
 		/*double check if number of receivers match, counted within loop*/
