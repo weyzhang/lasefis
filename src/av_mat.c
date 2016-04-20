@@ -31,12 +31,12 @@ float  *** uipjp, float *** ujpkp, float *** uipkp, float *** tausipjp,
 float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float  *** rip ){
 
 
-	extern int NX, NY, NZ, MYID,L;
+	extern int NX, NY, NZ, MYID,L,VERBOSE;
 	extern FILE *FP;
 	double time1=0.0, time2=0.0;
 	int i, j, k;
 	
-	if (MYID==0){
+	if ((MYID==0)&&(VERBOSE==1)){
 		fprintf(FP,"\n\n **Message from av_mat (written by PE %d):",MYID);
 		fprintf(FP,"\n Averaging of material parameters ... \n");
 		time1=MPI_Wtime();
@@ -70,7 +70,7 @@ float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float 
 
 
 
-	if (MYID==0){
+	if ((MYID==0)&&(VERBOSE==1)){
 		time2=MPI_Wtime();
 		fprintf(FP," finished (real time: %4.2f s).\n",time2-time1);
 	}

@@ -42,7 +42,7 @@ void readseis_split(int ishot, float **section, int ntr,int *rnum_loc, int ns, i
     if(comp==2) sprintf(data,"%s_vz_ext.%s.shot%d",SEIS_OBS_FILE,file_ext,ishot);
     if(comp==3) sprintf(data,"%s_vy_ext.%s.shot%d",SEIS_OBS_FILE,file_ext,ishot);
 
-    fprintf(FP,"\nreads %s\n",data);
+    fprintf(FP,"\n reads %s",data);
     
     if(ntr>0){
     fpdata=fopen(data,"r");
@@ -62,5 +62,5 @@ void readseis_split(int ishot, float **section, int ntr,int *rnum_loc, int ns, i
     }
     fclose(fpdata);
     }
-    fprintf(FP," readseis_split finished\n");  
+   // fprintf(FP," readseis_split finished\n");  
 }

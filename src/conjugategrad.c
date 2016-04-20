@@ -37,7 +37,7 @@ void conjugate(int nx,int ny,int nz, float ***grad1, float ***grad2,float ***gra
 	
 	beta[0]=0.0; beta[1]=0.0; beta[2]=0.0;
 
-	fprintf(FP,"\n Calculate conjugate gradient \n");
+	fprintf(FP,"\n Calculate conjugate gradient ");
 	
 	if(cdf==1){
 		for (j=1;j<=ny;j++){

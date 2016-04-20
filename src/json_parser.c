@@ -41,9 +41,9 @@ int read_objects_from_intputfile(FILE *fp, char *input_file,char **varname_list,
 
 
 	if (fp_in==NULL) {
-		fprintf(fp, "\n==================================================================\n");
+		fprintf(fp, "\n ==================================================================\n");
 		fprintf(fp, "  ERROR: Could not open input file '%s'!", input_file);
-		fprintf(fp, "\n==================================================================\n");
+		fprintf(fp, "\n ==================================================================\n");
 		sprintf(errormessage, "\n  in: <read_par_json.c> \n");
 		err(errormessage);
 	}
@@ -233,15 +233,15 @@ int read_objects_from_intputfile(FILE *fp, char *input_file,char **varname_list,
 void print_objectlist_screen(FILE *fp, int number_readobject,char **varname_list,char **value_list) {
 
 	int ii;
-	fprintf(fp, "\n===========================================================\n");
-	fprintf(fp, "||  Object # | object name \t| object value           ||");
-	fprintf(fp, "\n===========================================================\n");
+	fprintf(fp, "\n ===========================================================\n");
+	fprintf(fp, " ||  Object # | object name \t| object value           ||");
+	fprintf(fp, "\n ===========================================================\n");
 
 	for (ii=0; ii<number_readobject; ii++) {
 		fprintf(fp, "      %2.0i     | %18s | %s \n",ii+1, varname_list[ii],value_list[ii]);
 	}
 
-	printf("========================================================\n\n");
+	printf(" ========================================================\n\n");
 }
 
 int count_occure_charinstring(char stringline[STRING_SIZE2], char teststring[]) {

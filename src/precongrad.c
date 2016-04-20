@@ -40,7 +40,7 @@ void precon_grad(int nx,int ny,int nz, float ***grad1, float ***grad2,float ***g
 	/*h=FW+40;*/
 	
 	
-	fprintf(FP,"\nGradient preconditioning\n");
+	fprintf(FP,"\n Gradient preconditioning\n");
 	
 	if(DAMPTYPE==1){
 		for (j=1;j<=ny;j++){

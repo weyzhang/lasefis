@@ -46,6 +46,7 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	extern int FDCOEFF;
 	extern int READREC, NPROCX,NPROCY,NPROCZ, FW, ABS_TYPE, SRCREC, FREE_SURF;
 	extern int SNAP, SEISMO, SEIS_FORMAT[6], SNAP_FORMAT;
+	extern int NSHOTS_STEP;
 	/*extern int RUN_MULTIPLE_SHOTS; no determination is done for the output check whether the simulation runs with one or multiple shot
 		-> directorys specified in input file should work in both cases */
 	extern char SEIS_FILE[STRING_SIZE], SNAP_FILE[STRING_SIZE];
@@ -712,8 +713,16 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	fprintf(fp," You have specified a width of %i gridpoints.\n",FW);
 	if ((FW<20)&&(MYID==0)) 
 		warning(" Be aware of strong artificial reflections from grid boundaries ! \n");}
+		
+		
 
-
+	if (nsrc<NSHOTS_STEP) {
+		NSHOTS_STEP=nsrc;
+		if(MYID==0) {
+		warning(" Parameter NSHOTS_STEP is greater than number of sources. NSHOT_STEP is reduced to nsrc. \n");
+		fprintf(fp," NSHOTS_STEP=%d\n",NSHOTS_STEP);
+		}
+	}
 
 }
 

@@ -31,7 +31,7 @@ void mergemod(char modfile[STRING_SIZE], int format){
 
 
 	extern int MYID, NPROCX, NPROCY, NPROCZ;
-	extern int NX, NY, NZ, NPROC, IDX, IDY, IDZ;
+	extern int NX, NY, NZ, NPROC, IDX, IDY, IDZ, VERBOSE;
 	extern FILE *FP;
 
 
@@ -45,9 +45,9 @@ void mergemod(char modfile[STRING_SIZE], int format){
 		err(" merge.c: constant expression NPROC?_MAX < NPROC? ");
 
 	
-	printf(" PE %d starts merge of %d model files \n",MYID,NPROC);	
+	if (VERBOSE) printf(" PE %d starts merge of %d model files \n",MYID,NPROC);
 
-	fprintf(FP,"\n writing merged model file to  %s \n",modfile);
+	fprintf(FP," writing merged model file to  %s \n",modfile);
 	fpout=fopen(modfile,"w");
 
 
@@ -59,7 +59,7 @@ void mergemod(char modfile[STRING_SIZE], int format){
       		if (fp[jp][ip][kp]==NULL) err("merge: can't read modfile !"); 
      	 }
 
-	fprintf(FP," ... finished. \n");
+	//fprintf(FP," ... finished. \n");
 
 
 

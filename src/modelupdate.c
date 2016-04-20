@@ -52,7 +52,7 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 	if(LBFGS) {w=it_group%BFGSNUM;
 		  if(w==0) w=BFGSNUM;}
 
-	 fprintf(FP,"Modelupdatefunction \n");
+	 fprintf(FP,"\n Message from modelupdate.c ");
 	
 	/*find and exchange model maxima*/
 	for (j=1;j<=ny;j++){
@@ -76,7 +76,8 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 	max[0]=buf[0];
 	max[1]=buf[1];
 	max[2]=buf[2];
-	fprintf(FP,"rhomax=%4.2f, vpmax=%4.2f, vsmax=%4.2f \n", max[2], max[0], max[1]);
+	fprintf(FP,"\n Maximum values in current model:\n");
+	fprintf(FP," rhomax=%4.2f, vpmax=%4.2f, vsmax=%4.2f \n", max[2], max[0], max[1]);
 	
 	/*if(iteration==1){vs0=vs0*vs0;
 	vp0=vp0*vp0;}
@@ -104,7 +105,7 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 		  max1[1]=dummy[1];
 		  max1[2]=dummy[2];
 		  if(max1[2]==0.0) max1[2]=1.0;
-		  fprintf(FP,"max1[0]=%e,max1[1]=%e  \n",max1[0],max1[1]);
+		  //fprintf(FP," max1[0]=%e,max1[1]=%e  \n",max1[0],max1[1]);
 		  
 		  if (max1[0]>0.0 && max1[1]>0.0){
 			  for (j=1;j<=ny;j++){
@@ -117,7 +118,7 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 				  }
 			  }
 		  }
-		  else fprintf(FP,"max1*max2*max3 =0 \n");
+		  else fprintf(FP,"Warning: One of the gradients is zero: max1*max2*max3 =0 \n");
 	}
 	/*if(it_group==1){scale1=4.0; scale2=4.0;}*/
 	l=0;
