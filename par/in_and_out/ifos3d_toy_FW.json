@@ -69,5 +69,7 @@
 
 
 "Method" : "comment",
-			"METHOD" : "0"
+			"METHOD" : "0",
+			
+			"MOD_OUT_FILE" : "./model/toy"
 }

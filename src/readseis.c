@@ -28,7 +28,7 @@ void readseis(int ishot, float **section, float **sectionf, int ntr, int ns, int
   
 
     extern FILE *FP;
-    extern int MYID, RUN_MULTIPLE_SHOTS,VERBOSE;
+    extern int MYID, RUN_MULTIPLE_SHOTS;
     extern char  SEIS_OBS_FILE[STRING_SIZE];
     char file_ext[5];
     FILE *fpdata;

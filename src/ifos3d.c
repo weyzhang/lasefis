@@ -30,7 +30,7 @@ int main(int argc, char **argv){
 	int lsnap, nsnap=0, lsamp=0, nlsamp=0, buffsize;
 	int ntr=0, ntr_loc=0, ntr_glob=0, nsrc=0, nsrc_loc=0, ishot, ishot1, nshots; 
 
-	double 	time1=0.0, time2=0.0, time3=0.0, time4=0.0;
+	double 	time1=0.0, time2=0.0, time4=0.0;
 	double * time_v_update, * time_s_update, * time_s_exchange,* time_v_exchange, * time_timestep;	
 	int * xb, * yb, * zb, l,i,j;
 	
@@ -84,11 +84,11 @@ int main(int argc, char **argv){
 	
 	
 	MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-	MPI_Status  *send_statuses, *rec_statuses;
+	/* MPI_Status  *send_statuses, *rec_statuses; */
 	
 	float memdyn, memmodel, memseismograms, membuffer, memtotal,memcpml=0.0,memdynf=0.0, memgrad=0.0, membfgs=0.0;
 	float fac1, fac2,fac3;
-	char *buff_addr, ext[10];
+	char *buff_addr;// ext[10];
 	char buffer[STRING_SIZE], bufferstring[10];
 	/*char comp[6];*/
 	FILE * fpsrc=NULL;
@@ -275,8 +275,8 @@ MPI_Barrier(MPI_COMM_WORLD);
 	req_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
 	sreq_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
 	sreq_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	send_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
-	rec_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
+	/* send_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
+	rec_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status)); */
 	
         /* allocation for timing arrays used for performance analysis */
 	time_v_update=dvector(1,NT);

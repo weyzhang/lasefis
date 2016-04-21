@@ -31,7 +31,7 @@ void precon_grad(int nx,int ny,int nz, float ***grad1, float ***grad2,float ***g
 	extern int POS[4], NXG, NYG, NZG, FW, DAMPTYPE, FREE_SURF;
 	extern FILE *FP;
 
-	int i,j,k,l,n,ii=0,kk=0,jj=0,sx=0,sy=0,sz=0,rx,ry,rz,h;
+	int i,j,k,l,n,ii=0,kk=0,jj=0,sx=0,sy=0,sz=0,rx,ry,rz;//,h;
 	int sh, rh; /*distance of source and receiver arrays to model edge (grid points)*/
 	float r=0.0, G[3];
 	G[0]=0.0; G[1]=0.0; G[2]=0.0;
@@ -222,8 +222,8 @@ void precon_grad(int nx,int ny,int nz, float ***grad1, float ***grad2,float ***g
 				for (k=1;k<=nz;k++){		
 				/*-------------------------------------------*/
 				/*damping y-direction*/
-				h=0;
-				h=iround(srcpos[2][1]/DY);
+				//h=0;
+				//h=iround(srcpos[2][1]/DY);
 				r=0.0;
 				r=(jj-sh)*1.0;
 				if(r<0)	G[0]=0.0;

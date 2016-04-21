@@ -28,8 +28,6 @@ void readinv(float *finv, int *nf, int *groupnum,int *itpergroup,int nfmax){
 	extern FILE *FP;
 	extern int MYID, VERBOSE;
 	char buffer[256];
-	int idummy;
-	float fdummy;
 	int mute,i;
 	float twin[2],owin[2];
 	float abort;

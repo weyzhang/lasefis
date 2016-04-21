@@ -705,6 +705,10 @@ void read_par_json(FILE *fp, char *fileinp) {
 					FILT=0;
 					fprintf(fp," Variable FILT is set to default value %d.\n",FILT);
 
+				if (get_string_from_objectlist("MOD_OUT_FILE",number_readobjects,MOD_OUT_FILE,varname_list, value_list)) {
+					err("Variable MOD_OUT_FILE could not be retrieved from the json input file!");
+				}
+
 				}
 
 			}

@@ -34,7 +34,7 @@ void modelupdate(int nx, int ny, int nz, float ***gradvp, float ***gradvs, float
 	float vpnew,vsnew,rhonew;
 	float max[3],buf[3],max1[3],dummy[3];
 	float vp,vs;
-	int w;
+	int w=0;
 	float scale1=0.0, scale2=0.0, scale3=0.0;
 	
 	buf[0]=0.0;buf[1]=0.0;buf[2]=0.0;
