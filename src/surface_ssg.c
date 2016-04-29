@@ -38,7 +38,7 @@ float *** vz){
 	extern float DT, DX, DY, DZ;
 
 
-	j=ndepth;     /* The free surface is located exactly in y=(ndepth-1/2)*dh meter!! */
+	j=ndepth;     /* The free surface is located exactly in y=(ndepth)*dh meter!! */
 
 	dthalbe=DT/2.0;
 	fdoh=FDORDER/2;

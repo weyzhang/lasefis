@@ -9,8 +9,8 @@ nx=nx/outx;ny=ny/outy;nz=nz/outz;
 fignum=71;
 
 
-file_inp1='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/grad/toy.gradvp_160.00Hz_it1001'; %preconditioned gradient
-file_inp2='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/grad/toy.gradvp_160.00Hz_it1';    %"raw" gradient
+file_inp1='../par/grad/toy_grad.vp_160.00Hz_it1001'; %preconditioned gradient
+file_inp2='../par/grad/toy_grad.vp_160.00Hz_it1';    %"raw" gradient
 
 
 

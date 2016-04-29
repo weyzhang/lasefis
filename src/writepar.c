@@ -34,7 +34,7 @@ void writepar(FILE *fp, int ns) {
 	extern float ALPHA, BETA;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
 	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF;
-	extern int  READMOD, READREC, DRX, DRY, BOUNDARY, SRCREC, IDX, IDY, IDZ;
+	extern int  READMOD, READREC, DRX, DRZ, BOUNDARY, SRCREC, IDX, IDY, IDZ;
 	extern float TSNAP1, TSNAP2, TSNAPINC, REFREC[4], DAMPING;
 	extern char SNAP_FILE[STRING_SIZE], SOURCE_FILE[], SIGNAL_FILE[], REC_FILE[], SEIS_FILE[STRING_SIZE];
 	extern char  MFILE[STRING_SIZE],GRAD_FILE[STRING_SIZE],INV_FILE[STRING_SIZE],SEIS_OBS_FILE[STRING_SIZE];
@@ -55,23 +55,21 @@ void writepar(FILE *fp, int ns) {
 	fprintf(fp,"\n ********* PARAMETERS AS SPECIFIED IN INPUT FILE **********");
 	fprintf(fp,"\n **********************************************************\n\n");
 
-	/*note that internally "y" is used for the vertical coordinate,
-	for usability reasons, we switch the "y" and "z" coordinate
-	so that "z" - as commonly used - denotes the depth (vertical direction)*/
+	/*note that "y" is used for the vertical coordinate*/
 	fprintf(fp,"\n\n **Message from write_par (printed by PE %d):\n\n",MYID);
 	fprintf(fp,"------------------------- Processors ------------------------\n");
 	fprintf(fp," Number of PEs in horizontal x-direction (NPROCX): %d\n",NPROCX);
-	fprintf(fp," Number of PEs in horizontal y-direction (NPROCY): %d\n",NPROCZ);
-	fprintf(fp," Number of PEs in vertical   z-direction (NPROCZ): %d\n",NPROCY);
+	fprintf(fp," Number of PEs in vertical   y-direction (NPROCY): %d\n",NPROCY);
+	fprintf(fp," Number of PEs in horizontal z-direction (NPROCZ): %d\n",NPROCZ);
 	fprintf(fp," Total number of PEs in use: %d\n",NP);
 	fprintf(fp,"\n");
 	fprintf(fp," ----------------------- Discretization  ---------------------\n");
 	fprintf(fp," Number of gridpoints in x-direction (NX): %i\n", NX);
-	fprintf(fp," Number of gridpoints in y-direction (NY): %i\n", NZ);
-	fprintf(fp," Number of gridpoints in z-direction (NZ): %i\n", NY);
+	fprintf(fp," Number of gridpoints in y-direction (NY): %i\n", NY);
+	fprintf(fp," Number of gridpoints in z-direction (NZ): %i\n", NZ);
 	fprintf(fp," Grid-spacing in x-direction (DX): %e meter\n", DX);
-	fprintf(fp," Grid-spacing in y-direction (DY): %e meter\n", DZ);
-	fprintf(fp," Grid-spacing in z-direction (DZ): %e meter\n", DY);
+	fprintf(fp," Grid-spacing in y-direction (DY): %e meter\n", DY);
+	fprintf(fp," Grid-spacing in z-direction (DZ): %e meter\n", DZ);
 	fprintf(fp," Time of wave propagation (T): %e seconds\n",TIME);
 	fprintf(fp," Timestep (DT): %e seconds\n", DT);
 	fprintf(fp," Number of timesteps: %i \n",NT);
@@ -145,11 +143,11 @@ void writepar(FILE *fp, int ns) {
 			break;
 
 		case 3 :
-			fprintf(fp," point source with directive force in y-direction\n");
+			fprintf(fp," point source with directive force in z-direction\n");
 			break;
 
 		case 4 :
-			fprintf(fp," point source with directive force in  z-direction\n");
+			fprintf(fp," point source with directive force in  y-direction (vertical) \n");
 			break;
 
 		case 5 :
@@ -175,7 +173,7 @@ void writepar(FILE *fp, int ns) {
 				fprintf(fp," Reading receiver positions from file \n");
 				fprintf(fp,"\t%s\n\n",REC_FILE);
 				fprintf(fp," reference_point_for_receiver_coordinate_system:\n");
-				fprintf(fp," x=%f \ty=%f\t z=%f\n",REFREC[1], REFREC[3], REFREC[2]);
+				fprintf(fp," x=%f \ty=%f\t z=%f\n",REFREC[1], REFREC[2], REFREC[3]);
 				fprintf(fp,"\n");
 				break;
 
@@ -186,16 +184,16 @@ void writepar(FILE *fp, int ns) {
 				fprintf(fp," Depth of upper plane: %e m \n",REC_ARRAY_DEPTH);
 				fprintf(fp," Vertical increment between planes: %e m \n",REC_ARRAY_DIST);
 				fprintf(fp," Distance between receivers in x-direction within plane: %i Gridpoints\n", DRX);
-				fprintf(fp," Distance between receivers in y-direction within plane: %i Gridpoints\n", DRY);
+				fprintf(fp," Distance between receivers in z-direction within plane: %i Gridpoints\n", DRZ);
 				fprintf(fp,"\n");
 				break;
 
 			case 0 :
 				fprintf(fp," Receiver line: \n");
 				fprintf(fp," First receiver position (XREC1,YREC1,ZREC1) = (%5.3f, %5.3f, %5.3f m\n",
-				        XREC1,ZREC1,YREC1);
+				        XREC1,YREC1,ZREC1);
 				fprintf(fp," Last receiver position (XREC2,YREC2,ZREC2)  = (%5.3f, %5.3f, %5.3f) m\n",
-				        XREC2,ZREC2,YREC2);
+				        XREC2,YREC2,ZREC2);
 				fprintf(fp,"\n");
 				break;
 
@@ -305,8 +303,8 @@ void writepar(FILE *fp, int ns) {
 		fprintf(fp," \t last (TSNAP2)=%8.5f s\n",TSNAP2);
 		fprintf(fp," \t increment (TSNAPINC) =%8.5f s\n\n",TSNAPINC);
 		fprintf(fp," \t spacing in x-direction (IDX*DX) =%8.5f m\n",IDX*DX);
-		fprintf(fp," \t spacing in y-direction (IDY*DY) =%8.5f m\n",IDZ*DZ);
-		fprintf(fp," \t spacing in z-direction (IDZ*DZ) =%8.5f m\n",IDY*DY);
+		fprintf(fp," \t spacing in y-direction (IDY*DY) =%8.5f m\n",IDY*DY);
+		fprintf(fp," \t spacing in z-direction (IDZ*DZ) =%8.5f m\n",IDZ*DZ);
 		fprintf(fp," \n name of output-file (SNAP_FILE):\n\t %s\n",SNAP_FILE);
 
 		switch (SNAP_FORMAT) {
@@ -332,15 +330,15 @@ void writepar(FILE *fp, int ns) {
 				break;
 
 			case 2 :
-				fprintf(fp," \nDiv and curl output will be as Energy with sign true for xz-plane. \n");
-				break;
-
-			case 3 :
 				fprintf(fp," \nDiv and curl output will be as Energy with sign true for xy-plane. \n");
 				break;
 
+			case 3 :
+				fprintf(fp," \nDiv and curl output will be as Energy with sign true for xz-plane. \n");
+				break;
+
 			case 4 :
-				fprintf(fp," \nDiv and curl output will be as Energy with sign true for yz-plane. \n");
+				fprintf(fp," \nDiv and curl output will be as Energy with sign true for zy-plane. \n");
 				break;
 		}
 

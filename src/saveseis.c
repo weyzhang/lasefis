@@ -50,9 +50,6 @@ int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, in
 		case 5: sprintf(file_ext,"sgy"); break;
 		case 7: sprintf(file_ext,"su"); break;
 		}
-		/*note that internally "y" is used for the vertical coordinate,
-		for usability reasons, we switch the "y" and "z" coordinate 
-		so that "z" - as commonly used - denotes the depth (vertical direction)*/
 		
 		if(obs==0) sprintf(seisfile,"%s",SEIS_FILE);
 		if(obs==1) sprintf(seisfile,"%s",SEIS_OBS_FILE);
@@ -60,16 +57,16 @@ int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, in
 	if(ntr>0){	
 		if (RUN_MULTIPLE_SHOTS){
 			sprintf(vxf,"%s_vx_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
-			sprintf(vzf,"%s_vy_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
-			sprintf(vyf,"%s_vz_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
+			sprintf(vyf,"%s_vy_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
+			sprintf(vzf,"%s_vz_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
 			sprintf(curlf,"%s_rot_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
 			sprintf(divf,"%s_div_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
 			sprintf(pf,"%s_p_it%d.%s.shot%d.%d",seisfile,iteration,file_ext,ishot,MYID);
 		}
 		else{
 			sprintf(vxf,"%s_vx_it%d.%s.%d",seisfile,iteration,file_ext,MYID);
-			sprintf(vzf,"%s_vy_it%d.%s.%d",seisfile,iteration,file_ext,MYID);
-			sprintf(vyf,"%s_vz_it%d.%s.%d",seisfile,iteration,file_ext,MYID);
+			sprintf(vyf,"%s_vy_it%d.%s.%d",seisfile,iteration,file_ext,MYID);
+			sprintf(vzf,"%s_vz_it%d.%s.%d",seisfile,iteration,file_ext,MYID);
 			sprintf(curlf,"%s_rot_it%d.%s.%d",seisfile,iteration,file_ext,MYID);
 			sprintf(divf,"%s_div_it%d.%s.%d",seisfile,iteration,file_ext,MYID);
 			sprintf(pf,"%s_p_it%d.%s.%d",seisfile,iteration,file_ext,MYID);

@@ -74,8 +74,8 @@ int ny2, int nz2){
 
 
 	sprintf(xfile,"%s%s.x.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
-	sprintf(yfile,"%s%s.z.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
-	sprintf(zfile,"%s%s.y.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(yfile,"%s%s.y.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(zfile,"%s%s.z.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
 	sprintf(divfile,"%s%s.div.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
 	sprintf(rotfile,"%s%s.rot.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
 	sprintf(pfile,"%s%s.p.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
@@ -182,9 +182,8 @@ int ny2, int nz2){
 					/*amp= absolute value of curl(v)), without sqrt!!!*/
 					amp=((vzy-vyz)*(vzy-vyz)+(vxz-vzx)*(vxz-vzx)+(vyx-vxy)*(vyx-vxy)); 
 					
-					/*note that internally "y" is used for the vertical coordinate,
-					for usability reasons, we switch the "y" and "z" coordinate 
-					so that "z" - as commonly used - denotes the depth (vertical direction)*/
+					/*note that "y" is used for the vertical coordinate*/
+			
 										
 					switch(SNAP_PLANE){
 					case 1 : /* energy without sign */

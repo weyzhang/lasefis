@@ -56,8 +56,8 @@ void initproc(void)	{
 		fprintf(FP,"\n **Message from initprocs (printed by PE %d):\n",MYID);
 		fprintf(FP," Size of subarrays in gridpoints:\n");
 		fprintf(FP," IENDX = %d\n",IENDX);
-		fprintf(FP," IENDY = %d\n",IENDZ);
-		fprintf(FP," IENDZ (vertical) = %d\n",IENDY);
+		fprintf(FP," IENDY (vertical) = %d\n",IENDY);
+		fprintf(FP," IENDZ = %d\n",IENDZ);
 	}
 
 	/*---------------   index is indicating neighbouring processes	--------------------*/
@@ -69,8 +69,8 @@ void initproc(void)	{
 	INDEX[6]=MYID+NPROCX*NPROCY;  	 /* back	*/
 	/*---------------   POS indicates the processor location in the 3D logical processor array	---------*/
 	POS[1] = MYID % NPROCX;			/*  x coordinate */
-	POS[3] = (MYID/(NPROCX*NPROCY)); 	/*  y coordinate */
-	POS[2] = ( (MYID-(NPROCX*NPROCY)*POS[3]) / NPROCX ); 	/* z coordinate */
+	POS[3] = (MYID/(NPROCX*NPROCY)); 	/*  z coordinate */
+	POS[2] = ( (MYID-(NPROCX*NPROCY)*POS[3]) / NPROCX ); 	/* y coordinate (vertical) */
 
 	/*if (POS[1] == 0)        INDEX[1]=INDEX[1] + NPROCX;        	  
 	if (POS[1] == NPROCX-1) INDEX[2]=INDEX[2] - NPROCX;          	 

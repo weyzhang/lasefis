@@ -39,8 +39,8 @@ void readseis_split(int ishot, float **section, int ntr,int *rnum_loc, int ns, i
     sprintf(file_ext,"su");
 
     if(comp==1) sprintf(data,"%s_vx_ext.%s.shot%d",SEIS_OBS_FILE,file_ext,ishot);
-    if(comp==2) sprintf(data,"%s_vz_ext.%s.shot%d",SEIS_OBS_FILE,file_ext,ishot);
-    if(comp==3) sprintf(data,"%s_vy_ext.%s.shot%d",SEIS_OBS_FILE,file_ext,ishot);
+    if(comp==2) sprintf(data,"%s_vy_ext.%s.shot%d",SEIS_OBS_FILE,file_ext,ishot);
+    if(comp==3) sprintf(data,"%s_vz_ext.%s.shot%d",SEIS_OBS_FILE,file_ext,ishot);
 
     fprintf(FP,"\n reads %s",data);
     

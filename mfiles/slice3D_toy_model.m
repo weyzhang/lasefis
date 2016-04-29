@@ -6,13 +6,13 @@ nx=160; ny=184; nz=160; %ny:vertical
 outx=1; outy=1; outz=1; 
 dh=0.8;
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
-fignum=764;
+fignum=13;
 
 %file_inp1='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy_real.vp';
 %file_inp2='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy_real.vp';
 
-file_inp1='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy.vp_it60';
-file_inp2='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy.vp_it60';
+file_inp1='../par/model/toy.vp_it0';
+file_inp2='../par/model/toy.vp_it60';
 
 
 phi1=0; %rotation angles to x-z plane of first and second plane 

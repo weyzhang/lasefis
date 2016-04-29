@@ -28,7 +28,7 @@ int read_par(FILE *fp_in){
 
 	/* declaration of extern variables */
 	extern int   NX, NY, NZ, SOURCE_SHAPE, SOURCE_TYPE, SNAP, SNAP_FORMAT, SNAP_PLANE;
-	extern int DRX, DRY, L, SRCREC, FDORDER, FW, FDCOEFF;
+	extern int DRX, DRZ, L, SRCREC, FDORDER, FW, FDCOEFF;
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH, PHI;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, ALPHA, BETA;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
@@ -71,31 +71,28 @@ int read_par(FILE *fp_in){
 					sscanf(cline,"%s =%i",s,&NPROCX);
 					break;
 				case 2 :
-					sscanf(cline,"%s =%i",s,&NPROCZ); 
-					/*not that internally "y" is used for the vertical coordinate,
-					for usability reasons, we switch the "y" and "z" coordinate 
-					so that "z" - as commonly used - denotes the depth (vertical direction)*/
+					sscanf(cline,"%s =%i",s,&NPROCY); 
 					break;
 				case 3 :
-					sscanf(cline,"%s =%i",s,&NPROCY); 
+					sscanf(cline,"%s =%i",s,&NPROCZ); 
 					break;
 				case 4 :
 					sscanf(cline,"%s =%i",s,&NX);
 					break;
 				case 5 :
-					sscanf(cline,"%s =%i",s,&NZ);
+					sscanf(cline,"%s =%i",s,&NY);
 					break;
 				case 6 :
-					sscanf(cline,"%s =%i",s,&NY);
+					sscanf(cline,"%s =%i",s,&NZ);
 					break;
 				case 7 :
 					sscanf(cline,"%s =%f",s,&DX);
 					break;
                                 case 8 :
-					sscanf(cline,"%s =%f",s,&DZ);
+					sscanf(cline,"%s =%f",s,&DY);
 					break;
 				case 9 :
-					sscanf(cline,"%s =%f",s,&DY);
+					sscanf(cline,"%s =%f",s,&DZ);
 					break;
 				case 10 :
 					sscanf(cline,"%s =%i",s,&FDORDER);
@@ -165,8 +162,8 @@ int read_par(FILE *fp_in){
 						case 1: SRCREC=0; /* default: do not read source positions from file */
 						case 2: SRC_MF=0; /* source positions in meter */
 						case 3: REFSRC[0]=0.0; /* Reference x-coordinate */
-						case 4: REFSRC[1]=0.0; /* Reference y-coordinate */
-						case 5: REFSRC[2]=0.0; /* Reference z-coordinate (vertical!)*/
+						case 4: REFSRC[1]=0.0; /* Reference y-coordinate (vertical!)*/
+						case 5: REFSRC[2]=0.0; /* Reference z-coordinate */
 					}
 					break;
 				case 23 :
@@ -255,13 +252,10 @@ int read_par(FILE *fp_in){
 					sscanf(cline,"%s =%i",s,&IDX);
 					break;
 				case 42 :
-					sscanf(cline,"%s =%i",s,&IDZ);
-					/*not that internally "y" is used for the vertical coordinate,
-					for usability reasons, we switch the "y" and "z" coordinate 
-					so that "z" - as commonly used - denotes the depth (vertical direction)*/
+					sscanf(cline,"%s =%i",s,&IDY);
 					break;
 				case 43 :
-					sscanf(cline,"%s =%i",s,&IDY);
+					sscanf(cline,"%s =%i",s,&IDZ);
 					break;
 				case 44 :
 					sscanf(cline,"%s =%i",s,&SNAP_FORMAT);
@@ -282,13 +276,13 @@ int read_par(FILE *fp_in){
 					sscanf(cline,"%s =%s",s,REC_FILE);
 					break;
 				case 50 :
-					sscanf(cline,"%s =%f ,%f , %f",s,&REFREC[1],&REFREC[3],&REFREC[2]);
+					sscanf(cline,"%s =%f ,%f , %f",s,&REFREC[1],&REFREC[2],&REFREC[3]);
 					break;
 				case 51 :
-					sscanf(cline,"%s =%f ,%f ,%f",s,&XREC1,&ZREC1,&YREC1);
+					sscanf(cline,"%s =%f ,%f ,%f",s,&XREC1,&YREC1,&ZREC1);
 					break;
 				case 52 :
-					sscanf(cline,"%s =%f ,%f ,%f",s,&XREC2,&ZREC2,&YREC2);
+					sscanf(cline,"%s =%f ,%f ,%f",s,&XREC2,&YREC2,&ZREC2);
 					break;
 				case 53 :
 					sscanf(cline,"%s =%i",s,&NGEOPH);
@@ -306,7 +300,7 @@ int read_par(FILE *fp_in){
 					sscanf(cline,"%s =%i",s,&DRX);
 					break;
 				case 58 :
-					sscanf(cline,"%s =%i",s,&DRY);
+					sscanf(cline,"%s =%i",s,&DRZ);
 					break;
 				case 59 :
 					nvarin=sscanf(cline,"%s =%i , %i",s,&NDT,&NDTSHIFT);

@@ -41,7 +41,7 @@ void sources(FILE * fpsrc, int *nsrc, float **srcpos){
 			
 			for (l=1;l<=*nsrc;l++){
 				fgets(cline,255,fpsrc);
-				switch(sscanf(cline,"%f%f%f%f%f%f%f",&xsrc, &zsrc, &ysrc, &tshift, &srcpos[5][l], &srcpos[6][l], &srcpos[7][l])){
+				switch(sscanf(cline,"%f%f%f%f%f%f%f",&xsrc, &ysrc, &zsrc, &tshift, &srcpos[5][l], &srcpos[6][l], &srcpos[7][l])){
 					case 0: xsrc=0.0;
 					case 1: zsrc=0.0;
 					case 2: ysrc=0.0;
@@ -51,9 +51,7 @@ void sources(FILE * fpsrc, int *nsrc, float **srcpos){
 					case 6: srcpos[7][l]=SOURCE_TYPE;
 				}
 				/*change stype to srcpos[7]*/
-				/*note that internally "y" is used for the vertical coordinate,
-				for usability reasons, we switch the "y" and "z" coordinate 
-				so that "z" - as commonly used - denotes the depth (vertical direction*/
+				/*"y" is used for the vertical coordinate*/
 				if(SRC_MF==1) { /* feet */
 					srcpos[1][l]=xsrc/0.3048-REFSRC[0];
 					srcpos[2][l]=ysrc/0.3048-REFSRC[2];
@@ -95,8 +93,8 @@ void sources(FILE * fpsrc, int *nsrc, float **srcpos){
 		
 	if (MYID==0){
 	   for (l=1;l<=*nsrc;l++)
-	      printf(" %6.2e\t%6.2e\t%6.2e\t%6.2e\t%6.2e\t%6.2e\t%4.2f\n",
-		srcpos[1][l],srcpos[3][l],srcpos[2][l],srcpos[4][l],srcpos[5][l],srcpos[6][l],srcpos[7][l]);
+	      printf(" %6.2e\t%6.2e\t%6.2e\t%6.2e\t%6.2e\t%6.2e\t%6.2f\n",
+		srcpos[1][l],srcpos[2][l],srcpos[3][l],srcpos[4][l],srcpos[5][l],srcpos[6][l],srcpos[7][l]);
 	      printf("\n\n");
 	}
         MPI_Barrier(MPI_COMM_WORLD);

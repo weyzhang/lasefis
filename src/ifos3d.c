@@ -610,6 +610,7 @@ MPI_Barrier(MPI_COMM_WORLD);
 	snum_loc = ivector(1,nsrc);
 	srcpos_loc = splitsrc(srcpos,&nsrc_loc, nsrc,snum_loc);
 	
+	
 	if (RUN_MULTIPLE_SHOTS){
 		nshots=nsrc; 
 		if (nsrc_loc>0) signals=fmatrix(1,1,1,NT);}
@@ -842,17 +843,16 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 					residual(sectionread, sectionreadf,sectionvx,sectionvxdiff,ntr_loc,ns,&L2,&L2f);
 									
 					/* read seismic "observed" data (ycomp.) */
-					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,3);
+					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,2);
 					if(FILT==1){
 					filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 					/* calculate residuals and L2 Norm */
 					residual(sectionread, sectionreadf,sectionvy,sectionvydiff,ntr_loc,ns,&L2,&L2f);
 					
 					/* read seismic "observed" data (zcomp.)*/
-					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,2);
+					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,3);
 					if(FILT==1){
 					filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
-					
 					/* calculate residuals and L2 Norm */
 					residual(sectionread, sectionreadf,sectionvz,sectionvzdiff,ntr_loc,ns,&L2,&L2f);
 					
@@ -1109,10 +1109,10 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,1);
 						if(FILT==1){filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 						residual(sectionread, sectionreadf,sectionvx,sectionvxdiff,ntr_loc,ns,&L2,&L2f); 
-						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,3);
+						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,2);
 						if(FILT==1){filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 						residual(sectionread, sectionreadf,sectionvy,sectionvydiff,ntr_loc,ns,&L2,&L2f); 
-						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,2);
+						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,3);
 						if(FILT==1){filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 						residual(sectionread, sectionreadf,sectionvz,sectionvzdiff,ntr_loc,ns,&L2,&L2f); 	
 						}

@@ -1,6 +1,8 @@
 {
 "MODELING PARAMETERS" : "comment",
 
+"Note that y denotes the vertical direction !" : "comment",
+
 "Domain Decomposition" : "comment",
 			"NPROCX" : "2",
 			"NPROCY" : "2",
@@ -8,8 +10,8 @@
 
 "3-D Grid" : "comment",
 			"NX" : "160",
-			"NY" : "160",
-			"NZ" : "184",
+			"NY" : "184",
+			"NZ" : "160",
 			"DX" : "0.8",
 			"DY" : "0.8",
 			"DZ" : "0.8",
@@ -52,14 +54,14 @@
 
 "Receiver" : "comment",
 			"SEISMO" : "1",
-			"READREC" : "2",
+			"READREC" : "2",	
 
 "Receiver array" : "comment",
 			"REC_ARRAY" : "1",
 			"REC_ARRAY_DEPTH" : "24.0",
 			"REC_ARRAY_DIST" : "30.0",
 			"DRX" : "10",
-			"DRY" : "10",
+			"DRZ" : "10",
 			
 
 "Seismograms" : "comment",

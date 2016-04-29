@@ -66,6 +66,7 @@ float **splitsrc(float **srcpos,int *nsrc_loc, int nsrc, int *snum_loc)
 	}
 
 	free_matrix(srcpos_dummy,1,7,1,nsrc);
+	if (!RUN_MULTIPLE_SHOTS) {
 	if(VERBOSE){
 	fprintf(FP,"\n **Message from splitsrc:\n");
 	fprintf(FP," Splitting of source positions from global to local grids finished.\n");
@@ -75,12 +76,12 @@ float **splitsrc(float **srcpos,int *nsrc_loc, int nsrc, int *snum_loc)
 	printf(" Table of local source positions (in gridpoints), time-shift, centre frequency, amplitude and source type:\n");
 	printf(" MYID\t  x\t  y\t  z\t  tshift  fc\t  amp\t stype\n");}
 	}
-	/*MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Barrier(MPI_COMM_WORLD);
 
 	for (j=1;j<=i;j++)
 		printf(" %3d\t%4.0f\t%4.0f\t%4.0f\t%6.2f\t%6.2f\t%6.2f\t%4.2f\n",
 		    MYID,srcpos_local[1][j],srcpos_local[2][j],srcpos_local[3][j],
-				   srcpos_local[4][j],srcpos_local[5][j],srcpos_local[6][j],srcpos_local[7][j]);*/
+				   srcpos_local[4][j],srcpos_local[5][j],srcpos_local[6][j],srcpos_local[7][j]);}
         MPI_Barrier(MPI_COMM_WORLD);
 
         *nsrc_loc=i;
