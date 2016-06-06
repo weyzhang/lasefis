@@ -587,7 +587,7 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 				srec_minz=ZREC1;
 			}
 		}
-		if ((READREC==1) || (READREC=2)){
+		if ((READREC==1) || (READREC==2)){
 			/* find maximum and minimum source positions coordinate ---- from receiver file*/
 			for (k=1;k<=ntr;k++){
 				/* find maximum source positions coordinate*/
