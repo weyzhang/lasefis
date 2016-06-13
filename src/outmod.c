@@ -46,9 +46,10 @@ void outmod(int nx,int ny,int nz,float ***rho, float ***pi,float ***u, int itera
 	fpmod2=fopen(modfile2,"w");
 	fpmod3=fopen(modfile3,"w");
 	
-	for (j=1;j<=ny;j++){
-		for (i=1;i<=nx;i++){
-			for (k=1;k<=nz;k++){
+	
+	for (k=1;k<=nz;k++){
+		for (i=1;i<=nx;i++){	
+			for (j=1;j<=ny;j++){
 
 			vp=sqrt(pi[j][i][k]/rho[j][i][k]);
 			vs=sqrt(u[j][i][k]/rho[j][i][k]);

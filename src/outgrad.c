@@ -49,11 +49,10 @@ void outgrad(int nx,int ny,int nz,float ***grad1, float ***grad2,float ***grad3,
 	fpmod2=fopen(gradfile2,"w");
 	fpmod3=fopen(gradfile3,"w");
 	
-	for (j=1;j<=ny;j++){
+	for (k=1;k<=nz;k++){
 		for (i=1;i<=nx;i++){
-			for (k=1;k<=nz;k++){
+			for (j=1;j<=ny;j++){
 
-				
 			fwrite(&grad1[j][i][k], sizeof(float), 1,fpmod1);
 			fwrite(&grad2[j][i][k], sizeof(float), 1,fpmod2);
 			fwrite(&grad3[j][i][k], sizeof(float), 1,fpmod3);

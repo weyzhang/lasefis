@@ -60,9 +60,10 @@ void readhess(int nx, int ny, int nz, float ***  hess1, float ***  hess2, float 
 
 	
 	/* loop over global grid */
-		 for (j=1;j<=NYG;j++){
+		for (k=1;k<=NZG;k++){
 			for (i=1;i<=NXG;i++){
-				for (k=1;k<=NZG;k++){
+				for (j=1;j<=NYG;j++){
+
 				vp=readdsk(fp_vp, format);
 				vs=readdsk(fp_vs, format);
 				rhov=readdsk(fp_rho , format);
