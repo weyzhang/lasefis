@@ -27,7 +27,7 @@ void steplength(float *L2, float *step, int iteration, int it_group){
 
 		extern FILE *FP;
 		extern FILE *FI;
-		extern int MYID;
+		extern int MYID, LBFGS;
 		extern float TESTSTEP;
 		float a=0.0, b=0.0, c=0.0;
 		float teststep=0.0;
