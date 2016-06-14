@@ -46,6 +46,7 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	extern int FDCOEFF;
 	extern int READREC, NPROCX,NPROCY,NPROCZ, FW, ABS_TYPE, SRCREC, FREE_SURF;
 	extern int SNAP, SEISMO, SEIS_FORMAT[6], SNAP_FORMAT;
+	extern int NSHOTS_STEP;
 	/*extern int RUN_MULTIPLE_SHOTS; no determination is done for the output check whether the simulation runs with one or multiple shot
 		-> directorys specified in input file should work in both cases */
 	extern char SEIS_FILE[STRING_SIZE], SNAP_FILE[STRING_SIZE];
@@ -526,8 +527,8 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	   snapouty=NY/(float)IDY;
 	   snapoutz=NZ/(float)IDZ;
 	   fprintf(fp," Output of snapshot gridpoints per node (NX/NPROCX/IDX) %8.2f .\n", snapoutx);
-	   fprintf(fp," Output of snapshot gridpoints per node (NY/NPROCY/IDY) %8.2f .\n", snapoutz);
-	   fprintf(fp," Output of snapshot gridpoints per node (NZ/NPROCZ/IDZ) %8.2f .\n", snapouty);
+	   fprintf(fp," Output of snapshot gridpoints per node (NY/NPROCY/IDY) %8.2f .\n", snapouty);
+	   fprintf(fp," Output of snapshot gridpoints per node (NZ/NPROCZ/IDZ) %8.2f .\n", snapoutz);
 
 	   if (snapoutx-(int)snapoutx>0)
 		   err("\n\n Ratio NX-NPROCX-IDX must be whole-numbered \n\n");
@@ -549,20 +550,16 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	if ((SEISMO>0) && (MYID==0)) {
 		srec_minx=DX*NX*NPROCX+1, srec_miny=DY*NY*NPROCY+1, srec_minz=DZ*NZ*NPROCZ+1;
 		srec_maxx=-1.0, srec_maxy=-1.0, srec_maxz=-1.0;
-		fprintf(fp," Checking for receiver position(s) specified in input file.\n");
-		fprintf(fp,"    Global grid size in m: %5.2f (x) : %5.2f (y) : %5.2f (z) :.\n",NX*DX*NPROCX,NZ*DZ*NPROCZ,NY*DY*NPROCY);
-		if (ABS_TYPE==2){
-			if (FREE_SURF==0) fprintf(fp,"    Global grid size in m(-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in	m).\n",FW*DX,NX*DX*NPROCX-FW*DX,FW*DZ,NZ*DZ*NPROCZ-FW*DZ,FW*DY,NY*DY*NPROCY-FW*DY);
-			if (FREE_SURF==1) fprintf(fp,"    Global grid size in m(-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in m).\n",FW*DX,NX*DX*NPROCX-FW*DX,FW*DZ,NZ*DZ*NPROCZ-FW*DZ,DY,NY*DY*NPROCY-FW*DY);
+		fprintf(fp,"\n Checking for receiver position(s) specified in input file.\n");
+		fprintf(fp,"    Global grid size in m: %5.2f (x) : %5.2f (y) : %5.2f (z) :.\n",NX*DX*NPROCX,NY*DY*NPROCY,NZ*DZ*NPROCZ);
+		if (ABS_TYPE){
+			if (FREE_SURF==0) fprintf(fp,"    Global grid size in m(-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in m).\n",FW*DX,NX*DX*NPROCX-FW*DX,FW*DY,NY*DY*NPROCY-FW*DY,FW*DZ,NZ*DZ*NPROCZ-FW*DZ);
+			if (FREE_SURF==1) fprintf(fp,"    Global grid size in m(-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in m).\n",FW*DX,NX*DX*NPROCX-FW*DX,DY,NY*DY*NPROCY-FW*DY,FW*DZ,NZ*DZ*NPROCZ-FW*DZ);
 		}
 
 		
 		/* find maximum and minimum source positions coordinate ---- from input file*/
-		/*for usability reasons, "z" - as commonly used - denotes the depth (vertical direction),
-                  however, internally "y" is used for the vertical coordinate,
-                  we simply switch the "y" and "z" coordinate as read in the input file,
-                  therefore we determine the minimum/maximum position in y-direction by the ZREC1 variable and vice versa.
-		  this has to be considered for the receiver line coordinates specified in both the input file and separate source/receiver files*/
+		/*"y" is used for the vertical coordinate */
 
 		if (READREC==0) {
 			if (XREC1>XREC2) {
@@ -574,33 +571,33 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 				srec_minx=XREC1;
 			}
 			if (YREC1>YREC2) {
-				srec_maxz=YREC1;
-				srec_minz=YREC2;
+				srec_maxy=YREC1;
+				srec_miny=YREC2;
 			}			
 			else {
-				srec_maxz=YREC2;
-				srec_minz=YREC1;
+				srec_maxy=YREC2;
+				srec_miny=YREC1;
 			}			
 			if (ZREC1>ZREC2) {
-				srec_maxy=ZREC1;
-				srec_miny=ZREC2;
+				srec_maxz=ZREC1;
+				srec_minz=ZREC2;
 			}
 			else {
-				srec_maxy=ZREC2;
-				srec_miny=ZREC1;
+				srec_maxz=ZREC2;
+				srec_minz=ZREC1;
 			}
 		}
-		if ((READREC==1) || (READREC=2)){
+		if ((READREC==1) || (READREC==2)){
 			/* find maximum and minimum source positions coordinate ---- from receiver file*/
 			for (k=1;k<=ntr;k++){
 				/* find maximum source positions coordinate*/
 				if ((recpos[1][k]*DX)>srec_maxx) srec_maxx=recpos[1][k]*DX;
-				if ((recpos[3][k]*DZ)>srec_maxy) srec_maxy=recpos[3][k]*DZ;
-				if ((recpos[2][k]*DY)>srec_maxz) srec_maxz=recpos[2][k]*DY;
+				if ((recpos[2][k]*DY)>srec_maxy) srec_maxy=recpos[2][k]*DY;
+				if ((recpos[3][k]*DZ)>srec_maxz) srec_maxz=recpos[3][k]*DZ;
 				/* find minimum source positions coordinate*/
 				if ((recpos[1][k]*DX)<srec_minx) srec_minx=recpos[1][k]*DX;
-				if ((recpos[3][k]*DY)<srec_miny) srec_miny=recpos[3][k]*DZ;
-				if ((recpos[2][k]*DY)<srec_minz) srec_minz=recpos[2][k]*DY;
+				if ((recpos[2][k]*DY)<srec_miny) srec_miny=recpos[2][k]*DY;
+				if ((recpos[3][k]*DZ)<srec_minz) srec_minz=recpos[3][k]*DZ;
 			}
 			fprintf(fp,"    Number of receiver positions in receiver file %s : %i \n", REC_FILE, ntr);
 		}
@@ -612,16 +609,16 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 		if ((((srec_maxx<0.0) || (srec_maxy<0.0)) || ((srec_maxz<0.0))) || (((srec_minx<0.0) || (srec_miny<0.0)) || ((srec_minz<0.0)))) {
 			err("\n\n Coordinate of at least one receiver location is outside the global grid. \n\n");
 		}
-		if (((srec_maxx>NX*DX*NPROCX) || (srec_maxy>NZ*DZ*NPROCZ)) || ((srec_maxz>NY*DY*NPROCY))) {
+		if (((srec_maxx>NX*DX*NPROCX) || (srec_maxy>NY*DY*NPROCY)) || ((srec_maxz>NZ*DZ*NPROCZ))) {
 			err("\n\n Coordinate of at least one receiver location is outside the global grid. \n\n");
 		}
 		/* checking if receiver coordinate of first receiver in line specified in input-file is outside the Absorbing Boundary  */
-		if (ABS_TYPE==2){
-			if ((((srec_maxx<(FW*DX)) || (srec_maxy<(FW*DZ))) || ((srec_maxx<(FW*DY))&& !(FREE_SURF==1))) || (((srec_minx<(FW*DX)) || (srec_miny<(FW*DZ)))) || ((srec_minz<(FW*DY)) && !(FREE_SURF==1))) {
+		if (ABS_TYPE){
+			if ((((srec_maxx<(FW*DX)) || (srec_maxz<(FW*DZ))) || ((srec_maxy<(FW*DY))&& !(FREE_SURF==1))) || (((srec_minx<(FW*DX)) || (srec_minz<(FW*DZ)))) || ((srec_miny<(FW*DY)) && !(FREE_SURF==1))) {
 				/* this warning appears, when at least a single receiver is located in AB between 0 - FW+DX/DX/DZ ("inner boundary")*/
 				warning("\n\n Coordinate of at least one receiver location is inside the Absorbing Boundary (warning 1). \n\n");
 			}
-			if (((srec_maxx>(NX*DX*NPROCX-FW*DX)) || (srec_maxy>(NZ*DZ*NPROCZ-FW*DZ)) || ((srec_maxz>(NY*DY*NPROCY-FW*DY))))) {
+			if (((srec_maxx>(NX*DX*NPROCX-FW*DX)) || (srec_maxy>(NY*DY*NPROCY-FW*DY)) || ((srec_maxz>(NZ*DZ*NPROCZ-FW*DZ))))) {
 				/* this warning appears, when at least a single receiver is located in AB between NX/NY/NZ-FW+DX/DX/DZ and NX/NY/NZ ("outer boundary")*/
 				warning("\n\n Coordinate of at least one receiver location is inside the Absorbing Boundary (warning 2). \n\n");
 			}
@@ -634,11 +631,11 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	if ((SRCREC==1)&& (MYID==0)){
 		srec_minx=DX*NX*NPROCX+1, srec_miny=DY*NY*NPROCY+1, srec_minz=DZ*NZ*NPROCZ+1;
 		srec_maxx=-1.0, srec_maxy=-1.0, srec_maxz=-1.0;
-		fprintf(fp," Checking for source position(s) specified in source file. \n");
-		fprintf(fp,"    Global grid size in m: %5.2f (x) : %5.2f (y) : %5.2f (z) :.\n",NX*DX*NPROCX,NZ*DZ*NPROCZ,NY*DY*NPROCY);
-		if (ABS_TYPE==2){
-			if (FREE_SURF==0) fprintf(fp,"    Global grid size in m (-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in	m).\n",FW*DX,NX*DX*NPROCX-FW*DX,FW*DZ,NZ*DZ*NPROCZ-FW*DZ,FW*DY,NY*DY*NPROCY-FW*DY);
-			if (FREE_SURF==1) fprintf(fp,"    Global grid size in m(-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in m).\n",FW*DX,NX*DX*NPROCX-FW*DX,FW*DZ,NZ*DZ*NPROCZ-FW*DZ,DY,NY*DY*NPROCY-FW*DY);
+		fprintf(fp,"\n Checking for source position(s) specified in source file. \n");
+		fprintf(fp,"    Global grid size in m: %5.2f (x) : %5.2f (y) : %5.2f (z) :.\n",NX*DX*NPROCX,NY*DY*NPROCY,NZ*DZ*NPROCZ);
+		if (ABS_TYPE){
+			if (FREE_SURF==0) fprintf(fp,"    Global grid size in m (-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in	m).\n",FW*DX,NX*DX*NPROCX-FW*DX,FW*DY,NY*DY*NPROCY-FW*DY,FW*DZ,NZ*DZ*NPROCZ-FW*DZ);
+			if (FREE_SURF==1) fprintf(fp,"    Global grid size in m(-width of abs.boundary) : \n        %5.2f-%5.2f (x in m) : %5.2f-%5.2f (y in m) : %5.2f-%5.2f (z in m).\n",FW*DX,NX*DX*NPROCX-FW*DX,DY,NY*DY*NPROCY-FW*DY,FW*DZ,NZ*DZ*NPROCZ-FW*DZ);
 		}
 		
 		/*only for testing
@@ -650,12 +647,12 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 		for (k=1;k<=nsrc;k++){
 			/* find maximum source positions coordinate*/
 			if (srcpos[1][k]>srec_maxx) srec_maxx=srcpos[1][k];
-			if (srcpos[3][k]>srec_maxy) srec_maxy=srcpos[3][k];
-			if (srcpos[2][k]>srec_maxz) srec_maxz=srcpos[2][k];
+			if (srcpos[2][k]>srec_maxy) srec_maxy=srcpos[2][k];
+			if (srcpos[3][k]>srec_maxz) srec_maxz=srcpos[3][k];
 			/* find minimum source positions coordinate*/
 			if (srcpos[1][k]<srec_minx) srec_minx=srcpos[1][k];
-			if (srcpos[3][k]<srec_miny) srec_miny=srcpos[3][k];
-			if (srcpos[2][k]<srec_minz) srec_minz=srcpos[2][k];
+			if (srcpos[2][k]<srec_miny) srec_miny=srcpos[2][k];
+			if (srcpos[3][k]<srec_minz) srec_minz=srcpos[3][k];
 		}
 		/*only for testing
 		fprintf(fp," new min : %5.2f (x) %5.2f (y) %5.2f (z). \n",srec_minx,srec_miny,srec_minz);
@@ -668,16 +665,16 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 		if ((((srec_maxx<0.0) || (srec_maxy<0.0)) || ((srec_maxz<0.0))) || (((srec_minx<0.0) || (srec_miny<0.0)) || ((srec_minz<0.0)))) {
 			err("\n\n Coordinate of at least one source location is outside the global grid. \n\n");
 		}
-		if (((srec_maxx>NX*DX*NPROCX) || (srec_maxy>NZ*DZ*NPROCZ)) || ((srec_maxz>NY*DY*NPROCY))) {
+		if (((srec_maxx>NX*DX*NPROCX) || (srec_maxy>NY*DY*NPROCY)) || ((srec_maxz>NZ*DZ*NPROCZ))) {
 			err("\n\n Coordinate of at least one source location is outside the global grid. \n\n");
 		}
 		/* checking if receiver coordinate of first receiver in line specified in input-file is outside the Absorbing Boundary  */
-		if (ABS_TYPE==2){
-			if ((((srec_maxx<(FW*DX)) || (srec_maxy<(FW*DZ))) || ((srec_maxx<(FW*DY))&& !(FREE_SURF==1))) || (((srec_minx<(FW*DX)) || (srec_miny<(FW*DZ)))) || ((srec_minz<(FW*DY)) && !(FREE_SURF==1))) {
+		if (ABS_TYPE){
+			if ((((srec_maxx<(FW*DX)) || (srec_maxz<(FW*DZ))) || ((srec_maxy<(FW*DY))&& !(FREE_SURF==1))) || (((srec_minx<(FW*DX)) || (srec_minz<(FW*DZ)))) || ((srec_miny<(FW*DY)) && !(FREE_SURF==1))) {
 				/* this warning appears, when at least a single receiver is located in AB between 0 - FW+DX/DX/DZ ("inner boundary")*/
 				warning("\n\n Coordinate of at least one source location is inside the Absorbing Boundary (warning 1). \n\n");
 			}
-			if (((srec_maxx>(NX*DX*NPROCX-FW*DX)) || (srec_maxy>(NZ*DZ*NPROCZ-FW*DZ)) || ((srec_maxz>(NY*DY*NPROCY-FW*DY))))) {
+			if (((srec_maxx>(NX*DX*NPROCX-FW*DX)) || (srec_maxy>(NY*DY*NPROCY-FW*DY)) || ((srec_maxz>(NZ*DZ*NPROCZ-FW*DZ))))) {
 				/* this warning appears, when at least a single receiver is located in AB between NX/NY/NZ-FW+DX/DX/DZ and NX/NY/NZ ("outer boundary")*/
 				warning("\n\n Coordinate of at least one source location is inside the Absorbing Boundary (warning 2). \n\n");
 			}
@@ -712,8 +709,16 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	fprintf(fp," You have specified a width of %i gridpoints.\n",FW);
 	if ((FW<20)&&(MYID==0)) 
 		warning(" Be aware of strong artificial reflections from grid boundaries ! \n");}
+		
+		
 
-
+	if (nsrc<NSHOTS_STEP) {
+		NSHOTS_STEP=nsrc;
+		if(MYID==0) {
+		warning(" Parameter NSHOTS_STEP is greater than number of sources. NSHOT_STEP is reduced to nsrc. \n");
+		fprintf(fp," NSHOTS_STEP=%d\n",NSHOTS_STEP);
+		}
+	}
 
 }
 

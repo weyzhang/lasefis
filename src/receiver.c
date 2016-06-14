@@ -30,8 +30,9 @@ int **receiver(FILE *fp, int *ntr) {
 	extern float XREC1, YREC1, ZREC1, XREC2, YREC2, ZREC2;
 	extern float DX, DY, DZ, REFREC[4], REC_ARRAY_DEPTH, REC_ARRAY_DIST;
 	extern int READREC, NGEOPH, NXG, NZG, REC_ARRAY, BOUNDARY;
-	extern int MYID, DRX, DRY, FW;
-
+	extern int MYID, DRX, DRZ, FW, VERBOSE;
+	
+	int kmax;
 	int **recpos1, **recpos=NULL, nxrec=0, nyrec=0, nzrec=0;
 	int itr=1, itr1=0, itr2=0, recflag=0, i, j, k, ifw, n;
 	int nxrec1, nxrec2, nyrec1, nyrec2, nzrec1, nzrec2;
@@ -68,15 +69,11 @@ int **receiver(FILE *fp, int *ntr) {
 				recpos1=imatrix(1,3,1,*ntr);
 
 				for (itr=1; itr<=*ntr; itr++) {
-					fscanf(fpr,"%f%f%f\n",&xrec, &zrec, &yrec);
-					/*note that internally "y" is used for the vertical coordinate,
-					for usability reasons, we switch the "y" and "z" coordinate
-					so that "z" - as commonly used - denotes the depth (vertical direction),
-					the REF_REC variable is switched in read_par, the coordinates specified
-					in the receiver file are switched in this function*/
+					fscanf(fpr,"%f%f%f\n",&xrec, &yrec, &zrec);
+					/* "y" is used for the vertical coordinate*/
 					recpos1[1][itr]=iround((xrec+REFREC[1])/DX);
-					recpos1[2][itr]=iround((yrec+REFREC[2])/DZ);
-					recpos1[3][itr]=iround((zrec+REFREC[3])/DY);
+					recpos1[2][itr]=iround((yrec+REFREC[2])/DY);
+					recpos1[3][itr]=iround((zrec+REFREC[3])/DZ);
 				}
 
 				fclose(fpr);
@@ -119,14 +116,14 @@ int **receiver(FILE *fp, int *ntr) {
 
 				if (BOUNDARY==1) ifw=0;
 
-				*ntr=((1+(NZG-2*ifw)/DRY)*(1+(NXG-2*ifw)/DRX))*REC_ARRAY;
+				*ntr=((1+(NZG-2*ifw)/DRZ)*(1+(NXG-2*ifw)/DRX))*REC_ARRAY;
 				recpos=imatrix(1,3,1,*ntr);
 				itr=0;
 
 				for (n=0; n<=REC_ARRAY-1; n++) {
 					j=iround((REC_ARRAY_DEPTH+REC_ARRAY_DIST*(float)n)/DY);
 
-					for (k=ifw; k<=NZG-ifw; k+=DRY)
+					for (k=ifw; k<=NZG-ifw; k+=DRZ)
 						for (i=ifw; i<=NXG-ifw; i+=DRX) {
 							itr++;
 							recpos[1][itr]=i;
@@ -226,10 +223,11 @@ int **receiver(FILE *fp, int *ntr) {
 		fprintf(fp," Receiver positions (in gridpoints) in the global model-system:\n");
 		fprintf(fp," x  \ty \tz \n");
 		fprintf(fp," -  \t- \t- \n");
-
-		for (k=1; k<=*ntr; k++)
-			fprintf(fp," %5.2f   %5.2f   %5.2f\n",recpos[1][k]*DX,recpos[3][k]*DZ,recpos[2][k]*DY);
-
+		
+		if (!VERBOSE) kmax=30; else kmax=*ntr;
+		for (k=1; k<=kmax; k++)
+			fprintf(fp," %5.2f   %5.2f   %5.2f\n",recpos[1][k]*DX,recpos[2][k]*DY,recpos[3][k]*DZ);
+		if (!VERBOSE) fprintf(fp," ...\n Only %d of %d receiver positions displayed here",kmax,*ntr);
 		fprintf(fp,"\n\n");
 	}
 

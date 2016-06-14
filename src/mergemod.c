@@ -31,7 +31,7 @@ void mergemod(char modfile[STRING_SIZE], int format){
 
 
 	extern int MYID, NPROCX, NPROCY, NPROCZ;
-	extern int NX, NY, NZ, NPROC, IDX, IDY, IDZ;
+	extern int NX, NY, NZ, NPROC, IDX, IDY, IDZ, VERBOSE;
 	extern FILE *FP;
 
 
@@ -42,12 +42,12 @@ void mergemod(char modfile[STRING_SIZE], int format){
 	
 
 	if ((NPROCX>NPROCX_MAX)||(NPROCY>NPROCY_MAX)||(NPROCZ>NPROCZ_MAX))
-		err(" merge.c: constant expression NPROC?_MAX < NPROC? ");
+		err(" mergemod.c: constant expression NPROC?_MAX < NPROC? ");
 
 	
-	printf(" PE %d starts merge of %d model files \n",MYID,NPROC);	
+	if (VERBOSE) printf(" PE %d starts merge of %d model files \n",MYID,NPROC);
 
-	fprintf(FP,"\n writing merged model file to  %s \n",modfile);
+	fprintf(FP," writing merged model file to  %s \n",modfile);
 	fpout=fopen(modfile,"w");
 
 
@@ -56,21 +56,22 @@ void mergemod(char modfile[STRING_SIZE], int format){
    		for (jp=0;jp<=NPROCY-1; jp++){
       		sprintf(file,"%s.%i.%i.%i",modfile,ip,jp,kp);
       		fp[jp][ip][kp]=fopen(file,"r");
-      		if (fp[jp][ip][kp]==NULL) err("merge: can't read modfile !"); 
+      		if (fp[jp][ip][kp]==NULL) err("mergemod.c: can't read modfile !"); 
      	 }
 
-	fprintf(FP," ... finished. \n");
+	//fprintf(FP," ... finished. \n");
 
 
 
 	fprintf(FP," Copying...");
 
-   	for (jp=0;jp<=NPROCY-1; jp++)
-	for (j=1;j<=NY;j+=IDY)
-   	for (ip=0;ip<=NPROCX-1; ip++)
-      	for (i=1;i<=NX;i+=IDX)
 	for (kp=0;kp<=NPROCZ-1; kp++)
-      	for (k=1;k<=NZ;k+=IDZ){
+	for (k=1;k<=NZ;k+=IDZ)
+	for (ip=0;ip<=NPROCX-1; ip++)
+	for (i=1;i<=NX;i+=IDX)
+	for (jp=0;jp<=NPROCY-1; jp++)
+	for (j=1;j<=NY;j+=IDY){
+	
 	      	a=readdsk(fp[jp][ip][kp],format);
 	      	writedsk(fpout,a,format);
 	}

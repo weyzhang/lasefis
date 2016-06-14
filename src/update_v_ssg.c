@@ -490,13 +490,10 @@ case 12 :
 			
 			break;
 		case 3 : 
-			vz[j][i][k]+=amp*rjp[j][i][k];  /* single force in y /  */
-			/*note that internally "y" is used for the vertical coordinate,
-			for usability reasons, we switch the "y" and "z" coordinate 
-			so that "z" - as commonly used - denotes the depth (vertical direction)*/
+			vz[j][i][k]+=amp*rjp[j][i][k];  /* single force in z  */
 			break;
 		case 4 : 
-			vy[j][i][k]+=amp*rkp[j][i][k];  /* single force in z, vertical direction*/
+			vy[j][i][k]+=amp*rkp[j][i][k];  /* single force in y, vertical direction*/
 			break;
 		case 5 : 
 			alpha_rad=ALPHA*PI/180; /* custom force */

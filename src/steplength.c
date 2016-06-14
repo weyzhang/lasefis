@@ -27,13 +27,12 @@ void steplength(float *L2, float *step, int iteration, int it_group){
 
 		extern FILE *FP;
 		extern FILE *FI;
-		extern int MYID, LBFGS;
+		extern int MYID;
 		extern float TESTSTEP;
 		float a=0.0, b=0.0, c=0.0;
 		float teststep=0.0;
   
-		teststep=TESTSTEP;
-		
+		teststep=TESTSTEP;		
 
 		if(MYID==0)fprintf(FP,"Start estimation of optimal steplength\n");
 		
@@ -53,31 +52,32 @@ void steplength(float *L2, float *step, int iteration, int it_group){
 			if(L2[0]<L2[1]&&L2[0]<L2[2]) step[3]=0.1*step[1];
 			if(L2[1]<L2[0]&&L2[1]<L2[2]) step[3]=step[1];
 			if(L2[2]<L2[0]&&L2[2]<L2[1]) step[3]=step[2];
-			fprintf(FP,"a<0, found maxima");
+			fprintf(FP," a<0, found maxima\n");
 		}
 		if(MYID==0)fprintf(FI,"steplength =%e", step[3]);
 		
 		if(step[3]>2.5*step[4]){ 
 			step[3]=2.5*step[4];
-			if(MYID==0)fprintf(FP,"steplength larger stepmax, set to stepmax");
+		if(MYID==0)fprintf(FP," steplength larger stepmax, set to stepmax\n");
 		}
 		
 		if(LBFGS && it_group>1 && step[3]>1.0){
 			step[3]=1.0;
 			if(MYID==0)fprintf(FP,"steplength larger 1.0, set to 1.0");
 		}
-		
+				
 		if(step[3]<=0){
 			 step[3]=0.1*step[1];
-			 if(MYID==0)fprintf(FP,"steplength smaller 0,  set to %e", step[3]);
+			 if(MYID==0)fprintf(FP," steplength smaller 0,  set to step[3]\n");
 		}
 		
 		if(step[3]<0.1*step[1]){ step[3]=0.1*step[1];
-			if(MYID==0)fprintf(FP,"Warning: optimal steplength smaller 0.1*step[1]");
+			if(MYID==0)fprintf(FP," Warning: optimal steplength smaller 0.1*step[1]\n");
 		}
 
 		L2[3]=a*step[3]*step[3]+b*step[3]+c;
 		
+		if(MYID==0)fprintf(FP,"\n Steplengthparabel: L2=%.2e*step^2 + %.2e*step + %.2e, Minimum L2(%.2e)=%.2e\n", a,b,c,step[3],L2[3]);
 		if(MYID==0)fprintf(FI,"\nSteplengthparabel: L2=%e*step^2+%e*step+%e, Minimum L2(%e)=%e\n", a,b,c,step[3],L2[3]);
 		
 		/*estimation of new test-steplength*/

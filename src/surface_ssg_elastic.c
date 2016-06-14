@@ -36,7 +36,7 @@ void surface_elastic(int ndepth, float *** u, float *** pi,
 	register float b1, b2, b3, b4, b5, b6;
 	extern float DT, DX, DY, DZ;
 
-	j=ndepth;     /* The free surface is located exactly in y=(ndepth-1/2)*dh meter!! */
+	j=ndepth;     /* The free surface is located exactly in y=ndepth*dh meter!! */
 
 	/*dthalbe=DT/2.0;*/
 	fdoh=FDORDER/2;

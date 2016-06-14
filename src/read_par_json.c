@@ -29,7 +29,7 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 	/* declaration of extern variables */
 	extern int   NX, NY, NZ, SOURCE_SHAPE, SOURCE_TYPE, SNAP, SNAP_FORMAT, SNAP_PLANE;
-	extern int DRX, DRY, L, SRCREC, FDORDER, FW, FDCOEFF;
+	extern int DRX, DRZ, L, SRCREC, FDORDER, FW, FDCOEFF;
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH, PHI;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, ALPHA, BETA;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
@@ -67,11 +67,11 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 		/* read in objects from file */
 		number_readobjects=read_objects_from_intputfile(fp, fileinp, varname_list, value_list);
-		fprintf(fp,"\nFrom input file %s, %i objects have been read in. \n",fileinp, number_readobjects);
+		fprintf(fp,"\n From input file %s, %i objects have been read in. \n",fileinp, number_readobjects);
 
 		/* print objects to screen */
-		fprintf(fp, "\n===========================================================");
-		fprintf(fp, "\n=   List of Parameters read by the built in Json Parser   =");
+		fprintf(fp, "\n ===========================================================");
+		fprintf(fp, "\n =   List of Parameters read by the built in Json Parser   =");
 		print_objectlist_screen(fp, number_readobjects, varname_list, value_list);
 
 		/* extract variables form object list */
@@ -83,11 +83,11 @@ void read_par_json(FILE *fp, char *fileinp) {
 			err("Variable NPROCX could not be retrieved from the json input file!");
 		}
 
-		if (get_int_from_objectlist("NPROCZ",number_readobjects,&NPROCY,varname_list, value_list)) {
+		if (get_int_from_objectlist("NPROCY",number_readobjects,&NPROCY,varname_list, value_list)) {
 			err("Variable NPROCY could not be retrieved from the json input file!");
 		}
 
-		if (get_int_from_objectlist("NPROCY",number_readobjects,&NPROCZ,varname_list, value_list)) {
+		if (get_int_from_objectlist("NPROCZ",number_readobjects,&NPROCZ,varname_list, value_list)) {
 			err("Variable NPROCZ could not be retrieved from the json input file!");
 		}
 
@@ -96,11 +96,11 @@ void read_par_json(FILE *fp, char *fileinp) {
 			err("Variable NX could not be retrieved from the json input file!");
 		}
 
-		if (get_int_from_objectlist("NZ",number_readobjects,&NY,varname_list, value_list)) {
+		if (get_int_from_objectlist("NY",number_readobjects,&NY,varname_list, value_list)) {
 			err("Variable NY could not be retrieved from the json input file!");
 		}
 
-		if (get_int_from_objectlist("NY",number_readobjects,&NZ,varname_list, value_list)) {
+		if (get_int_from_objectlist("NZ",number_readobjects,&NZ,varname_list, value_list)) {
 			err("Variable NZ could not be retrieved from the json input file!");
 		}
 
@@ -108,11 +108,11 @@ void read_par_json(FILE *fp, char *fileinp) {
 			err("Variable DX could not be retrieved from the json input file!");
 		}
 
-		if (get_float_from_objectlist("DZ",number_readobjects,&DY,varname_list, value_list)) {
+		if (get_float_from_objectlist("DY",number_readobjects,&DY,varname_list, value_list)) {
 			err("Variable DY could not be retrieved from the json input file!");
 		}
 
-		if (get_float_from_objectlist("DY",number_readobjects,&DZ,varname_list, value_list)) {
+		if (get_float_from_objectlist("DZ",number_readobjects,&DZ,varname_list, value_list)) {
 			err("Variable DZ could not be retrieved from the json input file!");
 		}
 
@@ -137,18 +137,18 @@ void read_par_json(FILE *fp, char *fileinp) {
 		/*=================================
 		 section source parameters
 		 =================================*/
-		fprintf(fp,"The following default values are set:\n");
-		fprintf(fp,"=====================================\n\n");
+		fprintf(fp," The following default values are set:\n");
+		fprintf(fp," =====================================\n\n");
 
 
 		if (get_int_from_objectlist("SOURCE_SHAPE",number_readobjects,&SOURCE_SHAPE,varname_list, value_list)) {
-			err("Variable SOURCE_SHAPE could not be retrieved from the json input file!");
+			err(" Variable SOURCE_SHAPE could not be retrieved from the json input file!");
 		}
 
 		else {
 			if (SOURCE_SHAPE==3) {
 				if (get_string_from_objectlist("SIGNAL_FILE",number_readobjects,SIGNAL_FILE,varname_list, value_list)) {
-					err("Variable SIGNAL_FILE could not be retrieved from the json input file!");
+					err(" Variable SIGNAL_FILE could not be retrieved from the json input file!");
 
 				} else {
 					if (get_int_from_objectlist("SIGNAL_FORMAT",number_readobjects,&SIGNAL_FORMAT,varname_list, value_list)) {
@@ -159,24 +159,24 @@ void read_par_json(FILE *fp, char *fileinp) {
 		}
 
 		if (get_int_from_objectlist("SOURCE_TYPE",number_readobjects,&SOURCE_TYPE,varname_list, value_list)) {
-			err("Variable SOURCE_TYPE could not be retrieved from the json input file!");
+			err(" Variable SOURCE_TYPE could not be retrieved from the json input file!");
 		}
 
 		else {
 			if (SOURCE_TYPE==5) {
 				if (get_float_from_objectlist("ALPHA",number_readobjects,&ALPHA,varname_list, value_list)) {
-					err("Variable ALPHA could not be retrieved from the json input file!");
+					err(" Variable ALPHA could not be retrieved from the json input file!");
 				}
 
 				if (get_float_from_objectlist("BETA",number_readobjects,&BETA,varname_list, value_list)) {
-					err("Variable BETA could not be retrieved from the json input file!");
+					err(" Variable BETA could not be retrieved from the json input file!");
 				}
 			}
 
 		}
 
 		if (get_int_from_objectlist("SRCREC",number_readobjects,&SRCREC,varname_list, value_list)) {
-			err("Variable SRCREC could not be retrieved from the json input file!");
+			err(" Variable SRCREC could not be retrieved from the json input file!");
 
 		} else {
 			if (get_int_from_objectlist("SRC_MF",number_readobjects,&SRC_MF,varname_list, value_list)) {
@@ -185,27 +185,27 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 			if (get_float_from_objectlist("REFSRCX",number_readobjects,&REFSRC[0],varname_list, value_list)) {
 				REFSRC[0]=0.0;
-				fprintf(fp,"Variable REFSRCX is set to default value %1f.\n",REFSRC[0]);
+				fprintf(fp," Variable REFSRCX is set to default value %.1f.\n",REFSRC[0]);
 			}
 
-			if (get_float_from_objectlist("REFSRCZ",number_readobjects,&REFSRC[1],varname_list, value_list)) {
+			if (get_float_from_objectlist("REFSRCY",number_readobjects,&REFSRC[1],varname_list, value_list)) {
 				REFSRC[1]=0.0;
-				fprintf(fp,"Variable REFSRCZ is set to default value %1f.\n",REFSRC[1]);
+				fprintf(fp," Variable REFSRCY is set to default value %.1f.\n",REFSRC[1]);
 			}
 
-			if (get_float_from_objectlist("REFSRCY",number_readobjects,&REFSRC[2],varname_list, value_list)) {
+			if (get_float_from_objectlist("REFSRCZ",number_readobjects,&REFSRC[2],varname_list, value_list)) {
 				REFSRC[2]=0.0;
-				fprintf(fp,"Variable REFSRCY is set to default value %1f.\n",REFSRC[2]);
+				fprintf(fp," Variable REFSRCZ is set to default value %.1f.\n",REFSRC[2]);
 			}
 
 
 			if (SRCREC==1) {
 				if (get_string_from_objectlist("SOURCE_FILE",number_readobjects,SOURCE_FILE,varname_list, value_list)) {
-					err("Variable SOURCE_FILE could not be retrieved from the json input file!");
+					err(" Variable SOURCE_FILE could not be retrieved from the json input file!");
 				}
 
 				if (get_int_from_objectlist("RUN_MULTIPLE_SHOTS",number_readobjects,&RUN_MULTIPLE_SHOTS,varname_list, value_list)) {
-					err("Variable RUN_MULTIPLE_SHOTS could not be retrieved from the json input file!");
+					err(" Variable RUN_MULTIPLE_SHOTS could not be retrieved from the json input file!");
 
 				} else {
 					if (get_float_from_objectlist("SRCTSHIFT",number_readobjects,&SRCTSHIFT,varname_list, value_list)) {
@@ -218,7 +218,7 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 			if (SRCREC==2) {
 				if (get_float_from_objectlist("PLANE_WAVE_DEPTH",number_readobjects,&PLANE_WAVE_DEPTH,varname_list, value_list)) {
-					err("Variable PLANE_WAVE_DEPTH could not be retrieved from the json input file!");
+					err(" Variable PLANE_WAVE_DEPTH could not be retrieved from the json input file!");
 
 				} else {
 					if (PLANE_WAVE_DEPTH>0) {
@@ -261,7 +261,7 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 		if (get_int_from_objectlist("L",number_readobjects,&L,varname_list, value_list)) {
 			L=0;
-			fprintf(fp,"Variable L is set to default value %d.\n",L);
+			fprintf(fp," Variable L is set to default value %d.\n",L);
 
 		} else {
 			FL=vector(1,L);
@@ -299,7 +299,7 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 		if (get_int_from_objectlist("BOUNDARY",number_readobjects,&BOUNDARY,varname_list, value_list)) {
 			BOUNDARY=0;
-			fprintf(fp,"Variable BOUNDARY is set to default value %d.\n",BOUNDARY);
+			fprintf(fp," Variable BOUNDARY is set to default value %d.\n",BOUNDARY);
 		}
 
 		if (get_int_from_objectlist("ABS_TYPE",number_readobjects,&ABS_TYPE,varname_list, value_list)) {
@@ -367,17 +367,17 @@ void read_par_json(FILE *fp, char *fileinp) {
 		/* increments are read in any case, because they will be also used as increment for model output */
 		if (get_int_from_objectlist("IDX",number_readobjects,&IDX,varname_list, value_list)) {
 			IDX=1;
-			fprintf(fp,"Variable IDX is set to default value %d.\n",IDX);
+			fprintf(fp," Variable IDX is set to default value %d.\n",IDX);
 		}
 
-		if (get_int_from_objectlist("IDZ",number_readobjects,&IDY,varname_list, value_list)) {
+		if (get_int_from_objectlist("IDY",number_readobjects,&IDY,varname_list, value_list)) {
 			IDY=1;
-			fprintf(fp,"Variable IDZ is set to default value %d.\n",IDY);
+			fprintf(fp," Variable IDY is set to default value %d.\n",IDY);
 		}
 
-		if (get_int_from_objectlist("IDY",number_readobjects,&IDZ,varname_list, value_list)) {
+		if (get_int_from_objectlist("IDZ",number_readobjects,&IDZ,varname_list, value_list)) {
 			IDZ=1;
-			fprintf(fp,"Variable IDY is set to default value %d.\n",IDZ);
+			fprintf(fp," Variable IDZ is set to default value %d.\n",IDZ);
 		}
 
 		/*=================================
@@ -408,19 +408,19 @@ void read_par_json(FILE *fp, char *fileinp) {
 								err("Variable XREC2T could not be retrieved from the json input file!");
 							}
 
-							if (get_float_from_objectlist("YREC1",number_readobjects,&ZREC1,varname_list, value_list)) {
+							if (get_float_from_objectlist("YREC1",number_readobjects,&YREC1,varname_list, value_list)) {
 								err("Variable YREC1 could not be retrieved from the json input file!");
 							}
 
-							if (get_float_from_objectlist("YREC2",number_readobjects,&ZREC2,varname_list, value_list)) {
+							if (get_float_from_objectlist("YREC2",number_readobjects,&YREC2,varname_list, value_list)) {
 								err("Variable YREC2 could not be retrieved from the json input file!");
 							}
 
-							if (get_float_from_objectlist("ZREC1",number_readobjects,&YREC1,varname_list, value_list)) {
+							if (get_float_from_objectlist("ZREC1",number_readobjects,&ZREC1,varname_list, value_list)) {
 								err("Variable ZREC1 could not be retrieved from the json input file!");
 							}
 
-							if (get_float_from_objectlist("ZREC2",number_readobjects,&YREC2,varname_list, value_list)) {
+							if (get_float_from_objectlist("ZREC2",number_readobjects,&ZREC2,varname_list, value_list)) {
 								err("Variable ZREC2 could not be retrieved from the json input file!");
 							}
 
@@ -437,15 +437,18 @@ void read_par_json(FILE *fp, char *fileinp) {
 							}
 
 							if (get_float_from_objectlist("REFRECX",number_readobjects,&REFREC[1],varname_list, value_list)) {
-								err("Variable REFRECX could not be retrieved from the json input file!");
+								REFREC[1]=0.0;
+								fprintf(fp," Variable REFREC is set to default value %.1f.\n",REFREC[1]);
 							}
 
-							if (get_float_from_objectlist("REFRECZ",number_readobjects,&REFREC[2],varname_list, value_list)) {
-								err("Variable REFRECZ could not be retrieved from the json input file!");
+							if (get_float_from_objectlist("REFRECY",number_readobjects,&REFREC[2],varname_list, value_list)) {
+								REFREC[2]=0.0;
+								fprintf(fp," Variable REFREC is set to default value %.1f.\n",REFREC[1]);
 							}
 
-							if (get_float_from_objectlist("REFRECY",number_readobjects,&REFREC[3],varname_list, value_list)) {
-								err("Variable REFRECY could not be retrieved from the json input file!");
+							if (get_float_from_objectlist("REFRECZ",number_readobjects,&REFREC[3],varname_list, value_list)) {
+								REFREC[3]=0.0;
+								fprintf(fp," Variable REFREC is set to default value %.1f.\n",REFREC[1]);
 							}
 
 							break;
@@ -467,7 +470,7 @@ void read_par_json(FILE *fp, char *fileinp) {
 								err("Variable DRX could not be retrieved from the json input file!");
 							}
 
-							if (get_int_from_objectlist("DRY",number_readobjects,&DRY,varname_list, value_list)) {
+							if (get_int_from_objectlist("DRZ",number_readobjects,&DRZ,varname_list, value_list)) {
 								err("Variable DRZ could not be retrieved from the json input file!");
 							}
 
@@ -481,10 +484,10 @@ void read_par_json(FILE *fp, char *fileinp) {
 				}
 
 				if (READREC!=1) {
-					REFREC[0]=0.0;
 					REFREC[1]=0.0;
 					REFREC[2]=0.0;
-					fprintf(fp,"Variable REFREC is set to default value (%.2f,%.2f,%.2f).\n",REFREC[0],REFREC[1],REFREC[2]);
+					REFREC[3]=0.0;
+					fprintf(fp," Variable REFREC is set to default value (%.1f,%.1f,%.1f).\n",REFREC[1],REFREC[2],REFREC[3]);
 				}
 			}
 
@@ -494,12 +497,12 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 			if (get_int_from_objectlist("NDT",number_readobjects,&NDT,varname_list, value_list)) {
 				NDT=1;
-				fprintf(fp,"Variable NDT is set to default value %d.\n",NDT);
+				fprintf(fp," Variable NDT is set to default value %d.\n",NDT);
 			}
 
 			if (get_int_from_objectlist("NDTSHIFT",number_readobjects,&NDTSHIFT,varname_list, value_list)) {
 				NDTSHIFT=0;
-				fprintf(fp,"Variable NDTSHIFT is set to default value %d.\n",NDT);
+				fprintf(fp," Variable NDTSHIFT is set to default value %d.\n",NDT);
 			}
 
 			if (get_int_from_objectlist("SEIS_FORMAT",number_readobjects,&SEIS_FORMAT[0],varname_list, value_list)) {
@@ -697,13 +700,17 @@ void read_par_json(FILE *fp, char *fileinp) {
 			else {/* only forward modeling is applied */
 
 				ITMIN=1;
-				fprintf(fp,"Variable ITMIN is set to default value %d.\n",ITMIN);
+				fprintf(fp," Variable ITMIN is set to default value %d.\n",ITMIN);
 				ITMAX=1;
-				fprintf(fp,"Variable ITMAX is set to default value %d.\n",ITMAX);
+				fprintf(fp," Variable ITMAX is set to default value %d.\n",ITMAX);
 
 				if (get_int_from_objectlist("FILT",number_readobjects,&FILT,varname_list, value_list)) {
 					FILT=0;
-					fprintf(fp,"Variable FILT is set to default value %d.\n",FILT);
+					fprintf(fp," Variable FILT is set to default value %d.\n",FILT);
+
+				if (get_string_from_objectlist("MOD_OUT_FILE",number_readobjects,MOD_OUT_FILE,varname_list, value_list)) {
+					err("Variable MOD_OUT_FILE could not be retrieved from the json input file!");
+				}
 
 				}
 
@@ -711,8 +718,8 @@ void read_par_json(FILE *fp, char *fileinp) {
 
 		}
 
-		fprintf(fp,"\nEnd of setting default values\n");
-		fprintf(fp,"=====================================\n\n");
+		fprintf(fp,"\n End of setting default values\n");
+		fprintf(fp," =====================================\n\n");
 
 
 		/********************************************/

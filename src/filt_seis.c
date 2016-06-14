@@ -32,6 +32,7 @@ void filt_seis(float ** data,int ntr, int ns, float finv){
 	  int order=4;
 	  int method=1;
 	  float fc=0.0;
+	  extern int VERBOSE;
 	 extern FILE *FP;
 	        /*
 	        data    :       2-dimensional array containing seismograms (
@@ -58,7 +59,8 @@ void filt_seis(float ** data,int ntr, int ns, float finv){
 	       
 	        T0=1.0/fc;
 		
-		fprintf(FP,"ns=%d; DT=%e; T0=%e",ns,DT,T0);
+		
+		if (VERBOSE) fprintf(FP,"  ns=%d; DT=%e; T0=%e",ns,DT,T0);
 	       
 	        for (itr=1;itr<=ntr;itr++){
 	                for (j=1;j<=ns;j++){

@@ -25,7 +25,7 @@
 int **splitrec(int **recpos,int *ntr_loc, int ntr, int *rnum_loc)
 {
 
-	extern int IENDX, IENDY, IENDZ, MYID, POS[4];
+	extern int IENDX, IENDY, IENDZ, MYID, POS[4], VERBOSE;
 	extern FILE *FP;
 
 	int a,b,c,i=0,j,k;
@@ -57,11 +57,11 @@ int **splitrec(int **recpos,int *ntr_loc, int ntr, int *rnum_loc)
 		recpos_local[4][k] = recpos_dummy[4][k];
 	}
 	free_imatrix(recpos_dummy,1,4,1,ntr);
-
+	if(VERBOSE){
 	fprintf(FP,"\n **Message from split_rec:\n");
 	fprintf(FP," Splitting of receivers from global to local grids finished.\n");
 	fprintf(FP," MYID= %d \t \t no. of receivers= %d\n",MYID,i);
-	
+	}
 /*
 	fprintf(FP,"\n **Message from split_rec:\n");
 	fprintf(FP," Table of local receiver positions (in gridpoints):\n");

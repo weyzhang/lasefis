@@ -26,7 +26,7 @@
 void exchange_par(void){
 	/* declaration of extern variables */
 	extern int   NX, NY, NZ, SOURCE_SHAPE, SOURCE_TYPE, SNAP, SNAP_FORMAT, SNAP_PLANE;
-	extern int DRX, DRY, L, SRCREC, FDORDER;
+	extern int DRX, DRZ, L, SRCREC, FDORDER;
 	extern float DX, DY, DZ, TIME, DT, *FL, TS, TAU, PLANE_WAVE_DEPTH, PHI;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
 	extern float ALPHA, BETA, VPPML;
@@ -108,7 +108,7 @@ void exchange_par(void){
 		idum[12]  = FREE_SURF;
 		idum[13]  = SNAP;
 		idum[14]  = DRX;
-		idum[15]  = DRY;
+		idum[15]  = DRZ;
 		idum[16]  = BOUNDARY;
 		idum[17]  = REC_ARRAY;
 		idum[18]  = SRCREC;
@@ -236,7 +236,7 @@ void exchange_par(void){
 	FREE_SURF = idum[12];
 	SNAP = idum[13];
 	DRX = idum[14];
-	DRY = idum[15];
+	DRZ = idum[15];
 	BOUNDARY = idum[16];
 	REC_ARRAY = idum[17];
 	SRCREC = idum[18];

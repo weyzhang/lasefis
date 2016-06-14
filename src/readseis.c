@@ -36,7 +36,7 @@ void readseis(int ishot, float **section, float **sectionf, int ntr, int ns, int
     int i,j;
     
     memset(data, '\0', sizeof(data));    
-    fprintf(FP,"comp=%i",comp);
+    //fprintf(FP,"comp=%i",comp);
     
     sprintf(file_ext,"su");
 
@@ -51,7 +51,7 @@ void readseis(int ishot, float **section, float **sectionf, int ntr, int ns, int
 		if(comp==2){sprintf(data,"%s_vy.%s.shot%d.%d",SEIS_OBS_FILE,file_ext,ishot,MYID);}
 		if(comp==3){sprintf(data,"%s_vz.%s.shot%d.%d",SEIS_OBS_FILE,file_ext,ishot,MYID);}
 	}
-    fprintf(FP,"\nreads %s\n",data);
+    fprintf(FP,"\n reads %s",data);
     
     if(ntr>0){
     fpdata=fopen(data,"r");
@@ -67,7 +67,7 @@ void readseis(int ishot, float **section, float **sectionf, int ntr, int ns, int
     
     fclose(fpdata);
     }
-    fprintf(FP," readseis finished\n");
+    //fprintf(FP," readseis finished\n");
 
   
 }

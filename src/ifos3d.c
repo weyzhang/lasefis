@@ -30,7 +30,7 @@ int main(int argc, char **argv){
 	int lsnap, nsnap=0, lsamp=0, nlsamp=0, buffsize;
 	int ntr=0, ntr_loc=0, ntr_glob=0, nsrc=0, nsrc_loc=0, ishot, ishot1, nshots; 
 
-	double 	time1=0.0, time2=0.0, time3=0.0, time4=0.0;
+	double 	time1=0.0, time2=0.0, time4=0.0;
 	double * time_v_update, * time_s_update, * time_s_exchange,* time_v_exchange, * time_timestep;	
 	int * xb, * yb, * zb, l,i,j;
 	
@@ -84,11 +84,11 @@ int main(int argc, char **argv){
 	
 	
 	MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-	MPI_Status  *send_statuses, *rec_statuses;
+	/* MPI_Status  *send_statuses, *rec_statuses; */
 	
 	float memdyn, memmodel, memseismograms, membuffer, memtotal,memcpml=0.0,memdynf=0.0, memgrad=0.0, membfgs=0.0;
 	float fac1, fac2,fac3;
-	char *buff_addr, ext[10];
+	char *buff_addr;// ext[10];
 	char buffer[STRING_SIZE], bufferstring[10];
 	/*char comp[6];*/
 	FILE * fpsrc=NULL;
@@ -115,7 +115,7 @@ int main(int argc, char **argv){
 	if (MYID == 0){
 		 if (argc>1) {
 		 	strncpy(FILEINP,argv[1],STRING_SIZE);
-			fprintf(stderr," Input parameter filename read from command line : %s. \n\n",FILEINP);
+			fprintf(stderr," \n Input parameter filename read from command line : %s. \n",FILEINP);
 		 	if (strlen(FILEINP)>STRING_SIZE-1) {
 		 		fprintf(stderr,"\n IFOS cannot handel pathes with more than %d characters.\n",STRING_SIZE-1);
 				fprintf(stderr," Error: IFOS could not read input parameter file name. -> Exit. \n\n");
@@ -254,13 +254,13 @@ if(METHOD) nseismograms+=4;
 		fprintf(FP," Each process is now trying to allocate memory for:\n");
 		fprintf(FP," Dynamic modeling variables: \t\t %6.2f MB\n", memdyn);
 		fprintf(FP," Static modeling variables: \t\t %6.2f MB\n", memmodel);
-   		fprintf(FP," Seismograms: \t\t\t %6.2f MB\n", memseismograms);
+   		fprintf(FP," Seismograms: \t\t\t\t %6.2f MB\n", memseismograms);
 		fprintf(FP," Dynamic inversion variables: \t\t %6.2f MB\n", memdynf);
 		fprintf(FP," Static inversion variables: \t\t %6.2f MB\n", memgrad+membfgs);
-		fprintf(FP," Buffer arrays for grid exchange:%6.2f MB\n", membuffer);
-		fprintf(FP," Network Buffer for MPI_Bsend: \t %6.2f MB\n", buffsize*pow(2.0,-20.0));
+		fprintf(FP," Buffer arrays for grid exchange: \t %6.2f MB\n", membuffer);
+		fprintf(FP," Network Buffer for MPI_Bsend: \t\t %6.2f MB\n", buffsize*pow(2.0,-20.0));
 		fprintf(FP," ------------------------------------------------ \n");
-		fprintf(FP," Total memory required: \t %6.2f MB.\n\n", memtotal);
+		fprintf(FP," Total memory required: \t\t %6.2f MB.\n\n", memtotal);
 	}
 
 MPI_Barrier(MPI_COMM_WORLD); 
@@ -275,8 +275,8 @@ MPI_Barrier(MPI_COMM_WORLD);
 	req_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
 	sreq_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
 	sreq_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	send_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
-	rec_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
+	/* send_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
+	rec_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status)); */
 	
         /* allocation for timing arrays used for performance analysis */
 	time_v_update=dvector(1,NT);
@@ -690,7 +690,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 		if(METHOD==1){
 			if(it_group>=itmax||iteration==1){
 				readinv(finv,&nf,&groupnum,itpergroup,NFMAX);
-				fprintf(FP,"\n itmin=%d;itmax=%d;nf=%d;finv=%4.2f;groupnum=%d\n",itpergroup[0],itpergroup[1],nf,finv[0],groupnum);
+
 				cdf=1;
 				itmax=itpergroup[1];
 				it_group=1;
@@ -713,7 +713,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 			L2=0.0; 
 		  
 			if (MYID==0) fprintf(FI,"SHOT %d",ishot);
-			fprintf(FP,"\n MYID=%d *****  Starting simulation for shot %d of %d  ********** \n",MYID,ishot,nshots);
+			fprintf(FP,"\n **********   Starting simulation for shot %d of %d  ********** \n",ishot,nshots);
 			
 			if (RUN_MULTIPLE_SHOTS){nsrc_loc=snum_loc[ishot];
 				if(nsrc_loc>0){
@@ -746,7 +746,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				dummy=(1/(finv[nf-1]*TAST*DT));
 				ntast=(dummy);
 				if(!ntast) ntast=1;
-				fprintf(FP, "ntast=%i, TAST=%i \n", ntast, TAST);
+				//fprintf(FP, "ntast=%i, TAST=%i \n", ntast, TAST);
 			}
 			
 			if(MYID==0) fprintf(FP,"\n ****************************************\n ");
@@ -843,14 +843,14 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 					residual(sectionread, sectionreadf,sectionvx,sectionvxdiff,ntr_loc,ns,&L2,&L2f);
 									
 					/* read seismic "observed" data (ycomp.) */
-					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,3);
+					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,2);
 					if(FILT==1){
 					filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 					/* calculate residuals and L2 Norm */
 					residual(sectionread, sectionreadf,sectionvy,sectionvydiff,ntr_loc,ns,&L2,&L2f);
 					
 					/* read seismic "observed" data (zcomp.)*/
-					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,2);
+					readseis(ishot, sectionread, sectionreadf, ntr_loc, ns,3);
 					if(FILT==1){
 					filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 					
@@ -877,7 +877,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				
 				/*---------------------------- backpropagation----------------------------------------------*/
 				
-				fprintf(FP," *********** STARTING TIME STEPPING BACK PROPAGATION ***************\n");		  
+				fprintf(FP,"\n\n *********** STARTING TIME STEPPING BACK PROPAGATION ***************\n");		  
 				pshot_loc=1;
 				for(pshot=0;pshot<=hloop;pshot++){
 				
@@ -996,6 +996,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 			if(HESS&&iteration==1) outgrad(NX,NY,NZ,hess1,hess2,hess3,finv[0],iteration, HESS_FILE);
 		
 			/*output "raw" gradient*/
+			fprintf(FP,"\n raw Gradient: \n");
 			outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration, GRAD_FILE);
 			
 			if(HESS) hess_apply(1,NX,1,NY,1,NZ,grad1,grad2,grad3,hess1,hess2,hess3,finv[0],iteration);
@@ -1016,13 +1017,15 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 		
 		/*---------------------------------------steplength calculation----------------------------------------------------------------*/
 		
-			fprintf(FP,"\n STEPLENGTH CALCULATION ITERATION %d \n", iteration);
+			fprintf(FP,"\n\n *********** STEPLENGTH CALCULATION ITERATION %d *********** \n", iteration);
 				if(LBFGS||!LBFGS){
 			for (steptest=1;steptest<=2;steptest++){
 				if(cdf==1) step[4]=TESTSTEP;
 				
 				step[steptest]=0.0; step[steptest]=step[4]*steptest;
-				fprintf(FP,"step[%d]=%e",steptest,step[steptest]);
+			
+				fprintf(FP,"\n\n %d. test steplength: step[%d]=%.2e \n",steptest,steptest,step[steptest]);
+				fprintf(FP," ------------------------------------ \n");
 				
 				if(MYID==0) fprintf(FI,"\n steptest %d: steplength=%e \n",steptest ,step[steptest]);
 				
@@ -1039,7 +1042,7 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				  
 					ishot1=(nshots/NSHOTS_STEP)*(ishot-1)+1;
 				
-					fprintf(FP,"\n MYID=%d *****  Starting simulation for shot %d of %d  ********** \n",MYID,ishot1,nshots);
+					fprintf(FP,"\n **********  Starting simulation for shot %d of %d  ********** \n",ishot1,nshots);
 								
 					if (RUN_MULTIPLE_SHOTS){
 						nsrc_loc=snum_loc[ishot1];
@@ -1059,8 +1062,13 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 					lsamp=NDTSHIFT+1;
 					nlsamp=1;
 					
+					
+					if(MYID==0) fprintf(FP,"\n ****************************************\n ");
+				
+				
+					
 					for (nt=1;nt<=NT;nt++){
-
+						if(MYID==0) if(!(nt%(NT/40))) fprintf(FP,"*");
 						time_v_update[nt]=0.0;
 						time_s_update[nt]=0.0;
 
@@ -1098,10 +1106,10 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,1);
 						if(FILT==1){filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 						residual(sectionread, sectionreadf,sectionvx,sectionvxdiff,ntr_loc,ns,&L2,&L2f); 
-						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,3);
+						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,2);
 						if(FILT==1){filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 						residual(sectionread, sectionreadf,sectionvy,sectionvydiff,ntr_loc,ns,&L2,&L2f); 
-						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,2);
+						readseis(ishot1, sectionread, sectionreadf, ntr_loc, ns,3);
 						if(FILT==1){filt_seis(sectionread,ntr_loc,NT,finv[nf-1]);}
 						residual(sectionread, sectionreadf,sectionvz,sectionvzdiff,ntr_loc,ns,&L2,&L2f); 	
 						}
@@ -1116,15 +1124,17 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				misfit[steptest]=0.0;
 				misfit[steptest]=L2;
 				if(MYID==0)fprintf(FI,"\n L2=%e",misfit[steptest]);
+				
 			} /*steptest*/
 			
 
-			if(MYID==0)fprintf(FP,"\n\n\n Steplength Parabel \n");
+			if(MYID==0)fprintf(FP,"\n\n Steplength Parabel \n");
 			MPI_Barrier(MPI_COMM_WORLD);
 			steplength(misfit,step,iteration, it_group); /*find optimal steplength*/
 			}
+			if(MYID==0)fprintf(FP,"\n stepength calculation finished\n");
 			
-			if(MYID==0)fprintf(FP,"\n Modelupdate \n");
+			
 			modelupdate(NX,NY,NZ,grad1,grad2,grad3,rho,pi,u,bfgsmod1,step[3],beta,it_group);
 					
 			if(MYID==0)fprintf(FP,"\n Modeloutput \n");

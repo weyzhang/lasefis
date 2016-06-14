@@ -1,7 +1,7 @@
 {
 "MODELING PARAMETERS" : "comment",
 
-"Note that z denotes the vertical direction !" : "comment",
+"Note that y denotes the vertical direction !" : "comment",
 
 "Domain Decomposition" : "comment",
 			"NPROCX" : "2",
@@ -10,8 +10,8 @@
 
 "3-D Grid" : "comment",
 			"NX" : "160",
-			"NY" : "160",
-			"NZ" : "184",
+			"NY" : "184",
+			"NZ" : "160",
 			"DX" : "0.8",
 			"DY" : "0.8",
 			"DZ" : "0.8",
@@ -36,11 +36,11 @@
 			"External signal input instead of SOURCE_SHAPE" : "comment",
 			"SIGNAL_FILE" : "./STF/stf.su",
 			"SOURCE_TYPE" : "4",
-			"SOURCE_TYPE values (point_source): explosive=1;force_in_x=2;force_in_y=3;force_in_z=4;custom=5" : "comment",
+			"SOURCE_TYPE values (point_source): explosive=1;force_in_x=2;force_in_z=3;force_in_y=4;custom=5" : "comment",
 			"If SOURCE_TYPE <5 the following two lines are ignored" : "comment",
 			"ALPHA" : "45.0",
 			"BETA" : "45.0",
-			"ALPHA=force_angle_between_x_y_(in_degree) (BETA between x_z)" : "comment",
+			"ALPHA=force_angle_between_x_y(vertical)_(in_degree) (BETA between x_z)" : "comment",
 			"read_source_positions_from_SOURCE_FILE_(yes=1;Plane wave=2) " : "comment",
 			"SRCREC" : "1",
 			"SOURCE_FILE" : "./sources/sources_toy.dat",
@@ -112,9 +112,9 @@
 			"if SNAP !=3 the following line is ignored" : "comment",
 			"SNAP_PLANE" : "1",
 			"output of snapshots as energy wihout sign SNAP_PLANE=1" : "comment",
-			"energy with sign true for x-z-plane SNAP_PLANE=2" : "comment",
-			"energy with sign true for x-y-plane SNAP_PLANE=3" : "comment",
-			"energy with sign true for y-z-plane SNAP_PLANE=4" : "comment",
+			"energy with sign true for x-y-plane SNAP_PLANE=2" : "comment",
+			"energy with sign true for x-z-plane SNAP_PLANE=3" : "comment",
+			"energy with sign true for z-x-plane SNAP_PLANE=4" : "comment",
 
 "Receiver" : "comment",
 			"output_of_seismograms" : "comment",
@@ -131,7 +131,7 @@
 			"reference_point_for_receiver_coordinate_system" : "comment",
 			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0, 0.0",
 			"if READREC=1 the following three lines are ignored" : "comment",
-			"Note that z denotes the vertical direction !" : "comment",
+			"Note that y denotes the vertical direction !" : "comment",
 			"position_of_first_receiver_(in_m)" : "comment",
 			"XREC1, YREC1, ZREC1" : "90.0 , 90.0, 90.0",
 			"position_of_last_receiver_(in_m)" : "comment",
@@ -149,7 +149,7 @@
 			"REC_ARRAY_DIST" : "30.0",
 			"distance_between_receivers_in_x/y-direction" : "comment",
 			"DRX" : "10",
-			"DRY" : "10",
+			"DRZ" : "10",
 			
 
 "Seismograms" : "comment",

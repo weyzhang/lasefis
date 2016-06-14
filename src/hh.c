@@ -67,20 +67,12 @@ float ***  taus, float ***  taup, float *  eta){
 	 }
 
 	/* loop over global grid */
-	for (k=1;k<=NZG;k++){
+	for (j=1;j<=NYG;j++){
 		for (i=1;i<=NXG;i++){
-			for (j=1;j<=NYG;j++){
+			for (k=1;k<=NZG;k++){
 
 				
 				Vp=vp1; Vs=vs1; Rho=rho1; 
-				
-				/*for usability reasons, "z" - as commonly used - denotes the depth (vertical direction),
-				  however, internally "y" is used for the vertical coordinate,
-				  we simply switch the "y" and "z" coordinate as read in the input file,
-				  therefore use the variable "j" to, e.g., calculate/address the vertical coordinate:
-				  x=(float)i*DX;
-				  y=(float)k*DZ;
-				  z=(float)j*DY;*/  				
 
 				muv=Vs*Vs*Rho/(1.0+sumu);
 				piv=Vp*Vp*Rho/(1.0+sumpi);
@@ -105,22 +97,14 @@ float ***  taus, float ***  taup, float *  eta){
 		}
 	}
 
-	for (k=50;k<=80;k++){
+	for (j=50;j<=80;j++){
 		for (i=55;i<=85;i++){
-			for (j=50;j<=80;j++){
+			for (k=50;k<=80;k++){
 
 			/*for (j=(NYG/2+1);j<=NYG;j++){*/
 
 				Vp=0.0; Vs=0.0; Rho=0.0;
 				Vp=vp2; Vs=vs2; Rho=rho2; 
-				
-				/*for usability reasons, "z" - as commonly used - denotes the depth (vertical direction),
-				  however, internally "y" is used for the vertical coordinate,
-				  we simply switch the "y" and "z" coordinate as read in the input file,
-				  therefore use the variable "j" to, e.g., calculate/address the vertical coordinate:
-				  x=(float)i*DX;
-				  y=(float)k*DZ;
-				  z=(float)j*DY;*/  				
 
 				muv=Vs*Vs*Rho/(1.0+sumu);
 				piv=Vp*Vp*Rho/(1.0+sumpi);
