@@ -57,7 +57,8 @@ fileinp = argv[1];
 	}
 	else {
 	        //read "old" input file *.inp, might not work in future
-	        read_par(FP);
+		err(" Old Input files (.inp) are no longer supported. \n Please use .json input files instead. \n\n");
+
 	} 
 
 

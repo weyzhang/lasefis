@@ -181,8 +181,6 @@ float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, 
 
 float readdsk(FILE *fp_in, int format);
 
-int read_par(FILE *fp);
-
 void read_par_json(FILE *fp, char *fileinp);
 
 void readmod_acoustic(float  ***  rho, float ***  pi, int ishot);

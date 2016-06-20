@@ -56,7 +56,6 @@ SNAPMERGE_SCR = \
 	snapmerge.c \
 	merge.c \
 	json_parser.c \
-	read_par.c \
 	read_par_json.c \
 	readdsk.c \
 	writedsk.c \
@@ -64,7 +63,6 @@ SNAPMERGE_SCR = \
 	
 PARTMODEL_SCR = \
 	part_model.c \
-	read_par.c \
 	read_par_json.c \
 	util.c 	
 
@@ -82,7 +80,6 @@ IFOS_UTIL = \
 		output_source_signal.c \
 		rd_sour.c \
 		readdsk.c \
-		read_par.c \
 		json_parser.c \
 		read_par_json.c \
 		exchange_par.c \
