@@ -28,7 +28,8 @@ The elastic medium is described by the density $\rho$ and the Lam\'e parameters 
 \subsection{Finite difference modeling}\label{sec:FDmodeling}
 For the simulations of 3D elastic wave propagation these equations are approximated by finite differences (FD). For the calculation of partial derivatives, the wavefield parameters and model parameters are discretised on a staggered-grid system \citep{Vir86, Lev88}. The 3D staggered-grid system is sketched in Figure~\ref{fig:stag_grid}. We use a Cartesian grid (x,y,z)=(i,j,k). The model parameters $\lambda$, $\mu$ and $\rho$ and the diagonal stress components $\sigma_{ii}$ are localised on the full grid points, whereas velocities and off-diagonal stress components are calculated on a grid which is half a grid point shifted to the original system. Compared to a conventional Cartesian grid, the staggered grid enables a larger grid spacing for the same level of accuracy.\\
 \begin{figure}
-\includegraphics[width=0.7\textwidth]{fig/staggered_grid}
+\centering
+\includegraphics[width=0.74\textwidth]{fig/ssg_grid}
 \caption[Staggered grid system]{Staggered-grid coordinate system used for 3D FD modelling in SOFI3D}\label{fig:stag_grid}
 \end{figure}
 The derivatives are approximated by centered finite differences. The easiest finite-differences are of second order, where the two adjacent grid points with a grid space $dh$ are used to calculate the derivative between these grid points as follows
@@ -46,7 +47,7 @@ Hereby the summation of the update values over all time steps accounts for the t
 \subsubsection*{Boundary conditions}
 There are two ways to avoid arteficial reflections from model boundaries in SOFI3D. The first exponentially damps waves within a boundary zone surrounding the model by multiplying the amplitudes with an exponentially decaying factor \citep{Cer85}. At least 30 gridpoints thickness at boundary zones is required. The second method is the implementation of convolutional perfectly matched layers (C-PMLs) \citep{Ber94,Kom07}. This method can offer a much better performance compared to the  conventional exponential damping and a boundary zone of 10 gridpoints thickness is generally sufficient. However, in case of strong contrasts and heterogeneities at the model boundary instabilities can be caused.
 \subsubsection*{The free surface}
-At the free surface, the vertical stress components $\sigma_{xz}$, $\sigma_{yz}$ and  $\sigma_{zz}$ are zero. A planar free surface is implemented implicitely in SOFI3D with the mirroring technique described by \cite{Lev88}.
+At the free surface, the vertical stress components $\sigma_{xy}$, $\sigma_{yy}$ and  $\sigma_{zy}$ are zero. A planar free surface is implemented implicitely in SOFI3D with the mirroring technique described by \cite{Lev88}.
 \subsubsection*{Grid dispersion and stability} 
 To mitigate numerical dispersion and grid anisotropy of the wavefield the grid spacing must be chosen sufficiently small. For a fourth-order spatial and second-order temporal scheme the criterion 
 \begin{equation}

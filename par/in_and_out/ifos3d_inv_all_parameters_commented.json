@@ -48,7 +48,7 @@
 			"RUN_MULTIPLE_SHOTS" : "1",
 			
 			"Following lines can be ignored if SRCREC!=2" : "comment",
-			"Plane wave (PW) excitation,if PLANE_WAVE_DEPTH>0, SRCREC is treated as 0" : "comment",
+			"Plane wave (PW) excitation" : "comment",
 			"depth_of_PW_excitation_(no<=0)_(in_meter)" : "comment",
 			"PLANE_WAVE_DEPTH" : "0.0",
 			"dip_of_PW_from_vertical_(in_degrees)" : "comment",
