@@ -6,13 +6,13 @@ nx=160; ny=184; nz=160; %ny:vertical
 outx=1; outy=1; outz=1; 
 dh=0.8;
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
-fignum=13;
+fignum=12;
 
 %file_inp1='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy_real.vp';
 %file_inp2='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy_real.vp';
 
-file_inp1='../par/model/toy.vp_it0';
-file_inp2='../par/model/toy.vp_it60';
+file_inp1='../par/model/toy.vs_it0';
+file_inp2='../par/model/toy.vs_it60';
 
 
 phi1=0; %rotation angles to x-z plane of first and second plane 
@@ -27,10 +27,10 @@ rotaxes=[1,0,0]; %direction rotation axes [0,1,0] rotation of plane around verti
 %viewpoint=[122,26];
 viewpoint=[-20,12];
   
-%caxis_value_1=3300;%vs
-%caxis_value_2=3900;%vs
-caxis_value_1=5700;%vp
-caxis_value_2=6700;%vp
+caxis_value_1=3300;%vs
+caxis_value_2=3900;%vs
+%caxis_value_1=5700;%vp
+%caxis_value_2=6700;%vp
 
 
 
@@ -40,12 +40,12 @@ zcut1=10; zcut2=149;
 
 
 fid_rot=fopen(file_inp1,'r','ieee-le');
-rot1=zeros(nz/outz,nx/outx,ny/outy);
+rot1=zeros(ny/outy,nx/outx,nz/outz);
 rot1=fread(fid_rot,(nx*ny*nz),'float');
 
-fid_div=fopen(file_inp2,'r','ieee-le');
-div1=zeros(nz/outz,nx/outx,ny/outy);
-div1=fread(fid_div,(nx*ny*nz),'float');
+% fid_div=fopen(file_inp2,'r','ieee-le');
+% div1=zeros(nz/outz,nx/outx,ny/outy);
+% div1=fread(fid_div,(nx*ny*nz),'float');
 
 
 %rot1=-rot1./max(max(rot1));
@@ -57,8 +57,8 @@ div1=fread(fid_div,(nx*ny*nz),'float');
 %rot1=log10(rot1);
 
 
-rot=reshape(rot1,nz/outz,nx/outx,ny/outy);
-rot=rot(zcut1:zcut2,xcut1:xcut2,ycut1:ycut2);
+rot=reshape(rot1,ny/outy,nx/outx,nz/outz);
+rot=rot(ycut1:ycut2,xcut1:xcut2,zcut1:zcut2);
 
 nx=xcut2-xcut1+1;
 ny=ycut2-ycut1+1;
@@ -139,7 +139,7 @@ zd3 = get(hslicez,'ZData');
 
 
 
-rot=permute(rot,[2,1,3]);
+rot=permute(rot,[2,3,1]);
 %rott=size(rot)
 %size(rot)
 %size(Z)
@@ -225,7 +225,7 @@ hold on
     set(gca,'FontSize',14);
     set(gca,'FontWeight','normal');
     set(gca,'Linewidth',1.0);
-    
+    colormap('jet')
     cb = colorbar('vert');
     xlabel(cb, 'v_p');
         
