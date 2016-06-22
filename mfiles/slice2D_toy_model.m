@@ -4,9 +4,9 @@ clear all;
 clc
 close all
 
-iteration=60;
+iteration=1;
 
-nx=160; ny=186; nz=160; %ny:vertical
+nx=160; ny=184; nz=160; %ny:vertical
 outx=1; outy=1; outz=1; 
 dh=0.8;
 FW=10;
@@ -194,5 +194,5 @@ axis tight
 
 
 
-exportfig(3, [fname parameter '.eps'],'bounds','tight', 'color','rgb', ...
- 'preview','none', 'resolution',200, 'lockaxes',1);
+% exportfig(3, [fname parameter '.eps'],'bounds','tight', 'color','rgb', ...
+%  'preview','none', 'resolution',200, 'lockaxes',1);
