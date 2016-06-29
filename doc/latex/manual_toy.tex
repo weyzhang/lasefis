@@ -11,7 +11,7 @@ The 3D inversion is costly even for a simple model. To enable a successfull inve
 \end{figure}
 The true model for the seismic velocities is plotted in figure~\ref{fig:toy_model}. A box divided into four differently-sized parts with different positive and negative velocity variations is placed into a homogeneous full space of $v_p=6200$\,m/s and $v_s=3600$\,m/s. The $v_p$/$v_s$ ratio is not constant.
 The density model is homogeneous with 2800\,kg/m$^3$ and kept constant during inversion. The elastic model is generated in IFOS3D on the fly (\textbf{READMOD}=0) using the function \textit{src/hh\_toy.c} as defined in \textit{src/Makefile}.\\
-The model size is 128\,m$\times$128\,m $\times$147.2\,m in $x$-, $y$- and $z$-direction. We use a grid point distance of \textbf{DX}=\textbf{DY}=\textbf{DZ}=0.8\,m and thus a grid size of \textbf{NX}=160, \textbf{NY}=160 and \textbf{NZ}=184 points. \\
+The model size is 128\,m$\times$128\,m $\times$147.2\,m in $x$-, $z$- and $y$-direction. We use a grid point distance of \textbf{DX}=\textbf{DZ}=\textbf{DY}=0.8\,m and thus a grid size of \textbf{NX}=160, \textbf{NZ}=160 and \textbf{NY}=184 points. \\
 We use spatial FD-operators of \textbf{FDORDER}=4 and Holberg coefficients (\textbf{FDCOEFF=2}). This fullfills the dispersion criterion (see SOFI manual) up to a frequency of 500\,Hz ($v_{s,min}=3450$\,m/s):
 \begin{equation}
  dh <= \frac{v_{s,min}}{nf_{max}}=\frac{v_{s,min}}{8.32f_{max}}
@@ -29,8 +29,8 @@ The model does not contain a free surface (\textbf{FREE\_SURF}=0) and as boundar
 \caption[Toy example - source wavelet and spectrum]{The toy example - normalised amplitude and spectrum of sin$^3$-source wavelet }\label{fig:toy_wavelet}
 \end{center}
 \end{figure}
-Sources and receivers are arranged within $x$-$y$-planes, as indicated in Figure~\ref{fig:toy_model}. The sources are listed in \textit{sources/sources\_toy.dat} (\textbf{SOURCE\_FILE}). We use 12 (3$\times$4) sources in 92\,m depth with a central frequency of \textbf{FC}=300\,Hz. The sources are vertical directed point forces (\textbf{QUELLTYP}=4) with sin$^3$-wavelets (\textbf{QUELLART=4}) as source time functions. The corresponding source wavelet can be seen in figure~\ref{fig:toy_wavelet}a. This source wavelet comprises the low frequencies with $40\%$ of the maximum amplitude left at about 400\,Hz (figure~\ref{fig:toy_wavelet}b). \\
-The receivers are arranged using a horizontal receiver array (\textbf{READREC}=2, \textbf{REC\_ARRAY}=1) in 24\,m depth. The distance between the receivers is \textbf{DRX}=\textbf{DRY}=10 gridpoints, which gives a total number of 169 receivers. 
+Sources and receivers are arranged within $x$-$z$-planes, as indicated in Figure~\ref{fig:toy_model}. The sources are listed in \textit{sources/sources\_toy.dat} (\textbf{SOURCE\_FILE}). We use 12 (3$\times$4) sources in 92\,m depth with a central frequency of \textbf{FC}=300\,Hz. The sources are vertical directed point forces (\textbf{QUELLTYP}=4) with sin$^3$-wavelets (\textbf{QUELLART=4}) as source time functions. The corresponding source wavelet can be seen in figure~\ref{fig:toy_wavelet}a. This source wavelet comprises the low frequencies with $40\%$ of the maximum amplitude left at about 400\,Hz (figure~\ref{fig:toy_wavelet}b). \\
+The receivers are arranged using a horizontal receiver array (\textbf{READREC}=2, \textbf{REC\_ARRAY}=1) in 24\,m depth. The distance between the receivers is \textbf{DRX}=\textbf{DRZ}=10 gridpoints, which gives a total number of 169 receivers. 
 \subsection{Inversion parameters}
 For the inversion we use homogeneous starting models with $v_s=3600$\,m/s and $v_p=6200$\,m/s. In total 60 iterations are performed (\textbf{ITMIN, ITMAX }= 1, 60) and five frequencies are employed simultanously (\textbf{NFMAX}=5). For preconditioning of gradients a local taper is applied around source and receiver positions (\textbf{DAMPTYPE}=2). We do not use the diagonal Hessian approximation (\textbf{HESS}=0) or the L-BFGS method (\textbf{LBFGS}=0). Out of the total number of 12 shots we use 4 shots for the steplength estimation (\textbf{NSHOTS\_STEP}=4) and start with an initial test steplength of 0.02 (\textbf{TESTSTEP}=0.02). The filenames for gradient and model output are given in the input file.
 \subsubsection*{The workflow}
@@ -48,7 +48,7 @@ The workflow file \textit{in\_and\_out} defines the different frequency stages. 
 \caption[Transmission example: frequency stages]{Frequency stages used for the transmission geometry box example with minimum wavelengths $\lambda_{min}(v_p)$ and $\lambda_{min}(v_s)$.}
 \label{tab:toy_fstage}
 \end{table}
-We used four frequency stages with five frequencies, which increase from stage to stage. The frequency bands are slightly overlapping. The table  also lists the ninimum and maximum wavelengths, which define the resolution of the result. In the first stage lower frequencies enable the reconstruction of rough model structures, whereas higher frequencies and smaller wavelengths result in a higher resolution of smaller model structures.
+We used four frequency stages with five frequencies, which increase from stage to stage. The frequency bands are slightly overlapping. The table also lists the minimum and maximum wavelengths, which define the resolution of the result. In the first stage lower frequencies enable the reconstruction of rough model structures, whereas higher frequencies and smaller wavelengths result in a higher resolution of smaller model structures.
 \section{Step by step guideline}
 \subsection{Step 1 - forward modeling}
 In a first step, a forward modeling is performed to calculate data of the box model, which can be used as observed data in the inversion. This corresponds to a SOFI3D simulation. The model is created on the fly by the function \textit{src/hh\_toy.c}. The parameters are already set in \textit{in\_and\_out/ifos3D\_toy.inp}. For the forward modeling we use \textbf{METHOD}=0. The seismograms are written in the folder \textit{su\_obs}. For the option \textbf{METHOD}=0 the seismograms are written in one file for each processor containing receiver locations. From these files the data can be directly used as input in the inversion. Note, that \textbf{FILT}=0 and the program calculates the unfiltered seismograms. The box model is saved in the folder \textit{model}.\\
@@ -60,7 +60,7 @@ To perform the modeling the following steps are applied:
 \end{itemize}
 The progress of IFOS3D can be viewed in \textit{in\_and\_out/ifos3D\_toy.out}. 
 \subsection{Step 2 - the FWI}
-In a second step, the inversion is performed. Before staring the inversion perform the following steps:
+In a second step, the inversion is performed. Before starting the inversion perform the following steps:
 \begin{itemize}
  \item set the parameter (kasten=0) in \textit{src/hh\_toy.c} to gain homogeneous starting models
  \item compile IFOS3D (execute \textit{./compileIFOS3D.sh})
@@ -73,15 +73,15 @@ In this section we look at the output of IFOS3D and show the inversion results. 
 \subsection{Seismograms}
 \subsubsection*{Output}
 The observed seismograms are calculated in step 1- forward modeling. They are located in the folder \textit{su\_obs} and provide unfiltered particle velocities for each shot and component in the su-format (e.g. \textit{obs\_toy\_vx\_it1.su.shot3}). \\
-The inverted seisograms are stored in each iteration for each shot and each component in the folder \textit{su}. They are also in the su-format and named for instance \textit{cal\_toy\_vy\_it30.su.shot2}. Note that these data are filtered below the highest frequency used within the corresponding frequency stage.\\
+The inverted seismograms are stored in each iteration for each shot and each component in the folder \textit{su}. They are also in the su-format and named for instance \textit{cal\_toy\_vy\_it30.su.shot2}. Note that these data are filtered below the highest frequency used within the corresponding frequency stage.\\
 The su-header in front of each trace contains i.a. information about source and receiver location, time stepping and time samples. It can be viewed using the Seismic Unix function \textit{surange} $<$ FILENAME or the Matlab function \textit{su2matlab}. 
 \subsubsection*{Data plot}
 For a first look, the seismograms can be plotted with the SU-routine \textit{suxwigb} $<$ FILENAME. Note, that it can be necessary to use the function \textit{segyclean} $<$ FILENAME $>$ FILENAME\_OUT before plotting.\\
-For a comparison of obeserved and inverted data, it is necessary to apply a lowpass filter to the observed data, using the maximum frequency of the corresponding stage. Figure~\ref{fig:toy_seismo1} shows a comparison between initial, observed and inverted seismograms for one source and receiver and $x$-, $y$- and $z$-component of the particle velocity. Note, that the observed data was filtered with the maximum frequency of the first iteration for a comparison in a) and with the maximum inversion frequency for a comparison with the final inverted data in b). The plot was produced with the Matlab program \textit{seismo\_trace\_toy.m}. This program uses the binary format as input, which is why the files need to be transformed before use, applying the SU-routine \textit{sustrip} $<$ FILENAME $>$ FILENAME\_OUT.
+For a comparison of observed and inverted data, it is necessary to apply a lowpass filter to the observed data, using the maximum frequency of the corresponding stage. Figure~\ref{fig:toy_seismo1} shows a comparison between initial, observed and inverted seismograms for one source and receiver and $x$-, $z$- and $y$-component of the particle velocity. Note, that the observed data was filtered with the maximum frequency of the first iteration for a comparison in a) and with the maximum inversion frequency for a comparison with the final inverted data in b). The plot was produced with the Matlab program \textit{seismo\_trace\_toy.m}. This program uses the binary format as input, which is why the files need to be transformed before use, applying the SU-routine \textit{sustrip} $<$ FILENAME $>$ FILENAME\_OUT.
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=\textwidth]{fig_toy/seismo1_toy}
-\caption[Toy example - observed, initial and inverted seismograms]{Multi-component seismograms exemplarily for source at ($x_s$, $y_s$, $z_s$) = (32\,m, 96\,m, 92\,m) and receiver at ($x_r$, $y_r$, $z_r$) = (56\,m, 40\,m, 24\,m), normalised to one trace a) initial vs. observed data filtered below 200\,Hz and b) observed vs. inverted data filtered below 320\,Hz} \label{fig:toy_seismo1}
+\caption[Toy example - observed, initial and inverted seismograms]{Multi-component seismograms exemplarily for source at ($x_s$, $z_s$, $y_s$) = (32\,m, 96\,m, 92\,m) and receiver at ($x_r$, $z_r$, $y_r$) = (56\,m, 40\,m, 24\,m), normalised to one trace a) initial vs. observed data filtered below 200\,Hz and b) observed vs. inverted data filtered below 320\,Hz} \label{fig:toy_seismo1}
 \end{center}
 \end{figure}
 \subsubsection*{Discussion}
@@ -120,7 +120,7 @@ The results for the toy example is plotted for two 2D slices. Figure~\ref{fig:to
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=\textwidth]{fig_toy/toy_model_result_new}
-\caption[Toy example - final inverted models, horizontal slice]{Final inverted models (60 iteartions) compared to real models for horizontal slice at $z$=60\,m: a) real model $v_p$, b) inverted  model $v_p$, c) real model $v_s$ and d) inverted model $v_s$. The dashed line indicates the absorbing frame;  }\label{fig:toy_result1}
+\caption[Toy example - final inverted models, horizontal slice]{Final inverted models (60 iterations) compared to real models for horizontal slice at $y$=60\,m: a) real model $v_p$, b) inverted  model $v_p$, c) real model $v_s$ and d) inverted model $v_s$. The dashed line indicates the absorbing frame;  }\label{fig:toy_result1}
 \end{center}
 \end{figure}
 A vertical slice of the models is plotted in figure~\ref{fig:toy_result2}. Overall, the vertical direction is more difficult to reconstruct, as can be ssen in the inverted models of $v_p$ (b) and $v_s$ (d) compared to the real models (a,b). The boundaries of the box are relatively well recovered for both parameters. The inversion of $v_p$ reconstructs the two main areas of the box, however the small high velocity area (dark red) cannot be resolved. This area is indicated in the inverted $v_s$ model, again showing the higher resolution of this parameter.
