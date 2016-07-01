@@ -2,7 +2,7 @@
 
 clear all;
 
-nx=160; ny=184; nz=160; %ny:vertical
+nx=160; ny=186; nz=160; %ny:vertical
 outx=1; outy=1; outz=1; 
 dh=0.8;
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
@@ -11,7 +11,7 @@ fignum=12;
 %file_inp1='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy_real.vp';
 %file_inp2='/data14/sdunkl/3DAWAIT/trunk_JURECA/results_toy/model/toy_real.vp';
 
-file_inp1='../par/model/toy.vs_it0';
+file_inp1='../par/model/toy.vp.true';
 file_inp2='../par/model/toy.vs_it60';
 
 
@@ -27,10 +27,10 @@ rotaxes=[1,0,0]; %direction rotation axes [0,1,0] rotation of plane around verti
 %viewpoint=[122,26];
 viewpoint=[-20,12];
   
-caxis_value_1=3300;%vs
-caxis_value_2=3900;%vs
-%caxis_value_1=5700;%vp
-%caxis_value_2=6700;%vp
+% caxis_value_1=3300;%vs
+% caxis_value_2=3900;%vs
+caxis_value_1=5700;%vp
+caxis_value_2=6700;%vp
 
 
 
@@ -157,9 +157,9 @@ figure(fignum)
         'EdgeColor','none',...
         'DiffuseStrength',.8) 
    hold on
-%h2 = slice(Z,X,Y,rot,zd3,xd3,yd3);set(h2,'FaceColor','interp',...
-%        'EdgeColor','none',...
-%       'DiffuseStrength',.8)  
+% h2 = slice(Z,X,Y,rot,zd3,xd3,yd3);set(h2,'FaceColor','interp',...
+%         'EdgeColor','none',...
+%        'DiffuseStrength',.8)  
 
     
 hold on
@@ -209,9 +209,9 @@ hold on
 
        hold off   
          
-    xlabel('y in m');
+    xlabel('z in m');
     ylabel('x in m');
-    zlabel('z in m');        
+    zlabel('y in m');        
     set(gca, 'xDir','reverse')      
     set(gca, 'yDir','normal')         
     set(gca, 'zDir','normal') 
@@ -227,7 +227,8 @@ hold on
     set(gca,'Linewidth',1.0);
     colormap('jet')
     cb = colorbar('vert');
-    xlabel(cb, 'v_p');
+    xlabel(cb, 'v_p in m/s');
+%set(cb,'YTick',[5800:200:6600]); % v_p
         
       set(gca,'FontSize',14);      
    %load('MyColormapsgrad','mycmap');
@@ -241,4 +242,5 @@ view(viewpoint);
    % axis tight
    box on
 
- 
+  exportfig(fignum, 'toy_model_real_vp.eps','bounds','tight', 'color','rgb', ...
+  'preview','none', 'resolution',200, 'lockaxes',1);

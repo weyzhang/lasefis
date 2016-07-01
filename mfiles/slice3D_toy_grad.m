@@ -2,15 +2,15 @@
 
 clear all;
 
-nx=160; ny=184; nz=160; 
+nx=160; ny=186; nz=160; %ny:vertical
 outx=1; outy=1; outz=1; 
 dh=0.8;
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
 fignum=71;
 
 
-file_inp1='../par/grad/toy_grad.vp_160.00Hz_it1001'; %preconditioned gradient
-file_inp2='../par/grad/toy_grad.vp_160.00Hz_it1';    %"raw" gradient
+file_inp1='../par/grad/toy_grad.vs_160.00Hz_it1'; %preconditioned gradient: it1001
+file_inp2='../par/grad/toy_grad.vp_160.00Hz_it1';    %"raw" gradient: it1
 
 
 
@@ -26,10 +26,12 @@ rotaxes=[1,0,0]; %direction rotation axes [0,1,0] rotation of plane around verti
 %viewpoint=[122,26];
 viewpoint=[-20,12];
   
-caxis_value_1=-1;
-caxis_value_2=1;
-
-
+% caxis_value_1=-1; % preconditioned
+% caxis_value_2=1; % preconditioned
+% caxis_value_1 = -0.02; % raw, vp
+% caxis_value_2 = 0.02; % raw, vp
+caxis_value_1 = -0.03; % raw, vs
+caxis_value_2 = 0.03; % raw, vs
 
 xcut1=10; xcut2=149;
 ycut1=10; ycut2=139;
@@ -37,11 +39,11 @@ zcut1=10; zcut2=149;
 
 
 fid_rot=fopen(file_inp1,'r','ieee-le');
-rot1=zeros(nz/outz,nx/outx,ny/outy);
+rot1=zeros(ny/outy,nx/outx,nz/outz);
 rot1=fread(fid_rot,(nx*ny*nz),'float');
 
 fid_div=fopen(file_inp2,'r','ieee-le');
-div1=zeros(nz/outz,nx/outx,ny/outy);
+div1=zeros(ny/outy,nx/outx,nz/outz);
 div1=fread(fid_div,(nx*ny*nz),'float');
 
 
@@ -53,8 +55,8 @@ rot1=-rot1./max(max(rot1));
 %rot1=log10(rot1);
 
 
-rot=reshape(rot1,nz/outz,nx/outx,ny/outy);
-rot=rot(zcut1:zcut2,xcut1:xcut2,ycut1:ycut2);
+rot=reshape(rot1,ny/outy,nx/outx,nz/outz);
+rot=rot(ycut1:ycut2,xcut1:xcut2,zcut1:zcut2);
 
 nx=xcut2-xcut1+1;
 ny=ycut2-ycut1+1;
@@ -74,7 +76,7 @@ z=zp1:dh*outz:zp2*outz;
 %z=zcut1:dh*outz:zcut2*outz;
 
 
-figure(12)
+% figure(12)
 [Z,X,Y]=meshgrid(z,x,y);
 xmin = min(X(:)); ymin = min(Y(:)); zmin = min(Z(:));
 xmax = max(X(:)); ymax = max(Y(:)); zmax = max(Z(:));
@@ -135,7 +137,7 @@ zd3 = get(hslicez,'ZData');
 
 
 
-rot=permute(rot,[2,1,3]);
+rot=permute(rot,[2,3,1]);
 %rott=size(rot)
 %size(rot)
 %size(Z)
@@ -205,14 +207,14 @@ hold on
 
        hold off   
          
-    xlabel('y in m');
+    xlabel('z in m');
     ylabel('x in m');
-    zlabel('z in m');        
+    zlabel('y in m');        
     set(gca, 'xDir','reverse')      
     set(gca, 'yDir','normal')         
     set(gca, 'zDir','normal') 
     
-    set(get(gca,'Ylabel'),'FontSize',14);
+   set(get(gca,'Ylabel'),'FontSize',14);
    set(get(gca,'Ylabel'),'FontWeight','normal');
    set(get(gca,'Xlabel'),'FontSize',14);
    set(get(gca,'Xlabel'),'FontWeight','normal');
@@ -223,7 +225,8 @@ hold on
     set(gca,'Linewidth',1.0);
     
     cb = colorbar('vert');
-    xlabel(cb, 'gradient v_p');
+    xlabel(cb, 'norm. \newline gradient v_s');
+    
         
       set(gca,'FontSize',14);      
    load('MyColormapsgrad','mycmap');
@@ -237,4 +240,8 @@ view(viewpoint);
    % axis tight
    box on
 
- 
+   
+   
+   
+ exportfig(fignum, 'rawgrad_it1_vs.eps','bounds','tight', 'color','rgb', ...
+  'preview','none', 'resolution',200, 'lockaxes',1);
