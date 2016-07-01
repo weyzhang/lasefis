@@ -5,7 +5,7 @@ The 3D inversion is costly even for a simple model. To enable a successfull inve
 \subsection{Model and grid system}
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=\textwidth]{fig_toy/toy_real_model}
+\includegraphics[width=\textwidth]{fig_toy/toy_real_model_neu}
 \caption[Toy example - the real model and acquisition geometry]{The toy example - real model $v_p$ (a) and $v_s$ (b), sources and receivers indicated as stars and crosses, respectively}\label{fig:toy_model}
 \end{center}
 \end{figure}
@@ -88,12 +88,12 @@ For a comparison of observed and inverted data, it is necessary to apply a lowpa
 Figure~\ref{fig:toy_seismo1} shows the comparison of initial and observed data for the low frequencies of the first inversion stage. The waveforms show only small differences and clearly no cycle skipping. Thus the homogeneous starting model is already sufficient for this simple example. \\
 The success of the inversion can be seen when comparing the observed and inverted data. The waveforms, including the small oscillations are fitted very well for all components.
 \subsection{The gradient} 
-Gradients for $v_p$, $v_s$ and $\rho$ are stored in binary format in each iteration in the folder \textit{grad} (e.g. \textit{toy\_grad.vp\_200.00Hz\_it5}). Additionally to the raw gradients named by iteration number, the conjugate gradients are stored with labels of (iteration number +1000), like  (e.g. \\ \textit{toy\_grad.vp\_200.00Hz\_it1005}). \\
+Gradients for $v_p$, $v_s$ and $\rho$ are stored in binary format in each iteration in the folder \textit{grad} (e.g. \textit{toy\_grad.vp\_200.00Hz\_it5}). Additionally to the raw gradients named by iteration number, the conjugate gradients are stored with labels of (iteration number +2000), like  (e.g. \\ \textit{toy\_grad.vp\_200.00Hz\_it2005}). \\
 The gradients can be plotted with the Matlab program \textit{slice\_3D\_toy\_grad.m}. This program plots the 3D grid as two perpendicular slices. The acquisition geometry of the toy example is also included. \\
 Here, we show the ``raw'' gradients and the preconditioned gradients of $v_p$ and $v_s$ normalised to their maximum value for the first iteration (figure~\ref{fig:toy_grad}). In the raw gradients (a,b) the high amplitudes around sources and receivers are clearly visible. Especially the source artefacts are very distinct compared to the small scaled receiver artefacts. By preconditioning these artefacts can be removed for the greater part (c,d) and the main update concentrates on the box area. Due to the smaller wavelengths of the shear wave, the $v_s$-gradient already shows more structure than the $v_p$-gradient. 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=\textwidth]{fig_toy/grad_toy}
+\includegraphics[width=\textwidth]{fig_toy/grad_toy_neu}
 \caption[Toy example - gradient before and after preconditioning]{Normalised gradients of first iteration : a) ``raw'' gradient $v_p$, b) ``raw'' gradient $v_s$, c) preconditioned gradient $v_p$ and d) preconditioned gradient $v_s$; sources (stars) and receivers (crosses) are indicated. }\label{fig:toy_grad}
 \end{center}
 \end{figure}
