@@ -80,7 +80,7 @@ For a first look, the seismograms can be plotted with the SU-routine \textit{sux
 For a comparison of observed and inverted data, it is necessary to apply a lowpass filter to the observed data, using the maximum frequency of the corresponding stage. Figure~\ref{fig:toy_seismo1} shows a comparison between initial, observed and inverted seismograms for one source and receiver and $x$-, $z$- and $y$-component of the particle velocity. Note, that the observed data was filtered with the maximum frequency of the first iteration for a comparison in a) and with the maximum inversion frequency for a comparison with the final inverted data in b). The plot was produced with the Matlab program \textit{seismo\_trace\_toy.m}. This program uses the binary format as input, which is why the files need to be transformed before use, applying the SU-routine \textit{sustrip} $<$ FILENAME $>$ FILENAME\_OUT.
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=\textwidth]{fig_toy/seismo1_toy}
+\includegraphics[width=\textwidth]{fig_toy/seismo_trace_toy}
 \caption[Toy example - observed, initial and inverted seismograms]{Multi-component seismograms exemplarily for source at ($x_s$, $z_s$, $y_s$) = (32\,m, 96\,m, 92\,m) and receiver at ($x_r$, $z_r$, $y_r$) = (56\,m, 40\,m, 24\,m), normalised to one trace a) initial vs. observed data filtered below 200\,Hz and b) observed vs. inverted data filtered below 320\,Hz} \label{fig:toy_seismo1}
 \end{center}
 \end{figure}
