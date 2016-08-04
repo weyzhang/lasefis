@@ -94,7 +94,6 @@ IFOS_UTIL = \
 		writedsk.c \
 		writemod.c \
 		writepar.c \
-		rwsegy.c \
 
 IFOS_SRC = \
 		ifos3d.c \

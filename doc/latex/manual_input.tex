@@ -191,12 +191,9 @@ The last option (\textbf{READREC}=2) is very attractive for 3D FWI because it de
 \end{verbatim}
 
 For the seismogram output every \textbf{NDT}th sample is written to file starting at timestep \textbf{NDTSHIFT} of the FD modeling. The file format can be choosen with \textbf{SEIS\_FORMAT}:\\
-0: SEG-Y (ASCII-text/native 4-byte-floats (IEEE on PC)/little endian on PC)\\
 1: SU (native 4-byte-floats (IEEE on PC)/little endian on PC)\\
 2: TEXTUAL (native ASCII)\\
 3: BINARY (IEEE-4-byte-floats on PC/little endian on PC)\\
-4: SEG-Y (ASCII-text/native 4-byte-floats (IEEE on PC)/little endian on PC)\\
-5: SEG-Y (ASCII-text/IBM-4-byte-floats on PC/big endian on PC) \\
 We recommend the use of the SU-format. This format stores a header in front of each trace with information like time sampling, source and receiver position and tracenumber. Seismic Unix offers different functions for data processing of SU-files.\\
 The seismograms are stored for each component, each shot and each iteration in the folder \textit{su}. \textbf{SEIS\_FILE} defines the name of the files, here for example \textit{cal\_toy\_vx\_it3.su.shot2}
 \subsubsection*{Snapshots}

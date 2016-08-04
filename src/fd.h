@@ -119,7 +119,7 @@ void note(FILE *fp);
 
 void  outseis(FILE *fp, FILE *fpdata, int comp, float **section,
 int **recpos, int **recpos_loc, int ntr, float ** srcpos_loc,
-int nsrc, int ns, int seis_form[6]);
+int nsrc, int ns, int seis_form);
 		
 float *rd_sour(int *nts,FILE* fp_source);
 

@@ -31,7 +31,7 @@ void exchange_par(void){
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
 	extern float ALPHA, BETA, VPPML;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
-	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, READREC;
+	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT, FREE_SURF, READMOD, READREC;
 	extern int BOUNDARY, REC_ARRAY, LOG, IDX, IDY, IDZ, ABS_TYPE;
 	extern float TSNAP1, TSNAP2, TSNAPINC, FW, REFREC[4], DAMPING, FPML;
 	extern char  MFILE[STRING_SIZE], SIGNAL_FILE[STRING_SIZE];
@@ -123,12 +123,8 @@ void exchange_par(void){
 		idum[27]  = NDT;
 		idum[28]  = NDTSHIFT;
 		
-		idum[29]  = SEIS_FORMAT[0];
-		idum[30]  = SEIS_FORMAT[1];
-		idum[31]  = SEIS_FORMAT[2];
-		idum[32]  = SEIS_FORMAT[3];
-		idum[33]  = SEIS_FORMAT[4];
-		idum[34]  = SEIS_FORMAT[5];
+		idum[29]  = SEIS_FORMAT;
+		
 		                                                                       
         	idum[35]  = RUN_MULTIPLE_SHOTS;                                                                       
 		idum[36]  = SNAP_PLANE;
@@ -252,12 +248,7 @@ void exchange_par(void){
 	NDT = idum[27];
 	NDTSHIFT = idum[28];
 	
-	SEIS_FORMAT[0] = idum[29];
-	SEIS_FORMAT[1] = idum[30];
-	SEIS_FORMAT[2] = idum[31];
-	SEIS_FORMAT[3] = idum[32];
-	SEIS_FORMAT[4] = idum[33];
-	SEIS_FORMAT[5] = idum[34];
+	SEIS_FORMAT = idum[29];
 	
 	RUN_MULTIPLE_SHOTS= idum[35];
 	SNAP_PLANE= idum[36];

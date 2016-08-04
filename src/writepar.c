@@ -33,7 +33,7 @@ void writepar(FILE *fp, int ns) {
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
 	extern float ALPHA, BETA;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
-	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF;
+	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT, FREE_SURF;
 	extern int  READMOD, READREC, DRX, DRZ, BOUNDARY, SRCREC, IDX, IDY, IDZ;
 	extern float TSNAP1, TSNAP2, TSNAPINC, REFREC[4], DAMPING;
 	extern char SNAP_FILE[STRING_SIZE], SOURCE_FILE[], SIGNAL_FILE[], REC_FILE[], SEIS_FILE[STRING_SIZE];
@@ -43,8 +43,8 @@ void writepar(FILE *fp, int ns) {
 	extern int NP, NPROCX, NPROCY, NPROCZ, MYID;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS, LBFGS,EXTOBS;
 	extern int NUMPAR, BFGSNUM;
-	extern int VERBOSE;
-
+	//extern int VERBOSE;
+	extern int LITTLEBIG;
 	extern float TESTSTEP,WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
 	/* definition of local variables */
 	char th1[3], file_ext[8];
@@ -349,9 +349,9 @@ void writepar(FILE *fp, int ns) {
 		fprintf(fp,"\n");
 		fprintf(fp," -----------------------  SEISMOGRAMS  ----------------------\n");
 
-		switch (SEIS_FORMAT[0]) {
+		switch (SEIS_FORMAT) {
 			case 0:
-				sprintf(file_ext,"sgy");
+				sprintf(file_ext,"su");
 				break;
 
 			case 1:
@@ -364,14 +364,6 @@ void writepar(FILE *fp, int ns) {
 
 			case 3:
 				sprintf(file_ext,"bin");
-				break;
-
-			case 4:
-				sprintf(file_ext,"sgy");
-				break;
-
-			case 5:
-				sprintf(file_ext,"sgy");
 				break;
 		}
 
@@ -450,150 +442,36 @@ void writepar(FILE *fp, int ns) {
 			fprintf(fp," Amplitudes will be written every %d%s time-step, starting at the %d%s.\n",NDT,th1,NDTSHIFT+1,th2);
 
 		} else {
-			if ((SEIS_FORMAT[0]==2)||(SEIS_FORMAT[0]==3)) {
+			if ((SEIS_FORMAT==2)||(SEIS_FORMAT==3)) {
 				fprintf(fp," Warning: seismogram files will be empty! \n");
 
-			} else if ((SEIS_FORMAT[0]==0)||(SEIS_FORMAT[0]==1)||(SEIS_FORMAT[0]==4)) {
+			} else if ((SEIS_FORMAT==0)||(SEIS_FORMAT==1)) {
 				fprintf(fp," Warning: seismogram files will contain only headers! \n");
 			}
 		}
 
-		switch (SEIS_FORMAT[0]) {
+		switch (SEIS_FORMAT) {
 			case 0 :
-			case 5 :
-				fprintf(fp," Seismograms are written in SEG-Y format. \n");
-
-				if (!SEIS_FORMAT[1]) {
-					fprintf(fp," \t textual header: ASCII \n");
-
-				} else if (SEIS_FORMAT[1]==1) {
-					fprintf(fp," \t textual header: EBCDIC \n");
-				}
-
-				if (!SEIS_FORMAT[2]) {
-					fprintf(fp," \t byte order: little endian \n");
-
-				} else if (SEIS_FORMAT[2]==1) {
-					fprintf(fp," \t byte order: big endian \n");
-				}
-
-				if (!SEIS_FORMAT[3]) {
-					fprintf(fp," \t data type: IEEE 4-byte floats \n");
-
-				} else if (SEIS_FORMAT[3]==1) {
-					fprintf(fp," \t data type: IBM 4-byte floats \n");
-				}
-
-				if (!SEIS_FORMAT[4]) {
-					fprintf(fp," \t coordinate unit: meter \n");
-
-				} else if (SEIS_FORMAT[4]==1) {
-					fprintf(fp," \t coordinate unit: feet \n");
-				}
-
-				break;
-
 			case 1 :
-				fprintf(fp," Seismograms are written in SU-format. \n");
-
-				if (VERBOSE) {
-					if (!SEIS_FORMAT[2]) {
-						fprintf(fp," \t byte order: little endian \n");
-
-					} else if (SEIS_FORMAT[2]==1) {
-						fprintf(fp," \t byte order: big endian \n");
-					}
-
-					if (!SEIS_FORMAT[3]) {
-						fprintf(fp," \t data type: IEEE 4-byte floats \n");
-
-					} else if (SEIS_FORMAT[3]==1) {
-						fprintf(fp," \t CAUTION: data type: IBM 4-byte floats \n");
-					}
-
-					if (!SEIS_FORMAT[4]) {
-						fprintf(fp," \t coordinate unit: meter \n");
-
-					} else if (SEIS_FORMAT[4]==1) {
-						fprintf(fp," \t coordinate unit: feet \n");
-					}
-				}
-
+				fprintf(fp," Seismograms are written in SU-format (output in meter, native endian and floats). \n");
 				break;
 
 			case 2 :
-				if (!SEIS_FORMAT[1]) {
 					fprintf(fp," Seismograms are written in ASCII. \n");
-
-				} else if (!SEIS_FORMAT[1]==1) {
-					fprintf(fp," Seismograms are written in EBCDIC. \n");
-				}
-
-				if (!SEIS_FORMAT[4]) {
-					fprintf(fp," \t coordinate unit: meter \n");
-
-				} else if (SEIS_FORMAT[4]==1) {
-					fprintf(fp," \t coordinate unit: feet \n");
-				}
-
+					fprintf(fp," one Receiver per collumn \n");
 				break;
 
 			case 3 :
 				fprintf(fp," Seismograms are written in binary format.");
 
-				if (!SEIS_FORMAT[2]) {
+				if (!LITTLEBIG) {
 					fprintf(fp," \t byte order: little endian \n");
 
-				} else if (SEIS_FORMAT[2]==1) {
+				} else if (LITTLEBIG==1) {
 					fprintf(fp," \t byte order: big endian \n");
 				}
 
-				if (!SEIS_FORMAT[3]) {
-					fprintf(fp," \t data type: IEEE 4-byte floats \n");
-
-				} else if (SEIS_FORMAT[3]==1) {
-					fprintf(fp," \t data type: IBM 4-byte floats \n");
-				}
-
-				if (!SEIS_FORMAT[4]) {
-					fprintf(fp," \t coordinate unit: meter \n");
-
-				} else if (SEIS_FORMAT[4]==1) {
-					fprintf(fp," \t coordinate unit: feet \n");
-				}
-
 				break;
-
-			case 6 :
-				fprintf(fp," Seismograms are written in pseudo SU-format (SEG-Y with trace headers only). \n");
-
-				if (!SEIS_FORMAT[2]) {
-					fprintf(fp," \t byte order: little endian \n");
-
-				} else if (SEIS_FORMAT[2]==1) {
-					fprintf(fp," \t byte order: big endian \n");
-				}
-
-				if (!SEIS_FORMAT[3]) {
-					fprintf(fp," \t data type: IEEE 4-byte floats \n");
-
-				} else if (SEIS_FORMAT[3]==1) {
-					fprintf(fp," \t CAUTION: data type: IBM 4-byte floats \n");
-				}
-
-				if (!SEIS_FORMAT[4]) {
-					fprintf(fp," \t coordinate unit: meter \n");
-
-				} else if (SEIS_FORMAT[4]==1) {
-					fprintf(fp," \t coordinate unit: feet \n");
-				}
-
-				break;
-
-			case 7 :
-				fprintf(fp," Seismograms are written in SU-format (output in meter, native endian and floats). \n");
-				break;
-
 			default:
 				err(" Sorry. Unknown format for seismic data! \n");
 		}
@@ -606,20 +484,11 @@ void writepar(FILE *fp, int ns) {
 
 		fprintf(fp," Number of samples per receiver:              %i \n", ns);
 
-		if (!SEIS_FORMAT[5]) {
-			SEIS_FORMAT[5]=USHRT_MAX;    /* default */
-		}
 
-		if (ns<=abs(SEIS_FORMAT[5])) {
+		if (ns<=USHRT_MAX) {
 			fprintf(fp," Number of samples per trace:                 %i \n", ns);
-
-		} else if (SEIS_FORMAT[5]<0) {
-			fprintf(fp," Number of samples per trace:                 %i \n", -SEIS_FORMAT[5]);
-			fprintf(fp," Number of traces per receiver:               %i \n", ns / -SEIS_FORMAT[5]);
-			fprintf(fp," Number of significant samples in last trace: %i \n", ns % -SEIS_FORMAT[5]);
-
 		} else {
-			fprintf(fp," Maximum allowed number of samples per trace: %i \n", SEIS_FORMAT[5]);
+			fprintf(fp," Maximum allowed number of samples per trace: %i \n", USHRT_MAX);
 			err(" Sorry. Too many samples per receiver! \n");
 		}
 

@@ -33,14 +33,14 @@ void read_par_json(FILE *fp, char *fileinp) {
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH, PHI;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, ALPHA, BETA;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
-	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, MOD_FORMAT, READREC, RUN_MULTIPLE_SHOTS;
+	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT, FREE_SURF, READMOD, MOD_FORMAT, READREC, RUN_MULTIPLE_SHOTS;
 	extern int BOUNDARY, REC_ARRAY, IDX, IDY, IDZ, ABS_TYPE;
 	extern float TSNAP1, TSNAP2, TSNAPINC, REFREC[4], DAMPING, FPML, VPPML;
 	extern char  MFILE[STRING_SIZE], SIGNAL_FILE[STRING_SIZE];
 	extern char SNAP_FILE[STRING_SIZE], SOURCE_FILE[STRING_SIZE], REC_FILE[STRING_SIZE];
 	extern char SEIS_FILE[STRING_SIZE],GRAD_FILE[STRING_SIZE], SEIS_OBS_FILE[STRING_SIZE],INV_FILE[STRING_SIZE];
 	extern int NPROCX,NPROCY,NPROCZ;
-	extern int ASCIIEBCDIC,LITTLEBIG,IEEEIBM;
+	extern int LITTLEBIG;
 
 	extern float REFSRC[3], SRCTSHIFT;
 	extern int SRC_MF, SIGNAL_FORMAT;
@@ -505,35 +505,17 @@ void read_par_json(FILE *fp, char *fileinp) {
 				fprintf(fp," Variable NDTSHIFT is set to default value %d.\n",NDT);
 			}
 
-			if (get_int_from_objectlist("SEIS_FORMAT",number_readobjects,&SEIS_FORMAT[0],varname_list, value_list)) {
+			if (get_int_from_objectlist("SEIS_FORMAT",number_readobjects,&SEIS_FORMAT,varname_list, value_list)) {
 				err("Variable SEIS_FORMAT could not be retrieved from the json input file!");
 
-			} else {
-				if (SEIS_FORMAT[0]==4) {
-					SEIS_FORMAT[0]=0;
-				}
-
-				if (SEIS_FORMAT[0]==5) {
-					SEIS_FORMAT[0]=0;
-					SEIS_FORMAT[1]=1;
-					SEIS_FORMAT[3]=1;
-					SEIS_FORMAT[4]=0;
-					SEIS_FORMAT[5]=0;
-				}
-			}
+			} 
 		}/*end of seismo*/
 
-		if (get_int_from_objectlist("ASCIIEBCDIC",number_readobjects,&ASCIIEBCDIC,varname_list, value_list)) {
-			ASCIIEBCDIC=0;
-		}
 
 		if (get_int_from_objectlist("LITTLEBIG",number_readobjects,&LITTLEBIG,varname_list, value_list)) {
 			LITTLEBIG=0;
 		}
 
-		if (get_int_from_objectlist("IEEEIBM",number_readobjects,&IEEEIBM,varname_list, value_list)) {
-			IEEEIBM=0;
-		}
 
 		/*=================================
 		 section inversion parameters

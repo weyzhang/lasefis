@@ -45,7 +45,7 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
         extern int NX, NY, NZ, L, MYID, IDX, IDY, IDZ, FW, POS[4], NT, NDT, NDTSHIFT;
 	extern int FDCOEFF;
 	extern int READREC, NPROCX,NPROCY,NPROCZ, FW, ABS_TYPE, SRCREC, FREE_SURF;
-	extern int SNAP, SEISMO, SEIS_FORMAT[6], SNAP_FORMAT;
+	extern int SNAP, SEISMO, SEIS_FORMAT, SNAP_FORMAT;
 	extern int NSHOTS_STEP;
 	/*extern int RUN_MULTIPLE_SHOTS; no determination is done for the output check whether the simulation runs with one or multiple shot
 		-> directorys specified in input file should work in both cases */
@@ -308,16 +308,14 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 	/*Checking SEISMOGRAM Output Particle velocities */
 	/*-------------------------------------- */
 	if (SEISMO>0) {	
-		switch (SEIS_FORMAT[0]){
-			case 0: sprintf(file_ext,"sgy"); break;
+		switch (SEIS_FORMAT){
+			case 0: sprintf(file_ext,"su"); break;
 			case 1: sprintf(file_ext,"su");  break;
 			case 2: sprintf(file_ext,"txt"); break;
 			case 3: sprintf(file_ext,"bin"); break;
-			case 4: sprintf(file_ext,"sgy"); break;
-			case 5: sprintf(file_ext,"sgy"); break;
 		}
 	
-		/*if ((RUN_MULTIPLE_SHOTS)||(SEIS_FORMAT[4])) {
+		/*if ((RUN_MULTIPLE_SHOTS)||(SEIS_FORMAT)) {
 		 possibly many files ... -> perform check of write and execute permission for directories, only 
 		
 			fprintf(fp," Check accessibility for seismogram files (multiple shots) ... \n");
@@ -354,7 +352,7 @@ float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **r
 
 			fprintf(fp," Check accessibility for seismogram files  ... \n");
 		
-			if (SEIS_FORMAT[0]==2) strcpy(xmod,"a");
+			if (SEIS_FORMAT==2) strcpy(xmod,"a");
 			else strcpy(xmod,"ab");			
 			switch (SEISMO){
 			case 1: /* particle velocities only */

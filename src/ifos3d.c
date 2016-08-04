@@ -245,7 +245,7 @@ if(METHOD) nseismograms+=4;
 		if(HESS) memgrad+=3*fac2*fac3;
 		if(LBFGS) membfgs=NUMPAR*BFGSNUM*3*fac3;
 	}
-	memtotal=memdyn+memmodel+memseismograms+membuffer+(buffsize*pow(2.0,-20.0))+memgrad+memdynf+membfgs;
+	memtotal=memdyn+memmodel+memseismograms+membuffer+(buffsize*pow(2.0,-20.0))+memgrad+memdynf+membfgs+memcpml;
 	
 	if (MYID==0){
 		fprintf(FP,"\n ------------------ MEMORY ALLOCATION --------------------------- \n");

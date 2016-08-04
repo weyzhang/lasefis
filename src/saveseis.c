@@ -27,7 +27,7 @@ void saveseis(FILE *fp, float **sectionvx, float **sectionvy,float **sectionvz,
 float **sectionp, float **sectioncurl, float **sectiondiv,
 int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, int obs, int iteration){ 
 		
-	extern int SEISMO, SEIS_FORMAT[6], MYID, RUN_MULTIPLE_SHOTS,NPROC,METHOD;	
+	extern int SEISMO, SEIS_FORMAT, MYID, RUN_MULTIPLE_SHOTS,NPROC,METHOD;	
 	extern char  SEIS_FILE[STRING_SIZE], SEIS_OBS_FILE[STRING_SIZE];
 	extern FILE *FP;
 
@@ -41,14 +41,11 @@ int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, in
 		srcpos1=fmatrix(1,7,1,1);
 		for (nt=1;nt<=7;nt++) srcpos1[nt][1]=srcpos[nt][ishot];
 		
-		switch (SEIS_FORMAT[0]){
-		case 0: sprintf(file_ext,"sgy"); break;
+		switch (SEIS_FORMAT){
+		case 0: sprintf(file_ext,"su"); break;
 		case 1: sprintf(file_ext,"su");  break;
 		case 2: sprintf(file_ext,"txt"); break;
 		case 3: sprintf(file_ext,"bin"); break;
-		case 4: sprintf(file_ext,"sgy"); break;
-		case 5: sprintf(file_ext,"sgy"); break;
-		case 7: sprintf(file_ext,"su"); break;
 		}
 		
 		if(obs==0) sprintf(seisfile,"%s",SEIS_FILE);
