@@ -11,7 +11,7 @@ rec_file='../par/receiver/receiver_toy.dat';
 
 iteration=60;
 
-nx=160; ny=186; nz=160; %ny:vertical
+nx=160; ny=184; nz=160; %ny:vertical
 outx=1; outy=1; outz=1; 
 dh=0.8;
 FW=10;
@@ -137,7 +137,8 @@ imagesc(Z,Y,model_truex);
 line(x_line,y_line,'LineStyle','--','Color','k')
 colb=colorbar;
 coll=get(colb,'xlabel');
-set(coll,'String',[parameter ' in m/s'],'FontSize',fontsize); 
+set(coll,'String',[parameter ' in m/s'],'FontSize',fontsize);
+colormap('jet');
 caxis([caxis_value_1 caxis_value_2])
 set(gca,'ydir','normal');
 %set(gca,'xdir','reverse');
@@ -168,6 +169,7 @@ line(x_line,y_line,'LineStyle','--','Color','k')
 colb=colorbar;
 coll=get(colb,'xlabel');
 set(coll,'String',[parameter ' in m/s'],'FontSize',fontsize); 
+colormap('jet');
 caxis([caxis_value_1 caxis_value_2])
 set(gca,'ydir','normal');
 %set(gca,'xdir','reverse');
@@ -198,6 +200,7 @@ line(x_line,z_line,'LineStyle','--','Color','k')
 colb=colorbar;
 coll=get(colb,'xlabel');
 set(coll,'String',[parameter ' in m/s'],'FontSize',fontsize); 
+colormap('jet');
 caxis([caxis_value_1 caxis_value_2])
 set(gca,'ydir','normal');
 xlabel('x in m','FontSize',fontsize)
@@ -228,6 +231,7 @@ line(x_line,z_line,'LineStyle','--','Color','k')
 colb=colorbar;
 coll=get(colb,'xlabel');
 set(coll,'String',[parameter ' in m/s'],'FontSize',fontsize); 
+colormap('jet');
 caxis([caxis_value_1 caxis_value_2])
 set(gca,'ydir','normal');
 xlabel('x in m','FontSize',fontsize)
@@ -257,6 +261,7 @@ line(x_line,y_line,'LineStyle','--','Color','k')
 colb=colorbar;
 coll=get(colb,'xlabel');
 set(coll,'String',[parameter ' in m/s'],'FontSize',fontsize); 
+colormap('jet');
 caxis([caxis_value_1 caxis_value_2])
 set(gca,'ydir','normal');
 %set(gca,'xdir','reverse');
@@ -286,6 +291,7 @@ imagesc(X,Y,modelz);
 line(x_line,y_line,'LineStyle','--','Color','k')
 colb=colorbar;
 coll=get(colb,'xlabel');
+colormap('jet');
 set(coll,'String',[parameter ' in m/s'],'FontSize',fontsize); 
 caxis([caxis_value_1 caxis_value_2])
 set(gca,'ydir','normal');
