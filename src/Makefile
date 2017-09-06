@@ -13,9 +13,9 @@ MODEL_SCR = hh_toy_true.c
 # Compiler (LAM: CC=hcc, CRAY T3E: CC=cc, SHARCNet: mpicc)
 
 # ON Linux cluster running LAM
-CC=mpicc
+CC=mpiicc
 LFLAGS=-lm -lmpi -lcseife
-CFLAGS=-Wall -O4
+CFLAGS=-Wall -O3
 SFLAGS=-L./../libcseife 
 IFLAGS=-I./../libcseife
 
@@ -152,9 +152,10 @@ IFOS_OBJ_RSG = $(IFOS_SRC_RSG:%.c=%.o)
 # SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 # PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 # SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
+all: seismerge snapmerge ifos3d
 
 seismerge:	$(SEISMERGE_OBJ)
-	$(CC) $(LFLAGS) $(SEISMERGE_OBJ) -o ../bin/seismerge	
+	$(CC) $(SFLAGS) $(LFLAGS) $(SEISMERGE_SCR) -o ../bin/seismerge	
 
 snapmerge:	$(SNAPMERGE_OBJ)
 	$(CC)  $(SFLAGS) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LFLAGS)
