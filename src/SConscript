@@ -17,7 +17,8 @@ def get_branch_hash():
 
   return branch_hash
 
-model_scr = "hh_toy_true.c"
+if not model_scr:  
+  model_scr = "hh_toy_true.c"
 
 ifos_util = """
 absorb.c \

@@ -26,4 +26,5 @@ dirlist = [
 ]
 dirs = dict(dirlist)
 
-SConscript('src/SConscript', variant_dir = 'build', duplicate = 0, exports = 'env')
+model_scr = ARGUMENTS.get('model_scr')    
+SConscript('src/SConscript', variant_dir = 'build', duplicate = 0, exports = 'env model_scr')
