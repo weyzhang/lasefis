@@ -2,9 +2,9 @@
 "MODELING PARAMETERS" : "comment",
 
 "Domain Decomposition" : "comment",
-			"NPROCX" : "16",
-			"NPROCY" : "4",
-			"NPROCZ" : "16",
+			"NPROCX" : "2",
+			"NPROCY" : "2",
+			"NPROCZ" : "2",
 
 "3-D Grid" : "comment",
 			"NX" : "160",
