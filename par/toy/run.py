@@ -68,7 +68,7 @@ shutil.copy('model/%s.vp_it0' % param['PREFIX'], 'model/%s.vp.true' % param['PRE
 shutil.copy('model/%s.rho_it0' % param['PREFIX'], 'model/%s.rho.true' % param['PREFIX'])
 
 compile('../../libcseife', '')
-compile('../../', 'model_scr=hh_toy_true.c')
+compile('../../', 'model_scr=hh_toy_start.c')
 param = read_json('inv.json')
 
 run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)

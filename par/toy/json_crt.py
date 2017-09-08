@@ -91,6 +91,7 @@ param_inv = {
   "INVERSION PARAMETERS" : "comment",
 
   "In- and Output Files" : "comment",
+        "GRADMO" : "0",
         "GRAD_FILE" : "./grad/grad",
         "MOD_OUT_FILE" : "./model/%s" % prefix,
         "SEIS_OBS_FILE" : "./su_obs/obs",
