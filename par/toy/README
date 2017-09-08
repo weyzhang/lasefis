@@ -1,0 +1,11 @@
+case: toy
+files: run.py, json_crt.py, input/(sources.dat, receivers.dat, workflow.dat)
+Usage:
+  mkdir -p job
+  cp -r par/toy job
+  cd job/toy
+  ./json_crt.py
+  ./run.py
+
+Clean:
+  ./run.py -c
