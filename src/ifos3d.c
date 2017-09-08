@@ -993,17 +993,20 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 		
 		if(METHOD){
 			/*output Hessian*/
-			if(HESS&&iteration==1) outgrad(NX,NY,NZ,hess1,hess2,hess3,finv[0],iteration, HESS_FILE);
+			if(HESS&&iteration==1 && GRADMO) 
+        outgrad(NX,NY,NZ,hess1,hess2,hess3,finv[0],iteration, HESS_FILE);
 		
 			/*output "raw" gradient*/
 			fprintf(FP,"\n raw Gradient: \n");
-			outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration, GRAD_FILE);
+      if(GRADMO)
+        outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration, GRAD_FILE);
 			
 			if(HESS) hess_apply(1,NX,1,NY,1,NZ,grad1,grad2,grad3,hess1,hess2,hess3,finv[0],iteration);
 			
 			/*preconditioning of gradient*/
 			precon_grad(NX,NY,NZ,grad1,grad2,grad3,nsrc,srcpos,ntr_glob,recpos,finv[0],iteration,cdf);
-			outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration+1000, GRAD_FILE);
+      if(GRADMO)
+        outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration+1000, GRAD_FILE);
 			if(LBFGS){
 				if(it_group>1){
 					/*lbfgs(grad1, hess1, bfgsscale1, bfgsmod1, bfgsgrad1,iteration);*/
@@ -1013,7 +1016,8 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 				else lbfgs_savegrad(grad1,grad2,grad3,bfgsgrad1);
 			}
 			if(!LBFGS) conjugate(NX,NY,NZ,grad1,grad2,grad3,gradprior1,gradprior2,gradprior3,gradprior4,gradprior5,gradprior6,beta,iteration,cdf);
-			outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration+2000, GRAD_FILE);
+      if(GRADMO)
+        outgrad(NX,NY,NZ,grad1,grad2,grad3,finv[0],iteration+2000, GRAD_FILE);
 		
 		/*---------------------------------------steplength calculation----------------------------------------------------------------*/
 		
