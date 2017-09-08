@@ -42,6 +42,7 @@ void exchange_par(void){
 	extern char  FILEINP[STRING_SIZE];
 	extern int   LITTLEBIG, ASCIIEBCDIC, IEEEIBM;
 	extern int METHOD;
+	extern int GRADMO;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS, EXTOBS;
 	extern int BFGSNUM, NUMPAR, LBFGS;
 	/*extern float F_INV;*/
@@ -151,12 +152,14 @@ void exchange_par(void){
 		idum[54] = LBFGS;
 		idum[55] = NUMPAR;
 		idum[56] = BFGSNUM;
+
+		idum[57] = GRADMO;
 		}
 
 	if (MYID != 0) FL=vector(1,L);
 	MPI_Barrier(MPI_COMM_WORLD);
 
-	MPI_Bcast(&idum,57,MPI_INT,0,MPI_COMM_WORLD);
+	MPI_Bcast(&idum,58,MPI_INT,0,MPI_COMM_WORLD);
 	MPI_Bcast(&fdum,42,MPI_FLOAT,0,MPI_COMM_WORLD);
 
 	MPI_Bcast(&SOURCE_FILE,STRING_SIZE,MPI_CHAR,0,MPI_COMM_WORLD);
@@ -275,7 +278,9 @@ void exchange_par(void){
 	LBFGS = idum[54];
 	NUMPAR = idum[55];
 	BFGSNUM = idum[56];
-	
+
+	GRADMO = idum[57];
+
 	MPI_Bcast(&FL[1],L,MPI_FLOAT,0,MPI_COMM_WORLD);
 
 }
