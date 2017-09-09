@@ -5,7 +5,9 @@ import shutil
 import json
 rm_dirs = ['grad', 'hess', 'su', 'su_obs']
 mk_dirs = ['log', 'model']
-files = ['*.json', 'bsub.out']
+FW_JSON = 'fw.json'
+INV_JSON = 'inv.json'
+files = [FW_JSON, INV_JSON, 'bsub.out']
 
 def init():
   for f in (rm_dirs + mk_dirs):
@@ -51,7 +53,7 @@ def run(submit_cmd, param):# {{{
   os.system(cmd)
 # }}}
 
-if len(sys.argv) == 2 and sys.argv[1] == '-c':
+if '-c' in sys.argv:
   clean()
   exit()
 
@@ -59,7 +61,7 @@ exe="../../bin/ifos3d"
 init()
 compile('../../libcseife/', '')
 compile('../../', 'model_scr=hh_toy_true.c')
-param = read_json('fw.json')
+param = read_json(FW_JSON)
 
 run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
 
@@ -69,6 +71,6 @@ shutil.copy('model/%s.rho_it0' % param['PREFIX'], 'model/%s.rho.true' % param['P
 
 compile('../../libcseife', '')
 compile('../../', 'model_scr=hh_toy_start.c')
-param = read_json('inv.json')
+param = read_json(INV_JSON)
 
 run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
