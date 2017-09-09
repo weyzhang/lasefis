@@ -59,6 +59,7 @@ param_fw = {
 
   "Receiver" : "comment",
         "SEISMO" : "1",
+        "SAVESU" : "1",
         "READREC" : "2",
 
   "Receiver array" : "comment",
@@ -84,6 +85,7 @@ param_inv = {
   "LOG_FILE" : "log/inv.log",
   "Seismograms" : "comment",
         "SEIS_FILE" : "./su/cal",
+        "SAVESU" : "0",
 
   "Method" : "comment",
         "METHOD" : "1",
