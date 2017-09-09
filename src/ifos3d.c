@@ -814,9 +814,11 @@ CPML_coeff(K_x,alpha_prime_x,a_x,b_x,K_x_half,alpha_prime_x_half,a_x_half,b_x_ha
 			} /* end of loop over timesteps forward propagation*/
 
 			if (SEISMO){
+        if(SAVESU) {
 			  	saveseis(FP,sectionvx,sectionvy,sectionvz,sectionp,sectioncurl,sectiondiv,recpos,recpos_loc,ntr,srcpos,ishot,ns,0,iteration);
+        }
 			}	
-			
+
 			/* output timing information (real times for update and exchange) */
 			/*if (LOG)
 			if (MYID==0) timing(time_v_update,time_s_update, time_s_exchange,time_v_exchange,time_timestep, ishot);*/

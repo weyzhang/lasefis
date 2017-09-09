@@ -43,11 +43,12 @@ void exchange_par(void){
 	extern int   LITTLEBIG, ASCIIEBCDIC, IEEEIBM;
 	extern int METHOD;
 	extern int GRADMO;
+	extern int SAVESU;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS, EXTOBS;
 	extern int BFGSNUM, NUMPAR, LBFGS;
 	/*extern float F_INV;*/
 	extern float TESTSTEP, WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
-	int idum[57];
+	int idum[59];
 	float fdum[42];
 	
 	
@@ -154,12 +155,13 @@ void exchange_par(void){
 		idum[56] = BFGSNUM;
 
 		idum[57] = GRADMO;
+		idum[58] = SAVESU;
 		}
 
 	if (MYID != 0) FL=vector(1,L);
 	MPI_Barrier(MPI_COMM_WORLD);
 
-	MPI_Bcast(&idum,58,MPI_INT,0,MPI_COMM_WORLD);
+	MPI_Bcast(&idum,59,MPI_INT,0,MPI_COMM_WORLD);
 	MPI_Bcast(&fdum,42,MPI_FLOAT,0,MPI_COMM_WORLD);
 
 	MPI_Bcast(&SOURCE_FILE,STRING_SIZE,MPI_CHAR,0,MPI_COMM_WORLD);
@@ -280,6 +282,7 @@ void exchange_par(void){
 	BFGSNUM = idum[56];
 
 	GRADMO = idum[57];
+	SAVESU = idum[58];
 
 	MPI_Bcast(&FL[1],L,MPI_FLOAT,0,MPI_COMM_WORLD);
 

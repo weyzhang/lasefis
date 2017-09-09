@@ -47,6 +47,7 @@ void read_par_json(FILE *fp, char *fileinp) {
 	extern char MOD_OUT_FILE[STRING_SIZE], HESS_FILE[STRING_SIZE];
 	extern int METHOD;
   extern int GRADMO;
+  extern int SAVESU;
 	extern int ITMIN, ITMAX, FILT, NFMAX, TAST, NSHOTS_STEP, DAMPTYPE, HESS, READ_HESS, REC_HESS,EXTOBS,LBFGS;
 	/*extern float F_INV;*/
 	extern float TESTSTEP, WATER_HESS[3], WEIGHT[3], VP0, VS0, RHO0;
@@ -526,6 +527,10 @@ void read_par_json(FILE *fp, char *fileinp) {
 		if (get_int_from_objectlist("METHOD",number_readobjects,&METHOD,varname_list, value_list)) {
 			err("Variable METHOD could not be retrieved from the json input file!");
 		}
+
+    if (get_int_from_objectlist("SAVESU",number_readobjects,&SAVESU,varname_list, value_list)) {
+      err("Variable SAVESU could not be retrieved from the json input file!");
+    }
 
 		else {
 			if (METHOD==1) {	/* FWI is calculated */
