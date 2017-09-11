@@ -4,17 +4,20 @@ import sys
 import shutil
 import json
 rm_dirs = ['grad', 'hess', 'su', 'su_obs']
-mk_dirs = ['log', 'model']
+mk_dirs = ['model', 'log']
 FW_JSON = 'fw.json'
 INV_JSON = 'inv.json'
 files = [FW_JSON, INV_JSON, 'bsub.out']
 
 def init():
-  for f in (rm_dirs + mk_dirs):
+  for f in rm_dirs:
     if os.path.exists(f):
       shutil.rmtree(f)
       os.mkdir(f)
     else:
+      os.mkdir(f)
+  for f in mk_dirs:
+    if not os.path.exists(f):
       os.mkdir(f)
 
 def clean():
@@ -58,19 +61,23 @@ if '-c' in sys.argv:
   exit()
 
 exe="../../bin/ifos3d"
-init()
-compile('../../libcseife/', '')
-compile('../../', 'model_scr=hh_toy_true.c')
-param = read_json(FW_JSON)
+if 'fw' in sys.argv:
+  init()
+  compile('../../libcseife/', '')
+  compile('../../', 'model_scr=hh_toy_true.c')
+  param = read_json(FW_JSON)
 
-run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
+  run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
 
-shutil.copy('model/%s.vs_it0' % param['PREFIX'], 'model/%s.vs.true' % param['PREFIX'])
-shutil.copy('model/%s.vp_it0' % param['PREFIX'], 'model/%s.vp.true' % param['PREFIX'])
-shutil.copy('model/%s.rho_it0' % param['PREFIX'], 'model/%s.rho.true' % param['PREFIX'])
+  shutil.copy('model/%s.vs_it0' % param['PREFIX'], 'model/%s.vs.true' % param['PREFIX'])
+  shutil.copy('model/%s.vp_it0' % param['PREFIX'], 'model/%s.vp.true' % param['PREFIX'])
+  shutil.copy('model/%s.rho_it0' % param['PREFIX'], 'model/%s.rho.true' % param['PREFIX'])
 
-compile('../../libcseife', '')
-compile('../../', 'model_scr=hh_toy_start.c')
-param = read_json(INV_JSON)
+elif 'inv' in sys.argv:
+  compile('../../libcseife', '')
+  compile('../../', 'model_scr=hh_toy_start.c')
+  param = read_json(INV_JSON)
 
-run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
+  run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
+else:
+  print 'Usage: ./run.py fw or ./run.py inv'
