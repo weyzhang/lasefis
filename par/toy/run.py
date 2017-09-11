@@ -3,10 +3,13 @@ import os
 import sys
 import shutil
 import json
-rm_dirs = ['grad', 'hess', 'su', 'su_obs']
-mk_dirs = ['model', 'log']
 FW_JSON = 'fw.json'
 INV_JSON = 'inv.json'
+QUEUE_NAME = 'q_sw_share'
+JOB_NAME = 'toy'
+
+rm_dirs = ['grad', 'hess', 'su', 'su_obs']
+mk_dirs = ['model', 'snap', 'log']
 files = [FW_JSON, INV_JSON, 'bsub.out']
 
 def init():
@@ -67,7 +70,7 @@ if 'fw' in sys.argv:
   compile('../../', 'model_scr=hh_toy_true.c')
   param = read_json(FW_JSON)
 
-  run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
+  run(bsub_x86(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
 
   shutil.copy('model/%s.vs_it0' % param['PREFIX'], 'model/%s.vs.true' % param['PREFIX'])
   shutil.copy('model/%s.vp_it0' % param['PREFIX'], 'model/%s.vp.true' % param['PREFIX'])
@@ -78,6 +81,6 @@ elif 'inv' in sys.argv:
   compile('../../', 'model_scr=hh_toy_start.c')
   param = read_json(INV_JSON)
 
-  run(bsub_x86(queue="q_x86_share", np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job='toy', prog=exe), param)
+  run(bsub_x86(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
 else:
   print 'Usage: ./run.py fw or ./run.py inv'
