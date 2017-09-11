@@ -3,9 +3,10 @@ import os
 import sys
 import shutil
 import json
-FW_JSON = 'fw.json'
-INV_JSON = 'inv.json'
-QUEUE_NAME = 'q_sw_share'
+import json_crt
+FW_JSON = json_crt.param_fw['JSON_FILE']
+INV_JSON = json_crt.param_inv['JSON_FILE']
+QUEUE_NAME = 'q_x86_share'
 JOB_NAME = 'toy'
 
 rm_dirs = ['grad', 'hess', 'su', 'su_obs']
@@ -70,7 +71,10 @@ if 'fw' in sys.argv:
   compile('../../', 'model_scr=hh_toy_true.c')
   param = read_json(FW_JSON)
 
-  run(bsub_x86(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
+  if 'sw' in QUEUE_NAME:
+    run(bsub_sw(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
+  elif 'x86' in QUEUE_NAME:
+    run(bsub_x86(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
 
   shutil.copy('model/%s.vs_it0' % param['PREFIX'], 'model/%s.vs.true' % param['PREFIX'])
   shutil.copy('model/%s.vp_it0' % param['PREFIX'], 'model/%s.vp.true' % param['PREFIX'])
@@ -81,6 +85,10 @@ elif 'inv' in sys.argv:
   compile('../../', 'model_scr=hh_toy_start.c')
   param = read_json(INV_JSON)
 
-  run(bsub_x86(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
+  if 'sw' in QUEUE_NAME:
+    run(bsub_sw(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
+  elif 'x86' in QUEUE_NAME:
+    run(bsub_x86(queue=QUEUE_NAME, np=int(param['NPROCX'])*int(param['NPROCY'])*int(param['NPROCZ']), job=JOB_NAME, prog=exe), param)
+
 else:
   print 'Usage: ./run.py fw or ./run.py inv'

@@ -3,6 +3,7 @@ import os
 import json
 prefix = "toy"
 param_fw = {
+  'JSON_FILE' : 'fw.json',
   "MODELING PARAMETERS" : "comment",
   "PREFIX" : "%s" % prefix,
   "LOG_FILE" : "log/fw.log",
@@ -10,9 +11,9 @@ param_fw = {
   "Note that y denotes the vertical direction !" : "comment",
 
   "Domain Decomposition" : "comment",
-        "NPROCX" : "2",
-        "NPROCY" : "2",
-        "NPROCZ" : "2",
+        "NPROCX" : "16",
+        "NPROCY" : "4",
+        "NPROCZ" : "16",
 
   "3-D Grid" : "comment",
         "NX" : "160",
@@ -82,6 +83,7 @@ param_fw = {
 }
 
 param_inv = {
+  'JSON_FILE' : 'inv.json',
   "LOG_FILE" : "log/inv.log",
   "Seismograms" : "comment",
         "SEIS_FILE" : "./su/cal",
@@ -122,8 +124,8 @@ param_inv = {
         "LBFGS" : "0"
 }
 
-with open('fw.json', 'w') as json_file:
+with open(param_fw['JSON_FILE'], 'w') as json_file:
   json_file.write(json.dumps(param_fw, indent = 1))
 param_fw.update(param_inv)  
-with open('inv.json', 'w') as json_file:
+with open(param_inv['JSON_FILE'], 'w') as json_file:
   json_file.write(json.dumps(param_fw, indent = 1))
