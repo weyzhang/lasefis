@@ -101,7 +101,7 @@ constant_boundary.c \
 %s 
 """ % (model_scr, ifos_util)).split())
 ifos3d =  env.Program(target = bin_name, source = obj1,
-                      LINK = ['mpiicc'])
+                      LINK = ['mpicc'])
 
 env.Install('#bin', ifos3d)
 

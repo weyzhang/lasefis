@@ -10,9 +10,9 @@ inc_path = ['-isystem', '.']
 lib_name = 'libcseife.a'
 
 # compiler flags
-env['F90'] = ['mpiifort']
-env['CC'] = ['mpiicc']
-env['LINK'] = ['mpiicc', '-wd11021']
+env['F90'] = ['mpif90']
+env['CC'] = ['mpicc']
+env['LINK'] = ['mpicc', '-wd11021']
 env.Append(CCFLAGS = ['-w', '-O3'] + inc_path, F90FLAGS = ['-O2'])
 env.Append(LIBS = ['m', 'cseife'])
 

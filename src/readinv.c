@@ -85,3 +85,4 @@ void readinv(float *finv, int *nf, int *groupnum,int *itpergroup,int nfmax){
 		
 
 }
+

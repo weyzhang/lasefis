@@ -23,6 +23,8 @@
 
 
 /* files to include */
+#ifndef H_FD
+#define H_FD
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -425,3 +427,4 @@ void lbfgs(float ***grad1, float ***grad2, float ***grad3, float *bfgsscale, flo
 void lbfgs_savegrad(float ***grad1, float ***grad2, float ***grad3,float **bfgsgrad1);
 
 void constant_boundary(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float ***  pi, float ***  u, float *** rho);
+#endif

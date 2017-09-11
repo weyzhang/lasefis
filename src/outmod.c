@@ -83,3 +83,4 @@ void outmod(int nx,int ny,int nz,float ***rho, float ***pi,float ***u, int itera
 	remove(modfile2);
 	remove(modfile3);	
 }
+
