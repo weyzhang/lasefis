@@ -1,0 +1,17 @@
+2.1-git	sfmath	job/py-toy-small-40/snap:	wyw@psn004	Mon Sep 11 16:14:55 2017
+
+	x2=1
+	d2=1
+	n2=40
+	o1=0
+	x3=2
+	d3=1
+	n3=46
+	o2=0
+	data_format="native_float"
+	o3=0
+	esize=4
+	in="toy.bin.y.000"
+	x1=0
+	d1=1
+	n1=40
