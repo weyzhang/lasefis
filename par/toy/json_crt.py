@@ -126,6 +126,7 @@ param_inv = {
 
 with open(param_fw['JSON_FILE'], 'w') as json_file:
   json_file.write(json.dumps(param_fw, indent = 1))
-param_fw.update(param_inv)  
+param_fwt = param_fw.copy()
+param_fwt.update(param_inv)  
 with open(param_inv['JSON_FILE'], 'w') as json_file:
-  json_file.write(json.dumps(param_fw, indent = 1))
+  json_file.write(json.dumps(param_fwt, indent = 1))
