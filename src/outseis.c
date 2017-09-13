@@ -24,304 +24,313 @@
 #include "fd.h"
 #include "segy.h"
 
-/* ****************************  UNDER CONSTRUCTION !!!  ***************************** */
-
-
-void  outseis(FILE *fp, FILE *fpdata, int comp, float **section,
-              int **recpos, int **recpos_loc, int ntr, float **srcpos,
-              int nsrc, int ns, int seis_form) {
-	/* declaration of extern variables */
-	extern int NDT;
-	extern float  DX, DY, DZ, TIME, DT, REFREC[4];
-
-	extern int LITTLEBIG;
-
-	/* declaration of local variables */
-	int i,j, * pint;
-	segy tr;
-	int tracl ;
-	float xr, yr, zr, y, z, scalefac, tfloat;  /*x*/
-	float XS=0.0, YS=0.0, ZS=0.0;
-	const float scale=3.0;
-	
+/* ****************************  UNDER CONSTRUCTION !!!
+ * ***************************** */
+
+void outseis(FILE* fp, FILE* fpdata, int comp, float** section, int** recpos,
+             int** recpos_loc, int ntr, float** srcpos, int nsrc, int ns,
+             int seis_form) {
+  /* declaration of extern variables */
+  extern int NDT;
+  extern float DX, DY, DZ, TIME, DT, REFREC[4];
+
+  extern int LITTLEBIG;
+
+  /* declaration of local variables */
+  int i, j, *pint;
+  segy tr;
+  int tracl;
+  float xr, yr, zr, y, z, scalefac, tfloat; /*x*/
+  float XS = 0.0, YS = 0.0, ZS = 0.0;
+  const float scale = 3.0;
+
+  if (nsrc == 1) {
+    /* only if one source position is specified in SOURCE_FILE,
+                    source coordinates are written into trace header fields */
+    XS = srcpos[1][1];
+    YS = srcpos[2][1];
+    ZS = srcpos[3][1];
+  }
+
+  scalefac = pow(10.0, scale);
+
+  switch (seis_form) {
+    case 0:
+    case 1: /* SU ~ (IEEE)  */
+
+      /* fprintf(stderr,"BEEN HERE !!!\n"); */
+      for (tracl = 1; tracl <= ntr; tracl++) {
+        xr = recpos[1][recpos_loc[4][tracl]] * DX;
+        yr = recpos[2][recpos_loc[4][tracl]] * DY;
+        zr = recpos[3][recpos_loc[4][tracl]] * DZ;
+        /*x=xr-REFREC[1];*/
+        y = yr - REFREC[2];
+        z = zr - REFREC[3];
+        tr.tracl = recpos_loc[4][tracl]; /* trace sequence number within line */
+        tr.ep = comp;
+        // tr.cdp=recpos_loc[4][tracl];
+        tr.trid = 1; /* trace identification code: 1=seismic*/
+        tr.offset = iround(sqrt((XS - xr) * (XS - xr) + (YS - yr) * (YS - yr) +
+                                (ZS - zr) * (ZS - zr)) *
+                           scalefac);
+        tr.gelev = iround(yr * scalefac);
+        tr.sdepth = iround(YS * scalefac); /* source depth (positive) */
+
+        /* angle between receiver position and reference point
+                       (sperical coordinate system: used for tunnel geometry) */
+        tr.gdel = iround(atan2(-y, z) * 180.0 * scalefac / PI);
+        tr.gwdep = iround(sqrt(z * z + y * y) * scalefac);
+
+        tr.scalel = (short)(-scale);
+        tr.scalco = (short)(-scale);
+        tr.sx = iround(XS * scalefac); /* X source coordinate */
+        tr.sy = iround(ZS * scalefac); /* Z source coordinate */
+
+        /* group coordinates */
+        tr.gx = iround(xr * scalefac);
+        tr.gy = iround(zr * scalefac);
+
+        tr.ns = (unsigned short)ns; /* number of samples in this trace */
+        tr.dt = (unsigned short)iround(
+            ((float)NDT * DT) * 1.0e6); /* sample interval in micro-seconds */
+        tr.d1 = (float)(TIME / ns); /* sample spacing for non-seismic data */
+        tr.d1 = 0;
+        tr.tracr = 0; /* trace sequence number within reel */
 
-	if (nsrc==1) {
-		/* only if one source position is specified in SOURCE_FILE,
-			source coordinates are written into trace header fields */
-		XS=srcpos[1][1];
-		YS=srcpos[2][1];
-		ZS=srcpos[3][1];
-	}
+        tr.fldr = 0; /* field record number */
 
-	scalefac=pow(10.0,scale);
+        tr.tracf = 0; /* trace number within field record */
 
-	switch (seis_form) {
-	case 0 :
-	case 1 : /* SU ~ (IEEE)  */
+        tr.ep = 0; /* energy source point number */
 
-		/* fprintf(stderr,"BEEN HERE !!!\n"); */
-		for (tracl=1; tracl<=ntr; tracl++) {
-			xr=recpos[1][recpos_loc[4][tracl]]*DX;
-			yr=recpos[2][recpos_loc[4][tracl]]*DY;
-			zr=recpos[3][recpos_loc[4][tracl]]*DZ;
-			/*x=xr-REFREC[1];*/
-			y=yr-REFREC[2];
-			z=zr-REFREC[3];
-			tr.tracl=recpos_loc[4][tracl];      /* trace sequence number within line */
-			tr.ep=comp;
-			//tr.cdp=recpos_loc[4][tracl];
-			tr.trid=1;           /* trace identification code: 1=seismic*/
-			tr.offset=iround(sqrt((XS-xr)*(XS-xr)
-			                      +(YS-yr)*(YS-yr)
-			                      +(ZS-zr)*(ZS-zr))*scalefac);
-			tr.gelev=iround(yr*scalefac);
-			tr.sdepth=iround(YS*scalefac);   /* source depth (positive) */
+        tr.cdpt = 0; /* trace number within CDP ensemble */
 
-			/* angle between receiver position and reference point
-			   (sperical coordinate system: used for tunnel geometry) */
-			tr.gdel=iround(atan2(-y,z)*180.0*scalefac/PI);
-			tr.gwdep=iround(sqrt(z*z+y*y)*scalefac);
+        tr.nvs = 0; /* number of vertically summed traces (see vscode
+                                            in bhed structure) */
 
-			tr.scalel=(short)(-scale);
-			tr.scalco=(short)(-scale);
-			tr.sx=iround(XS*scalefac);  /* X source coordinate */
-			tr.sy=iround(ZS*scalefac);  /* Z source coordinate */
+        tr.nhs = 0; /* number of horizontally summed traces (see vscode
+                                            in bhed structure) */
 
-			/* group coordinates */
-			tr.gx=iround(xr*scalefac);
-			tr.gy=iround(zr*scalefac);
+        tr.duse = 0; /* data use:
+                                            1 = production
+                                            2 = test */
 
+        tr.gdel = 0; /* datum elevation at receiver group */
 
-			tr.ns=(unsigned short)ns; /* number of samples in this trace */
-			tr.dt=(unsigned short)iround(((float)NDT*DT)*1.0e6); /* sample interval in micro-seconds */
-			tr.d1=(float)(TIME/ns);        /* sample spacing for non-seismic data */
-			tr.d1=0;
-			tr.tracr=0	;	/* trace sequence number within reel */
+        tr.sdel = 0; /* datum elevation at source */
 
-			tr.fldr=0       ;	/* field record number */
+        tr.gwdep = 0; /* water depth at receiver group */
 
-			tr.tracf=0      ;	/* trace number within field record */
+        tr.counit =
+            0; /* coordinate units code:
+                                    for previous four entries
+                                    1 = length (meters or feet)
+                                    2 = seconds of arc (in this case, the
+                                    X values are longitude and the Y values
+                                    are latitude, a positive value designates
+                                    the number of seconds east of Greenwich
+                                    or north of the equator */
 
-			tr.ep=0         ;	/* energy source point number */
+        tr.wevel = 0; /* weathering velocity */
 
-			tr.cdpt=0       ;	/* trace number within CDP ensemble */
+        tr.swevel = 0; /* subweathering velocity */
 
+        tr.sut = 0; /* uphole time at source */
 
-			tr.nvs=0       	;   /* number of vertically summed traces (see vscode
-			   			in bhed structure) */
+        tr.gut = 0; /* uphole time at receiver group */
 
-			tr.nhs=0       	;   /* number of horizontally summed traces (see vscode
-			  			in bhed structure) */
+        tr.sstat = 0; /* source static correction */
 
-			tr.duse=0     	;   /* data use:
-						1 = production
-						2 = test */
+        tr.gstat = 0; /* group static correction */
 
-			tr.gdel=0      	; /* datum elevation at receiver group */
+        tr.tstat = 0; /* total static applied */
 
-			tr.sdel=0      	; /* datum elevation at source */
+        tr.laga =
+            0; /* lag time A, time in ms between end of 240-
+                                      byte trace identification header and time
+                                      break, positive if time break occurs after
+                                      end of header, time break is defined as
+                                      the initiation pulse which maybe recorded
+                                      on an auxiliary trace or as otherwise
+                                      specified by the recording system */
 
-			tr.gwdep=0     	; /* water depth at receiver group */
+        tr.lagb = 0; /* lag time B, time in ms between the time break
+                                            and the initiation time of the
+                        energy source,
+                                            may be positive or negative */
 
-			tr.counit=0    	;   /* coordinate units code:
-						for previous four entries
-						1 = length (meters or feet)
-						2 = seconds of arc (in this case, the
-						X values are longitude and the Y values
-						are latitude, a positive value designates
-						the number of seconds east of Greenwich
-						or north of the equator */
+        tr.delrt =
+            0; /* delay recording time, time in ms between
+                                     initiation time of energy source and time
+                                     when recording of data samples begins
+                                     (for deep water work if recording does not
+                                     start at zero time) */
 
-			tr.wevel=0     ;	/* weathering velocity */
+        tr.muts = 0; /* mute time--start */
 
-			tr.swevel=0    ;	/* subweathering velocity */
+        tr.mute = 0; /* mute time--end */
 
-			tr.sut=0       ;	/* uphole time at source */
+        tr.gain = 0; /* gain type of field instruments code:
+                                            1 = fixed
+                                            2 = binary
+                                            3 = floating point
+                                            4 ---- N = optional use */
 
-			tr.gut=0       ;	/* uphole time at receiver group */
+        tr.igc = 0; /* instrument gain constant */
 
-			tr.sstat=0     ;	/* source static correction */
+        tr.igi = 0; /* instrument early or initial gain */
 
-			tr.gstat=0     ;	/* group static correction */
+        tr.corr = 0; /* correlated:
+                                            1 = no
+                                            2 = yes */
 
-			tr.tstat=0     ;	/* total static applied */
+        tr.sfs = 0; /* sweep frequency at start */
 
-			tr.laga=0      ; /* lag time A, time in ms between end of 240-
-			   			byte trace identification header and time
-			   			break, positive if time break occurs after
-			   			end of header, time break is defined as
-			   			the initiation pulse which maybe recorded
-			   			on an auxiliary trace or as otherwise
-			   			specified by the recording system */
+        tr.sfe = 0; /* sweep frequency at end */
 
-			tr.lagb=0     	; /* lag time B, time in ms between the time break
-			   			and the initiation time of the energy source,
-			   			may be positive or negative */
+        tr.slen = 0; /* sweep length in ms */
 
-			tr.delrt=0     	; /* delay recording time, time in ms between
-			   			initiation time of energy source and time
-			   			when recording of data samples begins
-			   			(for deep water work if recording does not
-			   			start at zero time) */
+        tr.styp = 0; /* sweep type code:
+                                            1 = linear
+                                            2 = cos-squared
+                                            3 = other */
 
-			tr.muts=0      ; /* mute time--start */
+        tr.stas = 0; /* sweep trace length at start in ms */
 
-			tr.mute=0      ; /* mute time--end */
+        tr.stae = 0; /* sweep trace length at end in ms */
 
-			tr.gain=0      ; /* gain type of field instruments code:
-						1 = fixed
-						2 = binary
-						3 = floating point
-						4 ---- N = optional use */
+        tr.tatyp = 0; /* taper type: 1=linear, 2=cos^2, 3=other */
 
-			tr.igc=0       ; /* instrument gain constant */
+        tr.afilf = 0; /* alias filter frequency if used */
 
-			tr.igi=0       ; /* instrument early or initial gain */
+        tr.afils = 0; /* alias filter slope */
 
-			tr.corr=0      ; /* correlated:
-						1 = no
-						2 = yes */
+        tr.nofilf = 0; /* notch filter frequency if used */
 
-			tr.sfs=0       ; /* sweep frequency at start */
+        tr.nofils = 0; /* notch filter slope */
 
-			tr.sfe=0       ; /* sweep frequency at end */
+        tr.lcf = 0; /* low cut frequency if used */
 
-			tr.slen=0      ; /* sweep length in ms */
+        tr.hcf = 0; /* high cut frequncy if used */
 
-			tr.styp=0      ; /* sweep type code:
-						1 = linear
-						2 = cos-squared
-						3 = other */
+        tr.lcs = 0; /* low cut slope */
 
-			tr.stas=0      	; /* sweep trace length at start in ms */
+        tr.hcs = 0; /* high cut slope */
 
-			tr.stae=0      	; /* sweep trace length at end in ms */
+        tr.year = 0; /* year data recorded */
 
-			tr.tatyp=0     	; /* taper type: 1=linear, 2=cos^2, 3=other */
+        tr.day = 0; /* day of year */
 
-			tr.afilf=0     	; /* alias filter frequency if used */
+        tr.hour = 0; /* hour of day (24 hour clock) */
 
-			tr.afils=0     	; /* alias filter slope */
+        tr.minute = 0; /* minute of hour */
 
-			tr.nofilf=0    	; /* notch filter frequency if used */
+        tr.sec = 0; /* second of minute */
 
-			tr.nofils=0   	; /* notch filter slope */
+        tr.timbas = 0; /* time basis code:
+                                            1 = local
+                                            2 = GMT
+                                            3 = other */
 
-			tr.lcf=0      	; /* low cut frequency if used */
+        tr.trwf =
+            0; /* trace weighting factor, defined as 1/2^N
+                                      volts for the least sigificant bit */
 
-			tr.hcf=0      	; /* high cut frequncy if used */
+        tr.grnors = 0; /* geophone group number of roll switch
+                                            position one */
 
-			tr.lcs=0       	; /* low cut slope */
+        tr.grnofr = 0; /* geophone group number of trace one within
+                                            original field record */
 
-			tr.hcs=0       	; /* high cut slope */
+        tr.grnlof = 0; /* geophone group number of last trace within
+                                            original field record */
 
-			tr.year=0      	; /* year data recorded */
+        tr.gaps = 0; /* gap size (total number of groups dropped) */
 
-			tr.day=0       	; /* day of year */
+        tr.otrav = 0; /* overtravel taper code:
+                                            1 = down (or behind)
+                                            2 = up (or ahead) */
 
-			tr.hour=0     	; /* hour of day (24 hour clock) */
+        /* local assignments */
 
-			tr.minute=0    	; /* minute of hour */
+        tr.f1 = 0.0; /* first sample location for non-seismic data */
 
-			tr.sec=0       	; /* second of minute */
+        tr.d2 = 0.0; /* sample spacing between traces */
 
-			tr.timbas=0    	; /* time basis code:
-						1 = local
-						2 = GMT
-						3 = other */
+        tr.f2 = 0.0; /* first trace location */
 
-			tr.trwf=0      	; /* trace weighting factor, defined as 1/2^N
-			   			volts for the least sigificant bit */
+        tr.ungpow = 0.0; /* negative of power used for dynamic
+                                            range compression */
 
-			tr.grnors=0   	; /* geophone group number of roll switch
-			   			position one */
+        tr.unscale = 0.0; /* reciprocal of scaling factor to normalize
+                                            range */
+        tr.ntr = 0;       /* number of traces */
 
-			tr.grnofr=0    	; /* geophone group number of trace one within
-			   			original field record */
+        tr.mark = 0;
 
-			tr.grnlof=0    	; /* geophone group number of last trace within
-			   			original field record */
+        for (j = 1; j <= ns; j++) {
+          tr.data[j] = section[tracl][j];
+        }
 
-			tr.gaps=0      	;  /* gap size (total number of groups dropped) */
+        fwrite(&tr, 240, 1, fpdata);
+        fwrite(&tr.data[1], 4, ns, fpdata);
+      }
 
-			tr.otrav=0     	;  /* overtravel taper code:
-						1 = down (or behind)
-						2 = up (or ahead) */
+      break;
 
-			/* local assignments */
+    case 2:
 
-			tr.f1=0.0;	/* first sample location for non-seismic data */
+      for (j = 1; j <= ns; j++) { /*ASCII ONE COLUMN PER TRACE */
+        for (i = 1; i <= ntr; i++) {
+          fprintf(fpdata, "%e\t", section[i][j]);
+        }
 
-			tr.d2=0.0;	/* sample spacing between traces */
+        fprintf(fpdata, "\n");
+      }
 
-			tr.f2=0.0;	/* first trace location */
+      break;
 
-			tr.ungpow=0.0;	/* negative of power used for dynamic
-			   			range compression */
+    case 3:             /*BINARY */
+      if (!LITTLEBIG) { /* OUTPUT NATIVE FLOATS */
+        for (i = 1; i <= ntr; i++)
+          for (j = 1; j <= ns; j++) {
+            fwrite(&section[i][j], sizeof(float), 1, fpdata);
+          }
 
-			tr.unscale=0.0;	/* reciprocal of scaling factor to normalize
-			   			range */
-			tr.ntr=0      ;   /* number of traces */
+      } else {
+        /* SWAP FLOATS */
+        for (i = 1; i <= ntr; i++)
+          for (j = 1; j <= ns; j++) {
+            tfloat = section[i][j];
+            pint = (int*)&tfloat;
+            *pint = ((*pint >> 24) & 0xff) | ((*pint & 0xff) << 24) |
+                    ((*pint >> 8) & 0xff00) | ((*pint & 0xff00) << 8);
+            /* explanation:
+                                                * (*pint>>24)&0xff shifts 3
+               bytes (3*8) to the right and takes with &=and only the least
+               significant byte (other bytes 0) 0 0 0 1
+                                                (*pint&0xff)<<24 sets the first
+               3 bytes to zero (takes only the least significant byte) than
+               shifts 3 bytes to the left (0 0 0 1 -> 1 0 0 0)
+                                                (*pint>>8)&0xff00 shifts 1 byte
+               to the right and than takes only 3rd byte (0 0 1 0)
+                                                (*pint&0xff00)<<8 sets bytes
+               1,2,4 to zero and shifts 1 byte to the left (0 1 0 0)
+                                                The |=or operator adds all for
+               parts to the swaped float
+                                                */
+            fwrite(&tfloat, sizeof(float), 1, fpdata);
+          }
+      }
 
-			tr.mark=0     ;
+      break;
 
-			for (j=1; j<=ns; j++) {
-				tr.data[j]=section[tracl][j];
-			}
+    default:
+      fprintf(fp,
+              " Don't know data format for seismograms ! Choose SEIS_FORMAT "
+              "1-3 \n");
+      fprintf(fp, " No output written. ");
+  }
 
-			fwrite(&tr,240,1,fpdata);
-			fwrite(&tr.data[1],4,ns,fpdata);
-		}
-
-		break;
-
-	case 2 :
-
-
-		for (j=1; j<=ns; j++) {     /*ASCII ONE COLUMN PER TRACE */
-			for (i=1; i<=ntr; i++) {
-				fprintf(fpdata,"%e\t", section[i][j]);
-			}
-
-			fprintf(fpdata,"\n");
-		}
-
-
-
-		break;
-
-	case 3 :                             /*BINARY */
-		if (!LITTLEBIG) { /* OUTPUT NATIVE FLOATS */
-			for (i=1; i<=ntr; i++) for (j=1; j<=ns; j++) {
-					fwrite(&section[i][j],sizeof(float),1,fpdata);
-				}
-
-		} else {
-				/* SWAP FLOATS */
-				for (i=1; i<=ntr; i++) for (j=1; j<=ns; j++) {
-						tfloat=section[i][j];
-						pint=(int *) &tfloat;
-						*pint=((*pint>>24)&0xff)|((*pint&0xff)<<24)|((*pint>>8)&0xff00)|((*pint&0xff00)<<8);
-							/* explanation:
-							* (*pint>>24)&0xff shifts 3 bytes (3*8) to the right and takes with &=and only the least significant byte (other bytes 0) 0 0 0 1
-							(*pint&0xff)<<24 sets the first 3 bytes to zero (takes only the least significant byte) than shifts 3 bytes to the left (0 0 0 1 -> 1 0 0 0) 
-							(*pint>>8)&0xff00 shifts 1 byte to the right and than takes only 3rd byte (0 0 1 0)
-							(*pint&0xff00)<<8 sets bytes 1,2,4 to zero and shifts 1 byte to the left (0 1 0 0)
-							The |=or operator adds all for parts to the swaped float
-							*/
-						fwrite(&tfloat,sizeof(float),1,fpdata);
-					}
-
-		}
-
-		break;
-
-	default :
-		fprintf(fp," Don't know data format for seismograms ! Choose SEIS_FORMAT 1-3 \n");
-		fprintf(fp," No output written. ");
-	}
-
-	fclose(fpdata);
-
-
+  fclose(fpdata);
 }

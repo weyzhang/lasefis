@@ -22,84 +22,77 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
-#include "globvar.h"      /* definition of global variables  */
+#include "globvar.h" /* definition of global variables  */
 
+int main(int argc, char** argv) {
+  int nsnap;
+  char* fileinp = "";
+  // FILE *FP;
+  fileinp = argv[1];
 
-int main(int argc, char **argv) {
+  if ((FP = fopen(fileinp, "r")) == NULL) {
+    err(" Opening input file failed.");
 
-	int nsnap;
-	char *fileinp="";
-	//FILE *FP;
-	fileinp = argv[1];
+  } else {
+    printf(" Opening input file was successful.\n\n");
+  }
 
+  /* read parameters from parameter-file */
 
-	if ((FP=fopen(fileinp,"r"))==NULL) {
-		err(" Opening input file failed.");
+  if (strstr(fileinp, ".json")) {
+    // read json formated input file
+    read_par_json(stdout, fileinp);
+    fclose(FP);
 
-	} else {
-		printf(" Opening input file was successful.\n\n");
-	}
+  } else {
+    // read "old" input file *.inp, might not work in future
+    err(" Old Input files (.inp) are no longer supported. \n Please use .json "
+        "input files instead. \n\n");
+  }
 
-	/* read parameters from parameter-file */
+  NXG = NX;
+  NYG = NY;
+  NZG = NZ;
+  NX = NXG / NPROCX;
+  NY = NYG / NPROCY;
+  NZ = NZG / NPROCZ;
 
-	if (strstr(fileinp,".json")) {
-		//read json formated input file
-		read_par_json(stdout, fileinp);
-		fclose(FP);
+  nsnap = 1 + iround((TSNAP2 - TSNAP1) / TSNAPINC);
 
-	} else {
-		//read "old" input file *.inp, might not work in future
-		err(" Old Input files (.inp) are no longer supported. \n Please use .json input files instead. \n\n");
+  FP = stdout;
 
-	}
+  switch (SNAP) {
+    case 1: /*particle velocity*/
 
+      merge(nsnap, 1);
+      merge(nsnap, 2);
+      merge(nsnap, 3);
+      break;
 
+    case 2: /*pressure */
+      merge(nsnap, 6);
+      break;
 
-	NXG=NX;
-	NYG=NY;
-	NZG=NZ;
-	NX = NXG/NPROCX;
-	NY = NYG/NPROCY;
-	NZ = NZG/NPROCZ;
+    case 4: /*particle velocity*/
+      merge(nsnap, 1);
+      merge(nsnap, 2);
+      merge(nsnap, 3);
 
-	nsnap=1+iround((TSNAP2-TSNAP1)/TSNAPINC);
+    case 3: /*curl and divergence energy*/
+      merge(nsnap, 4);
+      merge(nsnap, 5);
+      break;
 
-	FP=stdout;
+    case 5: /*Gradient/Model*/
+      merge(0, 7);
+      merge(0, 8);
+      merge(0, 9);
+      break;
 
-	switch (SNAP) {
-		case 1 : /*particle velocity*/
+    default:
+      warning(" snapmerge: cannot identify content of snapshot !");
+      break;
+  }
 
-			merge(nsnap,1);
-			merge(nsnap,2);
-			merge(nsnap,3);
-			break;
-
-		case 2 : /*pressure */
-			merge(nsnap,6);
-			break;
-
-		case 4 : /*particle velocity*/
-			merge(nsnap,1);
-			merge(nsnap,2);
-			merge(nsnap,3);
-
-		case 3 :/*curl and divergence energy*/
-			merge(nsnap,4);
-			merge(nsnap,5);
-			break;
-
-		case 5 :/*Gradient/Model*/
-			merge(0,7);
-			merge(0,8);
-			merge(0,9);
-			break;
-
-		default :
-			warning(" snapmerge: cannot identify content of snapshot !");
-			break;
-
-	}
-
-	return 0;
-
+  return 0;
 }
